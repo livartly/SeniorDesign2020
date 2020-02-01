@@ -1,0 +1,25 @@
+{
+  "name": "seniordesign2020",
+  "version": "1.0.0",
+  "description": "Web resource to assist students of discrete structures.",
+  "main": "index.js",
+  "directories": {
+    "doc": "docs"
+  },
+  "scripts": {
+    "test": "test"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/livartly/SeniorDesign2020.git"
+  },
+  "author": "Peter Cheng",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/livartly/SeniorDesign2020/issues"
+  },
+  "homepage": "https://github.com/livartly/SeniorDesign2020#readme",
+  "dependencies": {
+    "markdown-table": "^2.0.0"
+  }
+}
