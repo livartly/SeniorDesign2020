@@ -1,13 +1,14 @@
 import React, { Component } from 'react';
+import { Link } from 'react-router-dom';
 
 class Navbar extends Component {
   render() {
     return (
       <nav className="navbar">
-        <p><a href="http://livartly.com/wolframbeta/home.html" className="navhome"> HOME</a>
-          <a href="http://livartly.com/wolframbeta/resources.html" className="navvideos">RESOURCES</a>
-          <a href="http://livartly.com/wolframbeta/about.html" className="navsfx">ABOUT</a>
-          <a href="" className="navcontact">CONTACT </a>
+        <p><Link to="/" className="navhome">HOME</Link>
+          <Link to="/resources" className="navvideos">RESOURCES</Link>
+          <Link to="about" className="navsfx">ABOUT</Link>
+          <Link to="/" href="" className="navcontact">CONTACT</Link>
         </p>
       </nav>
     );
