@@ -22,9 +22,9 @@ class App extends Component {
             <Route exact path="/" component={Home} />
             <Route path="/resources" component={Resources} />
             <Route path="/about" component={About} />
+            <Route path="/calculator" component={Calculator} />
+            <Route path="/calculator2" component={Calculator2} />
           </Switch>
-          <Calculator />
-          <Calculator2 />
         </div>
       </Router>
     );
