@@ -20,25 +20,6 @@ class Home extends Component {
             <div className="contactme"><a href="contact.html"><b>CONTACT</b></a></div>
           </div>
         </div>
-
-
-        <footer>
-          <div className="row grey">
-            <div className="container">
-
-            </div>
-            <div className="container">
-              <div className="row twelve columns">
-                <a href="http://livartly.com/" className="navhome"> This is a link</a>
-              </div>
-              <div className="row twelve columns">
-                <p className="copyright">
-                  <h3>&copy; 2020 Wolfram Beta. All Rights Reserved.</h3>
-                </p>
-              </div>
-            </div>
-          </div>
-        </footer>
       </div>
     );
   }
