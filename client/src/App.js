@@ -16,7 +16,7 @@ import store from './store';
 import PrivateRoute from './components/private-route/PrivateRoute';
 import Register from './components/auth/RegisterContainer';
 import Login from './components/auth/LoginContainer';
-import Navbar from './components/navbar/Navbar';
+import Navbar from './components/navbar/NavbarContainer';
 import Home from './components/home/Home.js';
 import About from './components/about/About.js';
 import Resources from './components/resources/Resources.js';
