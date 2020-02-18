@@ -1,4 +1,4 @@
-import Navbar from './Navbar';
+import Navbar from './navbar';
 import { connect } from 'react-redux';
 import { withRouter } from 'react-router-dom';
 import { logoutUser } from '../../actions/authActions';

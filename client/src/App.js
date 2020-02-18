@@ -17,11 +17,11 @@ import PrivateRoute from './components/private-route/PrivateRoute';
 import Register from './components/auth/RegisterContainer';
 import Login from './components/auth/LoginContainer';
 import Navbar from './components/navbar/NavbarContainer';
-import Home from './components/home/Home.js';
-import About from './components/about/About.js';
-import Resources from './components/resources/Resources.js';
-import Calculator from './components/Calculator.js';
-import Calculator2 from './components/Calculator2.js';
+import Home from './components/home/home.js';
+import About from './components/about/about.js';
+import Resources from './components/resources/resources.js';
+import Calculator from './components/calculator.js';
+import Calculator2 from './components/calculator2.js';
 
 import './App.css';
 
