@@ -1,8 +1,7 @@
 import React from 'react';
 import Statement from '../engine/statement.js';
 
-
-
+import Table from 'react-bootstrap/Table';
 
 class Calculator extends React.Component {
   constructor(props) {
@@ -24,13 +23,36 @@ class Calculator extends React.Component {
     e.preventDefault();
     let statement = new Statement(this.state.wff);
     console.log(statement.table());
-    this.setState({ out: statement.table().replace(/&#124;/g, '|') });
+    this.setState({ out: statement.table() });
+  }
+
+  makeTable(outMarkdownString) {
+    if (outMarkdownString === "") return;
+    let outArray = outMarkdownString.split('\n');
+    return (
+      <Table striped bordered hover>
+        <thead>
+          <tr>
+            {outArray[0].slice(1, outArray[0].length - 1).split('|').map((item, i) => <th key={i}>{item.replace(/&#124;/g, '|')}</th>)}
+          </tr>
+        </thead>
+        <tbody>
+          {outArray.slice(2).map((item, i) => (this.makeRow(item, i)))}
+        </tbody>
+      </Table>
+    );
+  }
+
+  makeRow(rowArray, i) {
+    return (
+      <tr key={i}>
+        {rowArray.slice(1, rowArray.length - 1).split('|').map((item, j) => <td key={j}>{item}</td>)}
+      </tr>
+    );
   }
 
   render() {
-    let output = this.state.out.split('\n').map((item, i) => {
-      return <p key={i}>{item}</p>;
-    });
+    console.log("out is " + this.state.out);
     return (
       <div className="box">
         <h3>Truth Table Builder</h3>
@@ -39,7 +61,7 @@ class Calculator extends React.Component {
         <br />
         <button onClick={this.handleClick}>Submit</button>
         <br />
-        {output}
+        {this.makeTable(this.state.out)}
       </div>
     );
   }
