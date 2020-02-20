@@ -112,6 +112,11 @@ header.main_nav {
 		padding: 1% 0;
 		display: block;
 }
+
+.nav-container {
+	margin-left: auto;
+	margin-right: auto;
+}
 .navbar {
 	background-color: #000000;
 	text-align: center;
@@ -517,5 +522,6 @@ ul.social li {
 	font-size: 2.2em;
 	display: inline;
 	padding: 0 2%;
+}
 }
 }

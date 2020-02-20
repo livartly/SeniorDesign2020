@@ -30,7 +30,7 @@ class Calculator extends React.Component {
     if (outMarkdownString === "") return;
     let outArray = outMarkdownString.split('\n');
     return (
-      <Table striped bordered hover>
+      <Table striped bordered>
         <thead>
           <tr>
             {outArray[0].slice(1, outArray[0].length - 1).split('|').map((item, i) => <th key={i}>{item.replace(/&#124;/g, '|')}</th>)}
@@ -48,6 +48,21 @@ class Calculator extends React.Component {
       <tr key={i}>
         {rowArray.slice(1, rowArray.length - 1).split('|').map((item, j) => <td key={j}>{item}</td>)}
       </tr>
+    );
+  }
+
+  makeLegend() {
+    return (
+      <Table striped border>
+        <thead>
+          <tr>
+
+          </tr>
+        </thead>
+        <tbody>
+
+        </tbody>
+      </Table>
     );
   }
 

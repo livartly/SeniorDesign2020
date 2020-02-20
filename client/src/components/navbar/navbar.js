@@ -10,13 +10,12 @@ class Navbar extends Component {
   render() {
     return (
       <nav className="navbar">
-        <p><Link to="/" className="navhome">HOME</Link>
+        <p className="nav-container">
+          <Link to="/" className="navhome">HOME</Link>
           <Link to="/resources" className="navvideos">RESOURCES</Link>
           <Link to="about" className="navsfx">ABOUT</Link>
-          <Link to="/" href="" className="navcontact">CONTACT</Link>
-          <a onClick={this.handleLogout.bind(this)}>
-            Logout
-          </a>
+          <Link to="/" className="navcontact">CONTACT</Link>
+          <Link to="#" onClick={this.handleLogout.bind(this)}>LOGOUT</Link>
         </p>
       </nav>
     );

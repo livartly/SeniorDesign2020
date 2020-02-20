@@ -24,7 +24,7 @@ import Calculator from './components/calculator.js';
 import Calculator2 from './components/calculator2.js';
 
 import './App.css';
-import 'bootstrap/dist/css/bootstrap.min.css';
+//import 'bootstrap/dist/css/bootstrap.min.css';
 
 if (localStorage.jwtToken) {
   const token = localStorage.jwtToken;
