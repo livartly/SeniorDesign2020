@@ -4,7 +4,7 @@ import { Table } from 'react-bootstrap';
 
 const Legend = (props) => (
   <div>
-    <h3>Logical Connectives (descending order of prescedence)</h3>
+    <p>Logical Connectives (descending order of prescedence)</p>
     <Table striped border>
       <thead>
         <tr>

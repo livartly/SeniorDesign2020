@@ -8,10 +8,10 @@ import Legend from './Legend.js';
 class TruthTableBuilder extends React.Component {
   constructor(props) {
     super(props);
-    window.Statement = Statement;
     this.state = {
       wff: "",
-      out: ""
+      out: "",
+      error: null
     };
     this.updateWff = this.updateWff.bind(this);
     this.handleClick = this.handleClick.bind(this);
@@ -23,8 +23,14 @@ class TruthTableBuilder extends React.Component {
 
   handleClick(e) {
     e.preventDefault();
-    let statement = new Statement(this.state.wff);
-    this.setState({ out: statement.table() });
+    try {
+      let statement = new Statement(this.state.wff);
+      this.setState({ out: statement.table(), error: null });
+    }
+    catch (err) {
+      this.setState({ error: err.message });
+    }
+
   }
 
   makeTable(outMarkdownString) {
@@ -67,9 +73,11 @@ class TruthTableBuilder extends React.Component {
   render() {
     return (
       <div className="box">
-        <h2>Truth Table Builder</h2>
+        <p>Truth Table Builder</p>
         <Legend />
         <p>Type a wff in the box</p>
+        <span>{this.state.error ? this.state.error : ""}</span>
+        <br />
         <textarea value={this.state.wff} onChange={this.updateWff}></textarea>
         <br />
         <button onClick={this.handleClick}>Submit</button>
