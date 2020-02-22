@@ -20,7 +20,7 @@ import Navbar from './components/navbar/NavbarContainer';
 import Home from './components/home/home.js';
 import About from './components/about/about.js';
 import Resources from './components/resources/resources.js';
-import Calculator from './components/calculator.js';
+import Solver from './components/problem-solvers/solver.js';
 import Calculator2 from './components/calculator2.js';
 
 import './App.css';
@@ -53,7 +53,7 @@ class App extends Component {
               <PrivateRoute exact path="/" component={Home} />
               <PrivateRoute path="/resources" component={Resources} />
               <PrivateRoute path="/about" component={About} />
-              <PrivateRoute path="/calculator" component={Calculator} />
+              <PrivateRoute path="/solver" component={Solver} />
               <PrivateRoute path="/calculator2" component={Calculator2} />
             </Switch>
           </div>

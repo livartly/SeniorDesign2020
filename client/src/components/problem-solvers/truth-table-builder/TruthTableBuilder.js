@@ -1,9 +1,11 @@
 import React from 'react';
-import Statement from '../engine/statement.js';
+import Statement from '../../../engine/statement.js';
 
 import Table from 'react-bootstrap/Table';
 
-class Calculator extends React.Component {
+import Legend from './Legend.js';
+
+class TruthTableBuilder extends React.Component {
   constructor(props) {
     super(props);
     window.Statement = Statement;
@@ -22,7 +24,6 @@ class Calculator extends React.Component {
   handleClick(e) {
     e.preventDefault();
     let statement = new Statement(this.state.wff);
-    console.log(statement.table());
     this.setState({ out: statement.table() });
   }
 
@@ -63,54 +64,11 @@ class Calculator extends React.Component {
     );
   }
 
-  makeLegend() {
-    return (
-      <Table striped border>
-        <thead>
-          <tr>
-            <th>Symbol</th>
-            <th>Name</th>
-            <th>Example</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr>
-            <td>~</td>
-            <td>Negation</td>
-            <td>~P ("not P")</td>
-          </tr>
-          <tr>
-            <td>&amp;</td>
-            <td>Conjunction</td>
-            <td>P &amp; Q ("P and Q")</td>
-          </tr>
-          <tr>
-            <td>||</td>
-            <td>Disjunction</td>
-            <td>P || Q ("P or Q")</td>
-          </tr>
-          <tr>
-            <td>-></td>
-            <td>Implication</td>
-            <td>P -> Q ("If P, then Q")</td>
-          </tr>
-          <tr>
-            <td>&lt;-&gt;</td>
-            <td>Equivalence</td>
-            <td>P &lt;-&gt; Q ("P if and only if Q")</td>
-          </tr>
-        </tbody>
-      </Table>
-    );
-  }
-
   render() {
-    console.log("out is " + this.state.out);
     return (
       <div className="box">
         <h2>Truth Table Builder</h2>
-        <h3>Legend</h3>
-        {this.makeLegend()}
+        <Legend />
         <p>Type a wff in the box</p>
         <textarea value={this.state.wff} onChange={this.updateWff}></textarea>
         <br />
@@ -122,4 +80,4 @@ class Calculator extends React.Component {
   }
 }
 
-export default Calculator;
+export default TruthTableBuilder;
