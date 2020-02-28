@@ -25,6 +25,15 @@ class TruthTableBuilder extends React.Component {
     e.preventDefault();
     try {
       let statement = new Statement(this.state.wff);
+
+      this.props.sendProblem({
+        userID: this.props.userID,
+        typeIndex: 1,
+        input: {
+          wff: this.state.wff
+        }
+      });
+
       this.setState({ out: statement.table(), error: null });
     }
     catch (err) {

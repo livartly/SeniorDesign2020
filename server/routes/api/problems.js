@@ -4,12 +4,8 @@ import Problem from '../../models/Problem';
 
 
 Router.post('/', function (req, res) {
-  const submitProblem = new Problem({
-    submitUserID: req.body.userID,
-    problemTypeIndex: req.body.problem.typeIndex,
-    dateSubmitted: Date.now(),
-    problemInput: req.body.problem.input
-  });
+  const submitProblem = new Problem(req.body);
+  submitProblem.dateSubmitted = Date.now();
 
   if (!submitProblem) {
     return res.status(400).json({ error: "invalid parameters" });

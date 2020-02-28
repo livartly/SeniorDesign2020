@@ -3,11 +3,11 @@ import mongoose, {
 } from 'mongoose';
 
 const ProblemSchema = new Schema({
-  submitUserID: {
+  userID: {
     type: Schema.Types.ObjectId,
     required: true
   },
-  problemTypeIndex: {
+  typeIndex: {
     type: Number,
     required: true
   },
@@ -16,7 +16,7 @@ const ProblemSchema = new Schema({
     required: true,
     default: Date.now()
   },
-  problemInput: {
+  input: {
     type: Schema.Types.Mixed,
     required: true
   }
