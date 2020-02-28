@@ -3,6 +3,7 @@ import mongoose from 'mongoose';
 import bodyParser from 'body-parser';
 import passport from 'passport';
 import userAPIRouter from './routes/api/users';
+import problemAPIRouter from './routes/api/problems';
 import passportConfig from './config/passport';
 
 const app = express();
@@ -27,6 +28,7 @@ app.use(passport.initialize());
 passportConfig(passport);
 
 app.use('/api/users', userAPIRouter);
+app.use('/api/problems', problemAPIRouter);
 
 const port = process.env.PORT || 5000;
 app.listen(port, () => {
