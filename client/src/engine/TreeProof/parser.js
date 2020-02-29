@@ -506,3 +506,5 @@ Parser.prototype.parseTerms = function(str, boundVars) {
     } while (str.length > 0);
     return result;
 }
+
+export const Parser;

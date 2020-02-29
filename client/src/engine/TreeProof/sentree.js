@@ -667,3 +667,4 @@ SenTree.prototype.getCounterModel = function() {
     return model;
 }
 
+export const SenTree;

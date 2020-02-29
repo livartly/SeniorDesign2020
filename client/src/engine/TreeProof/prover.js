@@ -1067,3 +1067,5 @@ Node.prototype.getExpansionRule = function() {
 Node.prototype.toString = function() {
     return this.formula.string;
 }
+
+export const Prover;

@@ -291,3 +291,4 @@ TreePainter.prototype.getNextUnpaintedNode = function() {
     return null;
 }
     
+export const Painter;

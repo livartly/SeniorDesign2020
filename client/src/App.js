@@ -22,6 +22,7 @@ import About from './components/about/about.js';
 import Resources from './components/resources/resources.js';
 import Solver from './components/problem-solvers/solver.js';
 import Calculator2 from './components/calculator2.js';
+import ProofTree from './components/problem-solvers/TreeProof/TreeProof.js';
 
 import './App.css';
 //import 'bootstrap/dist/css/bootstrap.min.css';
