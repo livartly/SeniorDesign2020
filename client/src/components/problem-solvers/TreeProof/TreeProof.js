@@ -101,20 +101,11 @@ class TreeProof extends React.Component {
     str = str.replace('->', '→');
     str = str.replace('~', '¬');
     str = str.replace(' v ', ' ∨ '); // 'v' letter => or symbol
-    str = str.replace('[]', '□');
-    str = str.replace('<>', '◇');
-    str = str.replace(/\(A([s-z])\)/, '∀$1'); // (Ax) => ∀x
-    str = str.replace(/\(E([s-z])\)/, '∃$1'); // (Ex) => ∃x
-    str = str.replace(/(?:^|\W)\(([s-z])\)/, '∀$1'); // (x) => ∀x, but not f(x) => f∀x
-    str = str.replace(/\\forall[\{ ]?\}?/g, '∀');
-    str = str.replace(/\\exists[\{ ]?\}?/g, '∃');
     str = str.replace(/(\\neg|\\lnot)[\{ ]?\}?/g, '¬');
     str = str.replace(/(\\vee|\\lor)[\{ ]?\}?/g, '∨');
     str = str.replace(/(\\wedge|\\land)[\{ ]?\}?/g, '∧');
     str = str.replace(/(\\to|\\rightarrow)[\{ ]?\}?/g, '→');
     str = str.replace(/\\leftrightarrow[\{ ]?\}?/g, '↔');
-    str = str.replace(/\\[Bb]ox[\{ ]?\}?/g, '□');
-    str = str.replace(/\\[Dd]iamond[\{ ]?\}?/g, '◇');
     return str;
   }
 
@@ -146,8 +137,6 @@ class TreeProof extends React.Component {
                 <div class="symbutton button formula" onClick={this.insertAtKaret("∨")}>∨</div>
                 <div class="symbutton button formula" onClick={this.insertAtKaret("→")}>→</div>
                 <div class="symbutton button formula" onClick={this.insertAtKaret("↔")}>↔</div>
-                <div class="symbutton button formula" onClick={this.insertAtKaret("∀")}>∀</div>
-                <div class="symbutton button formula" onClick={this.insertAtKaret("∃")}>∃</div>
               </div>
           </div>
           <div id="proveRow">
@@ -173,20 +162,8 @@ class TreeProof extends React.Component {
             a <a href="https://en.wikipedia.org/wiki/Method_of_analytic_tableau">tree
             proof (a.k.a. semantic tableau)</a>. </p>
 
-          <p>Examples (click!):</p>
-          <ul id="exampleList">
-            <li class="formula"><a href="#(p∨(q∧r))→((p∨q)∧(p∨r))">(p∨(q∧r))→((p∨q)∧(p∨r))</a></li>
-            <li class="formula"><a href="#((A→B)→A)→A">((A→B)→A)→A</a></li>
-            <li class="formula"><a href="#∃y∀x(Fy→Fx)">∃y∀x(Fy→Fx)</a></li>
-            <li class="formula"><a href="#∃y∃z∀x((Fx→Gy)∧(Gz→Fx)) → ∀x∃y(Fx↔Gy)">∃y∃z∀x((Fx→Gy)∧(Gz→Fx)) → ∀x∃y(Fx↔Gy)</a></li>
-            <li class="formula"><a href="#N(0) ∧ ∀i(N(i)→N(s(i))) → N(s(s(s(0))))">N(0) ∧ ∀i(N(i)→N(s(i))) → N(s(s(s(0))))</a></li>
-            <li class="formula"><a href="#∀y∃xFxy → ∃x∀yFxy">∀y∃xFxy → ∃x∀yFxy</a></li>
-            <li class="formula"><a href="#□(p→q)→□p→□q">□(p→q)→□p→□q</a></li>
-            <li class="formula"><a href="#∀x□Fx→□∀xFx">∀x□Fx→□∀xFx</a></li>
-            <li class="formula"><a href="#p∨q, ¬p |= q">p∨q, ¬p |= q</a></li>
-          </ul>
-
-         </div> <h3>Entering formulas</h3>
+        </div> 
+        <h3>Entering formulas</h3>
           
           <p>To enter logic symbols, use the buttons above the text field, or
             type
@@ -195,48 +172,21 @@ class TreeProof extends React.Component {
             <span class="formula">v</span> for <span class="formula">∨</span>,
             <span class="formula">-&gt;</span> for <span class="formula">→</span>,
             <span class="formula">&lt;-&gt;</span> for <span class="formula">↔</span>,
-            <span class="formula">(Ax)</span> for <span class="formula">∀x</span>,
-            <span class="formula">(Ex)</span> for <span class="formula">∃x</span>,
-            <span class="formula">[]</span> for <span class="formula">□</span>,
-            <span class="formula"></span> for <span class="formula">◇</span>. You can
-            also use LaTeX commands.</p>
+          </p>
 
-          <h3>Premises</h3>
-
-          <p>If you want to test an argument with premises and conclusion,
-          use <span class="formula">|=</span> to separate the premises from the
-          conclusion, and use commas to separate the premises. See the last example in
-          the list above.</p>
           
           <h3>Syntax of formulas</h3>
           
           <p>Any alphabetic character is allowed as a propositional constant, predicate,
             individual constant, or variable. The character may be followed by digits as
-            indices. Predicates and function terms must be in prefix notation. Function
-            terms must have their arguments enclosed in brackets. So
-            <span class="formula">F2x17</span>, <span class="formula">Rab</span>,
-            <span class="formula">R(a,b)</span>, <span class="formula">Raf(b)</span>,
-            <span class="formula">F(+(a,b))</span> are ok, but
-            not <span class="formula">Animal(Fred)</span>, <span class="formula">aRb</span>,
-            or <span class="formula">F(a+b)</span>. (In fact, these are also ok, but
-            they won't be parsed as you might expect.) The order of precedence among
+            indices. Predicates and function terms must be in prefix notation. The order of precedence among
             connectives is <span class="formula">¬, ∧, ∨, →, ↔</span>. Association is to
-            the right. Quantifier symbols in sequences of quantifiers must not be
-            omitted: write <span class="formula">∀x∀yRxy</span> instead
-            of <span class="formula">∀xyRxy</span>.</p>
-
-          <h3>Supported logics</h3>
-
-          <p>Besides classical propositional logic and first-order predicate logic (with
-            functions, but without identity), a few normal modal logics are supported. If
-            you enter a modal formula, you will see a choice of how the accessibility
-            relation should be constrained. For modal predicate logic, constant domains
-            and rigid terms are assumed.</p>
+            the right. 
+          </p>
 
           <div id="model"> </div>
           <div id="rootAnchor"> </div>
-        </div>
-      //</div>
+      </div>
     );
   }
 }
