@@ -29,7 +29,7 @@ TreePainter.prototype.paintTree = function() {
         return this.finished();
     }
     var paintNodes = this.tree.getExpansion(node);
-    log("expansion: " + paintNodes);
+    console.log("expansion: " + paintNodes);
     for (var i=0; i<paintNodes.length; i++) {
         this.paint(paintNodes[i]);
     }
@@ -55,7 +55,7 @@ TreePainter.prototype.paint = function(node) {
     else {
         node.container = node.parent.container;
     }
-    log("painting "+node+" in "+node.container.str);
+    console.log("painting "+node+" in "+node.container.str);
     // create node div
     node.div = this.makeNodeDiv(node);
     node.container.appendChild(node.div);
@@ -63,7 +63,7 @@ TreePainter.prototype.paint = function(node) {
     // Since all children of the container are absolutely positioned, the
     // container element is actually a horizontal line starting centered at
     // the top of the branch.
-    log('w '+node.formulaSpan.offsetWidth);
+    console.log('w '+node.formulaSpan.offsetWidth);
     node.div.style.top = node.container.h + "px";
     node.container.h += node.div.offsetHeight + 3; // that number is the line-spacing
     if (node.children.length == 0) {
@@ -72,7 +72,7 @@ TreePainter.prototype.paint = function(node) {
     }
     if (node.formulaSpan.offsetWidth > node.container.formulaWidth) {
         node.container.formulaWidth = node.formulaSpan.offsetWidth + 10;
-        log('adjusting container width '+node.container.formulaWidth);
+        console.log('adjusting container width '+node.container.formulaWidth);
         var n = node;
         do {
             n.formulaSpan.style.width = node.container.formulaWidth + "px";
@@ -81,7 +81,7 @@ TreePainter.prototype.paint = function(node) {
         } while (n && n.container == node.container);
     }
     else {
-        log('using old container width '+node.container.formulaWidth);
+        console.log('using old container width '+node.container.formulaWidth);
         node.formulaSpan.style.width = node.container.formulaWidth + "px";
         node.div.style.left = -node.container.w/2 + "px";
     }
@@ -93,7 +93,7 @@ TreePainter.prototype.paint = function(node) {
 
 TreePainter.prototype.makeContainer = function(node) {
     // create new container for subbranch
-    log('creating new container');
+    console.log('creating new container');
     var parContainer = node.parent ? node.parent.container : this.rootAnchor;
     var container = document.createElement('div');
     parContainer.appendChild(container);
@@ -104,7 +104,7 @@ TreePainter.prototype.makeContainer = function(node) {
     container.style.left = "0px";
     container.style.top = node.parent ? parContainer.h + this.branchingHeight + "px" : "0px";
     container.w = container.h = 0;
-    container.str = "{ "+node+ " }" + (self.__strid ? self.__strid++ : (self.__strid = 1));
+    container.str = "{ "+node+ " }" + (window.self.__strid ? window.self.__strid++ : (window.self.__strid = 1));
     container.formulaClass = 'fla'+this.curNodeNumber;
     container.formulaWidth = 0;
     return container;
@@ -153,9 +153,9 @@ TreePainter.prototype.repositionBranches = function(node) {
     while ((par = par.parentNode).subContainers) {
         if (!par.subContainers[1]) continue;
         var overlap = this.getOverlap(par);
-        //log("comparing subcontainers for overlap: " + par.str);
+        //console.log("comparing subcontainers for overlap: " + par.str);
         if (overlap) {
-            log(overlap+" overlap between "+par.subContainers[0].str+" and "+par.subContainers[1].str);
+            console.log(overlap+" overlap between "+par.subContainers[0].str+" and "+par.subContainers[1].str);
             var x1 = parseInt(par.subContainers[0].style.left) - Math.ceil(overlap/2);
             var x2 = parseInt(par.subContainers[1].style.left) + Math.ceil(overlap/2);
             par.subContainers[0].style.left = x1 + "px";
@@ -189,7 +189,7 @@ TreePainter.prototype.getOverlap = function(par) {
             co2.__y = co2.parentNode.__y + parseInt(co2.style.top);
             if ((co1.__y >= co2.__y) && (co1.__y < co2.__y + co2.h) ||
                 (co2.__y >= co1.__y) && (co2.__y < co1.__y + co1.h)) { // y-overlap > 0
-                var overlap12 = (co1.__x + co1.w/2 + painter.branchPadding) - (co2.__x - co2.w/2);
+                var overlap12 = (co1.__x + co1.w/2 + window.self.painter.branchPadding) - (co2.__x - co2.w/2);
                 overlap = Math.max(overlap, overlap12);
             }
             co2s = co2s.concat(co2.subContainers);
@@ -208,13 +208,13 @@ TreePainter.prototype.keepTreeInView = function() {
         if (winTreeRatio < 1) {
             this.scale = Math.max(winTreeRatio, 0.8);
             document.getElementById('rootAnchor').style.transform="scale("+this.scale+")";
-            log("tree doesn't fit: ratio window.width/tree.width "+winTreeRatio);
+            console.log("tree doesn't fit: ratio window.width/tree.width "+winTreeRatio);
         }
     }
     var minX = this.getMinX();
     if (minX < this.minX/this.scale) {
         var invisibleWidth = (this.minX/this.scale - minX);
-        log("minX " + minX + "<" + this.minX+": tree out of left document border by " + invisibleWidth);
+        console.log("minX " + minX + "<" + this.minX+": tree out of left document border by " + invisibleWidth);
         mainContainer.style.left = mainContainer.__x + invisibleWidth + "px";
     }
 }
@@ -255,7 +255,7 @@ TreePainter.prototype.highlightNothing = function() {
 
 TreePainter.prototype.drawLine = function(el, x1, y1, x2, y2) {
     // adapted from https://stackoverflow.com/questions/4270485/drawing-lines-on-html-page
-    log('line in '+el+' from '+x1+'/'+y1+' to '+x2+'/'+y2);
+    console.log('line in '+el+' from '+x1+'/'+y1+' to '+x2+'/'+y2);
     var a = x1 - x2;
     var b = y1 - y2;
     var length = Math.sqrt(a*a + b*b);
@@ -290,5 +290,5 @@ TreePainter.prototype.getNextUnpaintedNode = function() {
     }
     return null;
 }
-    
-export const Painter;
+
+export {TreePainter};

@@ -1,6 +1,6 @@
 // Formula objects should be treated as immutable.
 
-function Formula() {
+export function Formula() {
     // not actually called, but you may pretend that NegatedFormula etc. are all
     // subclasses of Formula insofar as they inherit Formula.prototype.
 }
@@ -26,7 +26,7 @@ Formula.prototype.unify = function(formula) {
     // variables). Warning: Don't confuse an empty unifier [] with false!
     //
     // The following algorithm is losely based on the one described in S.
-    // Hölldobler, Logik und Logikprogrammierung, Synchron Verlag, Heidelberg
+    // Hölldobler, console.logik und Logikprogrammierung, Synchron Verlag, Heidelberg
     // 2001, §4.5.
     //
     // Note that this only works for literals.  For quantified formulas one
@@ -44,7 +44,7 @@ Formula.prototype.unify = function(formula) {
     var terms2 = formula.terms.copyDeep();
     var t1, t2;
     while (t1 = terms1.shift(), t2 = terms2.shift()) {
-        log('unify terms? '+t1+' <=> '+t2);
+        console.log('unify terms? '+t1+' <=> '+t2);
         if (t1 == t2) {
             // terms are equal: nothing to do.
             continue;
@@ -64,7 +64,7 @@ Formula.prototype.unify = function(formula) {
         var t2Var = (t2[0] == 'ξ' || t2[0] == 'ζ');
         if (!t1Var && !t2Var) {
             // neither term is variable: unification failed
-            log('no, neither term variable');
+            console.log('no, neither term variable');
             return false;
         }
         if (!t1Var) {
@@ -77,7 +77,7 @@ Formula.prototype.unify = function(formula) {
             // its arguments (or arguments of its ... arguments).
             var terms, termss = [t2];
             while (terms = termss.shift()) {
-                // log(terms);
+                // console.log(terms);
                 for (var i=0; i<terms.length; i++) {
                     if (terms[i].isArray) termss.push(terms[i]);
                     else if (terms[i] == t1) return false;
@@ -87,7 +87,7 @@ Formula.prototype.unify = function(formula) {
         // now we unify the variable t1 with the term t2: substitute t2
         // for t1 everywhere in the unifier array and in the remaining
         // terms1 and terms2, and add t1/t2 to the unifier array.
-        log('yes: unify');
+        console.log('yes: unify');
         var terms, termss = [unifier, terms1, terms2];
         while (terms = termss.shift()) {
             for (var i=0; i<terms.length; i++) {
@@ -234,7 +234,7 @@ Formula.prototype.beta = function(n) {
     }
 }
 
-function AtomicFormula(predicate, terms) {
+export function AtomicFormula(predicate, terms) {
     this.type = 'literal';
     this.predicate = predicate;
     this.terms = terms; // a,b,f(a,g(c),d) => a,b,[f,a,[g,c],d]
@@ -288,7 +288,7 @@ AtomicFormula.substituteInTerm = function(term, origTerm, newTerm) {
     return term;
 }
 
-function QuantifiedFormula(quantifier, variable, matrix, overWorlds) {
+export function QuantifiedFormula(quantifier, variable, matrix, overWorlds) {
     this.quantifier = quantifier;
     this.variable = variable;
     this.matrix = matrix;
@@ -317,7 +317,7 @@ QuantifiedFormula.prototype.substitute = function(origTerm, newTerm, shallow) {
     return new QuantifiedFormula(this.quantifier, this.variable, nmatrix, this.overWorlds);
 }
 
-function BinaryFormula(operator, sub1, sub2) {
+export function BinaryFormula(operator, sub1, sub2) {
     this.operator = operator;
     this.sub1 = sub1;
     this.sub2 = sub2;
@@ -336,7 +336,7 @@ BinaryFormula.prototype.substitute = function(origTerm, newTerm, shallow) {
     return new BinaryFormula(this.operator, nsub1, nsub2);
 }
 
-function ModalFormula(operator, sub) {
+export function ModalFormula(operator, sub) {
     this.operator = operator;
     this.sub = sub;
     this.type = operator == '□' ? 'modalGamma' : 'modalDelta';
@@ -353,7 +353,7 @@ ModalFormula.prototype.substitute = function(origTerm, newTerm, shallow) {
     return new ModalFormula(this.operator, nsub);
 }
 
-function NegatedFormula(sub) {
+export function NegatedFormula(sub) {
     this.operator = '¬';
     this.sub = sub;
     this.type = NegatedFormula.computeType(sub);
@@ -382,5 +382,3 @@ NegatedFormula.prototype.substitute = function(origTerm, newTerm, shallow) {
     if (this.sub == nsub) return this;
     return new NegatedFormula(nsub);
 }
-
-export const Formula;

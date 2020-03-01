@@ -11,9 +11,12 @@
 // complexity (determined by the number of free variables and nodes on
 // the current branch).
 
-function Prover(initFormulas, parser, accessibilityConstraints) {
+import {ModelFinder} from './modelfinder.js';
+import {AtomicFormula} from './formula.js';
 
-    log("*** initializing prover");
+export function Prover(initFormulas, parser, accessibilityConstraints) {
+
+    console.log("*** initializing prover");
 
     // set up the formulas with which the tableau begins, and the accessibility
     // rules:
@@ -40,11 +43,11 @@ function Prover(initFormulas, parser, accessibilityConstraints) {
     this.initFormulasNormalized = this.initFormulasNonModal.map(function(f){
         return f.normalize();
     });
-    log('normalized initFormulas: '+this.initFormulasNormalized);
+    console.log('normalized initFormulas: '+this.initFormulasNormalized);
     
     // init prover:
     this.pauseLength = 5; // ms pause between calculations
-    log('increasing pauseLength to '+(this.pauseLength = 10));
+    console.log('increasing pauseLength to '+(this.pauseLength = 10));
     this.computationLength = 20; // ms before setTimeout pause
     this.step = 0; // counter of calculation steps
     this.depthLimit = 2; // how many free variables may occur on the tree before
@@ -102,27 +105,27 @@ Prover.prototype.nextStep = function() {
     // backtracking if limit is reached; also searches for a countermodel; calls
     // itself again until proof is complete.
     this.step++;
-    log('*** prover step '+this.step);
+    console.log('*** prover step '+this.step);
     this.status('step '+this.step+': '+this.tree.numNodes+' nodes, model size '
                 +this.modelfinder.model.domain.length+'/'
                 +this.modelfinder.model.worlds.length);
     
     // (todoList items look like this: [Prover.alpha, node])
-    log(this.tree.openBranches[0].todoList);
+    console.log(this.tree.openBranches[0].todoList);
     var todo = this.tree.openBranches[0].todoList.shift();
     if (todo) {
         var nextRule = todo.shift();
         var args = todo;
         nextRule(this.tree.openBranches[0], args);
-        log(this.tree);
+        console.log(this.tree);
 
         if (this.tree.openBranches.length == 0) {
-            log('tree closed');
+            console.log('tree closed');
             return this.onfinished(1);
         }
 
         if (this.tree.openBranches[0].nodes.length > this.depthLimit * 4) {
-            log('reached complexity limit for backtracking');
+            console.log('reached complexity limit for backtracking');
             this.limitReached();
         }
     } 
@@ -142,16 +145,16 @@ Prover.prototype.nextStep = function() {
         // of them closes, whereas many close for n+1. Changing the depth
         // measure doesn't help. Instead, once every 1000 steps, we increase the
         // limit for a while and then reset it:
-        log("trying with increased depth for a few steps");
+        console.log("trying with increased depth for a few steps");
         this.depthLimit++;
         this.decreaseLimit = this.step + 200;
     }
     else if (this.step == this.decreaseLimit) {
-        log("resetting depth");
+        console.log("resetting depth");
         this.depthLimit--;
     }
     
-    log((this.step == 10000 && (this.stopTimeout=true) && 'proof halted') || '');
+    console.log((this.step == 10000 && (this.stopTimeout=true) && 'proof halted') || '');
     var timeSinceBreak = performance.now() - this.lastBreakTime;
     if (this.stopTimeout) {
         // proof manually interrupted
@@ -172,23 +175,23 @@ Prover.prototype.nextStep = function() {
 
 Prover.prototype.limitReached = function() {
     if (this.curAlternativeIndex < this.alternatives.length-1) {
-        log(" * limit reached, trying stored alternative * ");
+        console.log(" * limit reached, trying stored alternative * ");
         this.curAlternativeIndex++;
     }
     else {
         this.depthLimit++;
-        log("----- increasing depthLimit to " + this.depthLimit + " -----");
+        console.log("----- increasing depthLimit to " + this.depthLimit + " -----");
         this.curAlternativeIndex = 0;
     }
     this.tree = this.alternatives[this.curAlternativeIndex];
-    log("alternative "+(this.curAlternativeIndex+1)+" of "+this.alternatives.length);
-    log(this.tree);
+    console.log("alternative "+(this.curAlternativeIndex+1)+" of "+this.alternatives.length);
+    console.log(this.tree);
 }
 
 // Rules for expanding the tableau:
 
 Prover.alpha = function(branch, nodeList) {
-    log('alpha '+nodeList[0]);
+    console.log('alpha '+nodeList[0]);
     var node = nodeList[0];
     var subnode1 = new Node(node.formula.sub1, Prover.alpha, nodeList);
     var subnode2 = new Node(node.formula.sub2, Prover.alpha, nodeList);
@@ -204,7 +207,7 @@ Prover.alpha.priority = 1;
 Prover.alpha.toString = function() { return 'alpha' }
 
 Prover.beta = function(branch, nodeList) {
-    log('beta '+nodeList[0]);
+    console.log('beta '+nodeList[0]);
     var node = nodeList[0];
     branch.tree.openBranches.unshift(branch.copy());
     var subnode1 = new Node(node.formula.sub1, Prover.beta, nodeList);
@@ -220,10 +223,10 @@ Prover.beta.toString = function() { return 'beta' }
 Prover.gamma = function(branch, nodeList, matrix) {
     // <matrix> is set when this is called from modalGamma for S5 trees, see
     // modalGamma() below.
-    log('gamma '+nodeList[0]);
+    console.log('gamma '+nodeList[0]);
     var node = nodeList[0];
     if (branch.freeVariables.length == this.depthLimit) {
-        log("depthLimit " + this.depthLimit + " exceeded!");
+        console.log("depthLimit " + this.depthLimit + " exceeded!");
         this.limitReached();
         return null;
     }
@@ -245,7 +248,7 @@ Prover.modalGamma = function(branch, nodeList) {
     // □A and ¬◇A nodes are translated into ∀x(¬wRxvAx) and ∀x(¬wRx∨¬Ax). By the
     // standard gamma rule, these would be expanded to ¬wRξ7 ∨ Aξ7 or ¬wRξ7 ∨
     // ¬Aξ7. We don't want the resulting branches on the tree. See readme.org
-    log('modalGamma '+nodeList[0]);
+    console.log('modalGamma '+nodeList[0]);
     var node = nodeList[0];
     // add application back onto todoList:
     branch.todoList.push([Prover.modalGamma, node]);
@@ -262,26 +265,26 @@ Prover.modalGamma = function(branch, nodeList) {
     }
 
     var wRx = node.formula.matrix.sub1.sub;
-    log('looking for '+wRx.predicate+wRx.terms[0]+'* nodes');
+    console.log('looking for '+wRx.predicate+wRx.terms[0]+'* nodes');
     // find wR* node for □A expansion:
     OUTERLOOP:
     for (var i=0; i<branch.literals.length; i++) {
         var wRy = branch.literals[i].formula;
         if (wRy.predicate == wRx.predicate && wRy.terms[0] == wRx.terms[0]) {
-            log('found '+wRy);
+            console.log('found '+wRy);
             // check if <node> has already been expanded with this wR* node:
             for (var j=0; j<branch.nodes.length; j++) {
                 if (branch.nodes[j].fromRule == Prover.modalGamma &&
                     branch.nodes[j].fromNodes[0] == node &&
                     branch.nodes[j].fromNodes[1] == branch.literals[i]) {
-                    log('already used');
+                    console.log('already used');
                     continue OUTERLOOP;
                 }
             }
             // expand <node> with found wR*:
             var modalMatrix = node.formula.matrix.sub2;
             var v = wRy.terms[1];
-            log('expanding: '+node.formula.variable+' => '+v);
+            console.log('expanding: '+node.formula.variable+' => '+v);
             var newFormula = modalMatrix.substitute(node.formula.variable, v);
             var newNode = new Node(newFormula, Prover.modalGamma, [node, branch.literals[i]]);
             newNode.instanceTerm = v;
@@ -299,7 +302,7 @@ Prover.modalGamma.toString = function() { return 'modalGamma' }
 Prover.delta = function(branch, nodeList, matrix) {
     // <matrix> is set when this is called from modalDelta for S5 trees, see
     // modalDelta() below. 
-    log('delta '+nodeList[0]);
+    console.log('delta '+nodeList[0]);
     var node = nodeList[0];
     var fla = node.formula;
     // find skolem term:
@@ -335,7 +338,7 @@ Prover.delta.priority = 2;
 Prover.delta.toString = function() { return 'delta' }
 
 Prover.modalDelta = function(branch, nodeList) {
-    log('modalDelta '+nodeList[0]);
+    console.log('modalDelta '+nodeList[0]);
     var node = nodeList[0]; // a node of type ∃x(wRx∧Ax)
     if (branch.tree.prover.s5) {
         // In S5, we still translate ◇A into ∃x(wRx∧Ax) rather than ∃xAx. That's
@@ -365,7 +368,7 @@ Prover.modalDelta.priority = 2;
 Prover.modalDelta.toString = function() { return 'modalDelta' }
 
 Prover.reflexivity = function(branch, nodeList) {
-    log('applying reflexivity rule');
+    console.log('applying reflexivity rule');
     // nodeList is either empty or contains a node of form wRv where v might
     // have been newly introduced
     if (nodeList.length == 0) {
@@ -377,7 +380,7 @@ Prover.reflexivity = function(branch, nodeList) {
     }
     var R = branch.tree.parser.R;
     var formula = new AtomicFormula(R, [worldName, worldName]);
-    log('adding '+formula);
+    console.log('adding '+formula);
     var newNode = new Node(formula, Prover.reflexivity, nodeList || []);
     branch.addNode(newNode);
     // No point calling branch.tryClose(newNode): ~Rwv won't be on the branch.
@@ -388,12 +391,12 @@ Prover.reflexivity.premiseCanBeReflexive = false; // can be applied to wRw
 Prover.reflexivity.toString = function() { return 'reflexivity' }
 
 Prover.symmetry = function(branch, nodeList) {
-    log('applying symmetry rule');
+    console.log('applying symmetry rule');
     // nodeList contains a node of form wRv.
     var nodeFormula = nodeList[0].formula;
     var R = branch.tree.parser.R;
     var formula = new AtomicFormula(R, [nodeFormula.terms[1], nodeFormula.terms[0]]);
-    log('adding '+formula);
+    console.log('adding '+formula);
     var newNode = new Node(formula, Prover.symmetry, nodeList);
     branch.addNode(newNode);
 }
@@ -403,7 +406,7 @@ Prover.symmetry.premiseCanBeReflexive = false; // can be applied to wRw
 Prover.symmetry.toString = function() { return 'symmetry' }
 
 Prover.euclidity = function(branch, nodeList) {
-    log('applying euclidity rule');
+    console.log('applying euclidity rule');
     // nodeList contains a newly added node of form wRv.
     var node = nodeList[0];
     var nodeFla = node.formula;
@@ -432,7 +435,7 @@ Prover.euclidity = function(branch, nodeList) {
                 newFla = new AtomicFormula(R, [nodeFla.terms[1], earlierFla.terms[1]]);
             }
             if (newFla) {
-                log('adding '+newFla);
+                console.log('adding '+newFla);
                 var newNode = new Node(newFla, Prover.euclidity, [branch.nodes[i], node]);
                 if (branch.addNode(newNode)) {
                     branch.todoList.unshift([Prover.euclidity, node]);
@@ -449,7 +452,7 @@ Prover.euclidity.premiseCanBeReflexive = false; // can be applied to wRw
 Prover.euclidity.toString = function() { return 'euclidity' }
 
 Prover.transitivity = function(branch, nodeList) {
-    log('applying transitivity rule');
+    console.log('applying transitivity rule');
     // nodeList contains a newly added node of form wRv.
     var R = branch.tree.parser.R;
     var node = nodeList[0];
@@ -468,7 +471,7 @@ Prover.transitivity = function(branch, nodeList) {
             newFla = new AtomicFormula(R, [nodeFla.terms[0], earlierFla.terms[1]]);
         }
         if (newFla) {
-            log('matches '+earlierFla+': adding '+newFla);
+            console.log('matches '+earlierFla+': adding '+newFla);
             var newNode = new Node(newFla, Prover.transitivity, [branch.nodes[i], node]);
             if (branch.addNode(newNode)) {
                 branch.todoList.unshift([Prover.transitivity, node]);
@@ -484,7 +487,7 @@ Prover.transitivity.premiseCanBeReflexive = false; // can be applied to wRw
 Prover.transitivity.toString = function() { return 'transitivity' }
 
 Prover.seriality = function(branch, nodeList) {
-    log('applying seriality rule');
+    console.log('applying seriality rule');
     // nodeList is either empty or contains a newly added node of form wRv.
     var R = branch.tree.parser.R;
     if (nodeList.length == 0) {
@@ -498,13 +501,13 @@ Prover.seriality = function(branch, nodeList) {
     for (var i=0; i<branch.nodes.length-1; i++) {
         var earlierFla = branch.nodes[i].formula;
         if (earlierFla.predicate == R && earlierFla.terms[0] == oldWorld) {
-            log(oldWorld+' can already see a world');
+            console.log(oldWorld+' can already see a world');
             return;
         }
     }
     var newWorld = branch.newWorldName();
     var newFla = new AtomicFormula(R, [oldWorld, newWorld]);
-    log('adding '+newFla);
+    console.log('adding '+newFla);
     var newNode = new Node(newFla, Prover.seriality, []);
     branch.addNode(newNode);
 }
@@ -514,7 +517,7 @@ Prover.seriality.premiseCanBeReflexive = false; // can be applied to wRw
 Prover.seriality.toString = function() { return 'seriality' }
 
 
-function Tree(prover) {
+export function Tree(prover) {
     if (!prover) return; // for copy() function
     this.prover = prover;
     this.parser = prover.parser;
@@ -551,11 +554,11 @@ Tree.prototype.pruneAlternatives = function() {
         for (var j=0; j<this.openBranches.length; j++) {
             var openBranch = this.openBranches[j];
             if (!altTree.containsOpenBranch(openBranch)) {
-                // log('alternative '+i+' does not contain open branch '+openBranch);
+                // console.log('alternative '+i+' does not contain open branch '+openBranch);
                 continue ALTLOOP
             }
         }
-        log('alternative '+i+' contains all open branches of this tree; removing');
+        console.log('alternative '+i+' contains all open branches of this tree; removing');
         if (i < this.prover.curAlternativeIndex) this.prover.curAlternativeIndex--;
         this.prover.alternatives.remove(altTree);
     }
@@ -637,7 +640,7 @@ Tree.prototype.pruneBranch = function(branch, complementary1, complementary2) {
                     if (!obranches[j].closed) return;
                 }
                 else {
-                    log("pruning branch "+obranches[j]+": unused expansion of "+branch.nodes[i].fromNodes[0]);
+                    console.log("pruning branch "+obranches[j]+": unused expansion of "+branch.nodes[i].fromNodes[0]);
                     if (obranches[j].closed) {
                         this.closedBranches.remove(obranches[j]);
                         branch.nodes[i].fromNodes[0].used = false;
@@ -659,7 +662,7 @@ Tree.prototype.closeCloseableBranches = function() {
     var openBranches = this.openBranches.copy();
     for (var k=0; k<openBranches.length; k++) {
         var branch = openBranches[k];
-        // log('?b: '+branch);
+        // console.log('?b: '+branch);
         BRANCHLOOP:
         for (var i=branch.nodes.length-1; i>=0; i--) {
             var n1 = branch.nodes[i];
@@ -667,7 +670,7 @@ Tree.prototype.closeCloseableBranches = function() {
             var closed = false;
             for (var j=i-1; j>=0; j--) {
                 var n2 = branch.nodes[j];
-                // log('? '+n1+' '+n2);
+                // console.log('? '+n1+' '+n2);
                 if (n2.formula.operator == '¬') {
                     if (n2.formula.sub.equals(n1.formula)) closed = true;
                 }
@@ -675,7 +678,7 @@ Tree.prototype.closeCloseableBranches = function() {
                     if (n1.formula.sub.equals(n2.formula)) closed = true;
                 }
                 if (closed) {
-                    log("+++ branch closed +++");
+                    console.log("+++ branch closed +++");
                     this.closeBranch(branch, n1, n2);
                     break BRANCHLOOP;
                 }
@@ -803,7 +806,7 @@ Tree.prototype.toString = function() {
     }
 }
 
-function Branch(tree, nodes, literals, freeVariables, skolemSymbols, todoList, closed) {
+export function Branch(tree, nodes, literals, freeVariables, skolemSymbols, todoList, closed) {
     this.tree = tree;
     this.nodes = nodes || [];
     this.literals = literals || [];
@@ -851,12 +854,12 @@ Branch.prototype.newWorldName = function() {
 Branch.prototype.tryClose = function(node) {
     // check if branch can be closed with the help of the newly added node
     // <node>.
-    log('checking if branch can be closed with '+node);
+    console.log('checking if branch can be closed with '+node);
     // First check if closure is possible without unification:
     var negatedFormula = (node.formula.operator == '¬') ? node.formula.sub : node.formula.negate();
     for (var i=0; i<this.nodes.length; i++) {
         if (this.nodes[i].formula.equals(negatedFormula)) {
-            log("+++ branch closed +++");
+            console.log("+++ branch closed +++");
             this.tree.closeBranch(this, node, this.nodes[i]);
             return true;
         }
@@ -908,13 +911,13 @@ Branch.prototype.tryClose = function(node) {
     if (considerAlternatives) {
         for (var i=1; i<unifiers.length; i++) {
             var altTree = this.tree.copy();
-            log("processing and storing alternative unifier for "+node+": "+unifiers[i]);
+            console.log("processing and storing alternative unifier for "+node+": "+unifiers[i]);
             // applying a substitution can make other branches closable as well
             altTree.applySubstitution(unifiers[i]);
             altTree.closeCloseableBranches();
-            log('alternative tree:\n'+altTree);
+            console.log('alternative tree:\n'+altTree);
             if (altTree.openBranches.length == 0) {
-                log('alternative tree closes, stopping proof');
+                console.log('alternative tree closes, stopping proof');
                 this.tree.prover.tree = altTree;
                 return true;
             }
@@ -923,20 +926,20 @@ Branch.prototype.tryClose = function(node) {
         if (this.todoList.length) {
             // instead of unifying, we could apply some other rule from the todoList:
             var altTree = this.tree.copy();
-            log("storing non-unified alternative"); 
+            console.log("storing non-unified alternative"); 
             // altTree is not unified, nextStep will apply next rule(s) 
             this.tree.prover.alternatives.push(altTree);
         }
-        log(this.tree.prover.alternatives.length+' alternatives');
+        console.log(this.tree.prover.alternatives.length+' alternatives');
     }
     else {
-        log("no need to consider alternatives for backtracking");
+        console.log("no need to consider alternatives for backtracking");
     }
-    log("applying unifier for "+node+" and "+otherNode+": "+unifier);
+    console.log("applying unifier for "+node+" and "+otherNode+": "+unifier);
     this.tree.applySubstitution(unifier);
     this.tree.closeBranch(this, node, otherNode);
-    log(this.tree);
-    log("+++ branch closed +++");
+    console.log(this.tree);
+    console.log("+++ branch closed +++");
     return true;
 }
 
@@ -1045,7 +1048,7 @@ Branch.prototype.toString = function() {
 }
 
 
-function Node(formula, fromRule, fromNodes) {
+export function Node(formula, fromRule, fromNodes) {
     // Each non-initial node on a branch is the result of applying a rule to
     // (zero or more) earlier nodes on the same branch. This information about a
     // node's origin is needed to display the final sentence tableau, and for
@@ -1067,5 +1070,3 @@ Node.prototype.getExpansionRule = function() {
 Node.prototype.toString = function() {
     return this.formula.string;
 }
-
-export const Prover;

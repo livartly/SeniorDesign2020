@@ -1,3 +1,4 @@
+import {Formula, AtomicFormula, QuantifiedFormula, BinaryFormula, ModalFormula, NegatedFormula} from './formula.js';
 
 function Parser() {
     // store signature info so that we can parse multiple formulas and check if
@@ -31,7 +32,7 @@ Parser.prototype.copy = function() {
 }
 
 Parser.prototype.registerExpression = function(ex, exType, arity) {
-    log('registering '+exType+' '+ex);
+    console.log('registering '+exType+' '+ex);
     if (!this.expressionType[ex]) this.symbols.push(ex);
     else if (this.expressionType[ex] != exType) {
         throw "don't use '"+ex+"' as both "+this.expressionType[ex]+" and "+exType;
@@ -114,6 +115,7 @@ Parser.prototype.getVariables = function(formula) {
     return res;
     
     // xxx del
+    /*
     var res = [];
     var dupe = {};
     var num_re = /[0-9]/;
@@ -126,7 +128,7 @@ Parser.prototype.getVariables = function(formula) {
             res.push(variable);
         }
     }
-    return res;
+    return res;*/
 }
 
 Parser.prototype.isTseitinLiteral = function(formula) {
@@ -152,7 +154,7 @@ Parser.prototype.initModality = function() {
 Parser.prototype.translateFromModal = function(formula, worldVariable) {
     // return translation of modal formula into first-order formula with
     // explicit world variables
-    log("translating modal formula "+formula);
+    console.log("translating modal formula "+formula);
     if (!worldVariable) {
         if (!this.w) this.initModality();
         worldVariable = this.w;
@@ -195,7 +197,7 @@ Parser.prototype.translateFromModal = function(formula, worldVariable) {
 Parser.prototype.stripAccessibilityClauses = function(formula) {
     // return new non-modal formula with all accessibility conditions stripped;
     // e.g. ∃v(wRv∧Av) => ∃vAv; ∀v(¬wRv∨Av) => ∀vAv. <formula> is normalized.
-    log(formula);
+    console.log(formula);
     if (formula.quantifier) {
         var nmatrix = this.stripAccessibilityClauses(formula.matrix);
         if (nmatrix == formula.matrix) return formula;
@@ -224,7 +226,7 @@ Parser.prototype.translateToModal = function(formula) {
     // translate back from first-order formula into modal formula, with extra
     // .world label: pv => p (v); ∀u(vRu→pu) => □p (v). Formulas of type 'wRv'
     // remain untranslated.
-    log("translating "+formula+" into modal formula");
+    console.log("translating "+formula+" into modal formula");
     if (formula.terms && formula.predicate == this.R) {
         return formula;
     }
@@ -265,14 +267,14 @@ Parser.prototype.translateToModal = function(formula) {
 Parser.prototype.parseInput = function(str) {
     // return [premises, conclusion] for entered string, where <premises> is
     // a list of premise Formulas and <conclusion> is a Formula.
-    log("*** parsing input");
+    console.log("*** parsing input");
     var parts = str.split('|=');
     if (parts.length > 2) {
         throw "You can't use more than one turnstile";
     }
     var premises = [];
     var conclusion = this.parseFormula(parts[parts.length-1]);
-    log("=== conclusion "+conclusion);
+    console.log("=== conclusion "+conclusion);
     if (parts.length == 2) {
         // split premises by commas that are not in parentheses:
         var temp = this.hideSubStringsInParens(parts[0]);
@@ -286,7 +288,7 @@ Parser.prototype.parseInput = function(str) {
                 prem = prem.replace("%"+j, subStringsInParens[j]);
             }
             premises.push(this.parseFormula(prem));
-            log("=== premise "+premises.length+": "+premises[premises.length]);
+            console.log("=== premise "+premises.length+": "+premises[premises.length]);
         }
     }
     return [premises, conclusion];
@@ -322,7 +324,7 @@ Parser.prototype.hideSubStringsInParens = function(str) {
 Parser.prototype.parseFormula = function(str) {
     // return Formula for (entered) string
     var boundVars = arguments[1] ? arguments[1].slice() : [];
-    log("parsing '"+str+"' (boundVars "+boundVars+")");
+    console.log("parsing '"+str+"' (boundVars "+boundVars+")");
 
     if (!arguments[1]) str = this.tidyFormula(str);
 
@@ -334,16 +336,16 @@ Parser.prototype.parseFormula = function(str) {
         var temp = this.hideSubStringsInParens(str);
         var nstr = temp[0];
         var subStringsInParens = temp[1];
-        log("   nstr = '"+nstr+"'; ");
+        console.log("   nstr = '"+nstr+"'; ");
          
         // Now let's see if there is still a connective in the modified string
         // (in decreasing order of precedence):
         var reTest = nstr.match(/↔/) || nstr.match(/→/)  || nstr.match(/∨/) || nstr.match(/∧/);
         if (reTest) { 
             // yes. The matched connective is the main operator
-            log("   string is complex; ");
+            console.log("   string is complex; ");
             var op = reTest[0];
-            log("   main connective: "+op+"; ");
+            console.log("   main connective: "+op+"; ");
             nstr = nstr.replace(op, "%split");
             // restore removed substrings:
             for (var i=0; i<subStringsInParens.length; i++) {
@@ -353,7 +355,7 @@ Parser.prototype.parseFormula = function(str) {
             if (!subFormulas[1]) {
                 throw "argument missing for operator "+op+" in "+str;
             }
-            log("   subformulas: "+subFormulas[0]+", "+subFormulas[1]+"; ");
+            console.log("   subformulas: "+subFormulas[0]+", "+subFormulas[1]+"; ");
             var sub1 = this.parseFormula(subFormulas[0], boundVars);
             var sub2 = this.parseFormula(subFormulas[1], boundVars);
             return new BinaryFormula(op, sub1, sub2);
@@ -362,7 +364,7 @@ Parser.prototype.parseFormula = function(str) {
     
     var reTest = str.match(/^(¬|□|◇)/);
     if (reTest) {
-        log("   string is negated or modal; ");
+        console.log("   string is negated or modal; ");
         var op = reTest[1];
         var sub = this.parseFormula(str.substr(1), boundVars);
         if (op == '¬') return new NegatedFormula(sub);
@@ -374,7 +376,7 @@ Parser.prototype.parseFormula = function(str) {
     reTest = /^(∀|∃)([^\d\(\),%]\d*)/.exec(str);
     if (reTest && reTest.index == 0) {
         // quantified formula
-        log("   string is quantified (quantifier = '"+reTest[1]+"'); ");
+        console.log("   string is quantified (quantifier = '"+reTest[1]+"'); ");
         var quantifier = reTest[1];
         var variable = reTest[2];
         if (!str.substr(reTest[0].length)) {
@@ -393,7 +395,7 @@ Parser.prototype.parseFormula = function(str) {
     reTest = /^[^\d\(\),%]\d*/.exec(str);
     if (reTest && reTest.index == 0) {
         // atomic
-        log("   string is atomic (predicate = '"+reTest[0]+"'); ");
+        console.log("   string is atomic (predicate = '"+reTest[0]+"'); ");
         var predicate = reTest[0];
         var termstr = str.substr(predicate.length); // empty for propositional constants
         var terms = this.parseTerms(termstr, boundVars) || [];
@@ -409,9 +411,9 @@ Parser.prototype.parseFormula = function(str) {
     }
 
     // if the entire formula was enclosed in parens we end up here
-    log("   string could not be identified as anything;");
+    console.log("   string could not be identified as anything;");
     if (str.match(/^\((.*)\)$/)) {
-        log("   trying again without outer parens;");
+        console.log("   trying again without outer parens;");
         return this.parseFormula(str.replace(/^\((.*)\)$/, "$1"), boundVars);
     }
 
@@ -427,7 +429,7 @@ Parser.prototype.tidyFormula = function(str) {
     this.checkBalancedParentheses(str);
     // remove parentheses around quantifiers: (∀x)Fx => ∀xFx
     str = str.replace(/\(([∀∃]\w\d*)\)/g, '$1');
-    log(str);
+    console.log(str);
     return str;
 }
 
@@ -469,7 +471,7 @@ Parser.prototype.parseAccessibilityFormula = function(str) {
 Parser.prototype.parseTerms = function(str, boundVars) {
     // parses a sequence of terms and returns the sequence in internal format,
     // as nested array
-    log("parsing terms: "+str+" (boundVars "+boundVars+")");
+    console.log("parsing terms: "+str+" (boundVars "+boundVars+")");
     if (!str) return [];
     var result = [];
     str = str.replace(/^\((.+)\)$/, "$1"); // remove surrounding parens
@@ -492,7 +494,7 @@ Parser.prototype.parseTerms = function(str, boundVars) {
                 else if (str.charAt(spos) == ")") openParens--;
                 spos++;
             } while (openParens && spos < str.length);
-            log("Arguments: "+args);
+            console.log("Arguments: "+args);
             nextTerm = [nextTerm].concat(this.parseTerms(args, boundVars));
             var arity = (nextTerm.length - 1);
             this.registerExpression(reTest[0], arity+"-ary function symbol", arity);
@@ -507,4 +509,4 @@ Parser.prototype.parseTerms = function(str, boundVars) {
     return result;
 }
 
-export const Parser;
+export {Parser};

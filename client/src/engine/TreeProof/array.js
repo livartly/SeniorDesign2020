@@ -110,5 +110,3 @@ Array.prototype.equals = function(arr2) {
     }
     return true;
 }
-
-export const Array;

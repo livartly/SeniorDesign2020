@@ -1,4 +1,11 @@
 import React from 'react';
+import {Array} from '../../../engine/TreeProof/array.js';
+import {Formula, AtomicFormula, QuantifiedFormula, BinaryFormula, ModalFormula, NegatedFormula} from '../../../engine/TreeProof/formula.js';
+import {ModelFinder, Model} from '../../../engine/TreeProof/modelfinder.js';
+import {Painter} from '../../../engine/TreeProof/painter.js';
+import {Parser} from '../../../engine/TreeProof/parser.js';
+import {Prover, Tree, Branch, Node} from '../../../engine/TreeProof/prover.js';
+import {SenTree} from '../../../engine/TreeProof/sentree.js';
 //import Statement from '../engine/statement.js';
 
 
@@ -45,15 +52,7 @@ class TreeProof extends React.Component {
             <input type="submit" value="Run" id="proveButton" class="button"></input>
           </div>
         </form>
-        
-        <script type='text/javascript' src='././engine/TreeProof/array.js'></script>
-        <script type='text/javascript' src='././engine/TreeProof/formula.js'></script>
-        <script type='text/javascript' src='././engine/TreeProof/index.js'></script>
-        <script type='text/javascript' src='././engine/TreeProof/modelfinder.js'></script>
-        <script type='text/javascript' src='././engine/TreeProof/painter.js'></script>
-        <script type='text/javascript' src='././engine/TreeProof/parser.js'></script>
-        <script type='text/javascript' src='././engine/TreeProof/prover.js'></script>
-        <script type='text/javascript' src='././engine/TreeProof/sentree.js'></script>
+      
 
         <div id="intro">
           <noscript><p><b>Enable JavaScript to use this page!.</b></p></noscript>
