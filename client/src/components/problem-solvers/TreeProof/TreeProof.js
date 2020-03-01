@@ -2,7 +2,7 @@ import React from 'react';
 import {Array} from '../../../engine/TreeProof/array.js';
 import {Formula, AtomicFormula, QuantifiedFormula, BinaryFormula, ModalFormula, NegatedFormula} from '../../../engine/TreeProof/formula.js';
 import {ModelFinder, Model} from '../../../engine/TreeProof/modelfinder.js';
-import {Painter} from '../../../engine/TreeProof/painter.js';
+import {Painter, TreePainter} from '../../../engine/TreeProof/painter.js';
 import {Parser} from '../../../engine/TreeProof/parser.js';
 import {Prover, Tree, Branch, Node} from '../../../engine/TreeProof/prover.js';
 import {SenTree} from '../../../engine/TreeProof/sentree.js';
@@ -14,22 +14,120 @@ import {SenTree} from '../../../engine/TreeProof/sentree.js';
 class TreeProof extends React.Component {
   constructor(props) {
     super(props);
-    //window.Statement = Statement;
     this.state = {
-      //wff: "",
-      //out: ""
+      inputText: "",
+      error: null
     };
-    this.updateWff = this.updateWff.bind(this);
+    this.insertAtKaret = this.insertAtKaret.bind(this);
+    this.updateInput = this.updateInput.bind(this);
     this.handleClick = this.handleClick.bind(this);
-  }
-
-  updateWff(e) {
-    this.setState({});
+    this.startProof = this.startProof.bind(this);
   }
 
   handleClick(e) {
     e.preventDefault();
-    this.setState();
+    //this.setState();
+    //console.log("Yeet");
+    this.startProof();
+  }
+
+  startProof() {
+    var prover = null;
+    var input = this.state.inputText;
+    var parser = new Parser();
+    try {
+        var parsedInput = parser.parseInput(input);
+        var premises = parsedInput[0];
+        var conclusion = parsedInput[1];
+        var initFormulas = premises.concat([conclusion.negate()]);
+    }
+    catch (e) {
+        alert(e);
+        return false;
+    }
+    document.getElementById("intro").style.display = "none";
+    document.getElementById("model").style.display = "none";
+    document.getElementById("rootAnchor").style.display = "none";
+    //document.getElementById("backtostartpage").style.display = "block";
+    //document.getElementById("status").style.display = "block";
+    //document.getElementById("status").innerHTML = "something went wrong: please email wo@umsu.de and tell me what you did";
+    
+    // Now a free-variable tableau is created. When the proof is finished,
+    // prover.finished() is called.
+    var accessibilityConstraints = [];
+
+    prover = new Prover(initFormulas, parser, accessibilityConstraints);
+    prover.onfinished = function(treeClosed) {
+        // The prover has finished. Show result:
+        var conclusionSpan = "<span class='formula'>"+conclusion+"</span>";
+        if (initFormulas.length == 1) {
+            var summary = conclusionSpan + " is " + (treeClosed ? "valid." : "invalid.");
+        }
+        else {
+            var summary = premises.map(function(f){
+                return "<span class='formula'>"+f+"</span>";
+            }).join(', ') + (treeClosed ? " entails " : " does not entail ") + conclusionSpan + ".";
+        }
+        // Translate the free-variable tableau into a sentence tableau:
+        var sentree = new SenTree(this.tree, parser); 
+        if (!treeClosed) {
+            // Tree is open. Display a countermodel if one is known:
+            // if (!this.counterModel) this.counterModel = sentree.getCounterModel();
+            if (this.counterModel) {
+                document.getElementById("model").style.display = "block";
+                document.getElementById("model").innerHTML = "<b>Countermodel:</b><br>" +
+                    this.counterModel.toHTML();
+            }
+            return; 
+        }
+        if (parser.isModal) {
+            sentree.modalize();
+        }
+        // Start painting the tree:
+        document.getElementById("rootAnchor").style.display = "block";
+        window.self.painter = new TreePainter(sentree, document.getElementById("rootAnchor"));
+        window.self.painter.paintTree();
+    }
+    setTimeout(function(){
+        prover.start();
+    }, 1);
+    return false;
+  }
+
+  renderSymbols(str) {
+    str = str.replace('&', '∧');
+    str = str.replace('^', '∧');
+    str = str.replace('<->', '↔');
+    str = str.replace('->', '→');
+    str = str.replace('~', '¬');
+    str = str.replace(' v ', ' ∨ '); // 'v' letter => or symbol
+    str = str.replace('[]', '□');
+    str = str.replace('<>', '◇');
+    str = str.replace(/\(A([s-z])\)/, '∀$1'); // (Ax) => ∀x
+    str = str.replace(/\(E([s-z])\)/, '∃$1'); // (Ex) => ∃x
+    str = str.replace(/(?:^|\W)\(([s-z])\)/, '∀$1'); // (x) => ∀x, but not f(x) => f∀x
+    str = str.replace(/\\forall[\{ ]?\}?/g, '∀');
+    str = str.replace(/\\exists[\{ ]?\}?/g, '∃');
+    str = str.replace(/(\\neg|\\lnot)[\{ ]?\}?/g, '¬');
+    str = str.replace(/(\\vee|\\lor)[\{ ]?\}?/g, '∨');
+    str = str.replace(/(\\wedge|\\land)[\{ ]?\}?/g, '∧');
+    str = str.replace(/(\\to|\\rightarrow)[\{ ]?\}?/g, '→');
+    str = str.replace(/\\leftrightarrow[\{ ]?\}?/g, '↔');
+    str = str.replace(/\\[Bb]ox[\{ ]?\}?/g, '□');
+    str = str.replace(/\\[Dd]iamond[\{ ]?\}?/g, '◇');
+    return str;
+  }
+
+  insertAtKaret(sym) {
+    return () => {
+      this.setState( (prevState) => ({
+        inputText: prevState.inputText + sym
+      }));
+    }
+  }
+
+  updateInput(e) {
+    this.setState({inputText: this.renderSymbols(e.currentTarget.value)});
   }
 
   render() {
@@ -37,19 +135,32 @@ class TreeProof extends React.Component {
       <div id = "Main">
         <div id="titlebar">
           <h2 id="title"><a id="titlelink" href=".">Tree Proof Generator</a></h2>
-          <a id="githublink" class="hideOnPhone" href="https://www.github.com/wo/tpg/commits/master"></a>
         </div>
 
         <form id="inputForm" action="." method="get" onsubmit="return false">
           <div id="symbolButtonRow">
             insert <span class="hideOnTablet">symbol:</span>
               <div id="symbolButtons">
-                <div class="symbutton button formula">¬</div><div class="symbutton button formula">∧</div><div class="symbutton button formula">∨</div><div class="symbutton button formula">→</div><div class="symbutton button formula">↔</div><div class="symbutton button formula">∀</div><div class="symbutton button formula">∃</div><div class="symbutton button formula">□</div><div class="symbutton button formula">◇</div>
+                <div class="symbutton button formula" onClick={this.insertAtKaret("¬")}>¬</div>
+                <div class="symbutton button formula" onClick={this.insertAtKaret("∧")}>∧</div>
+                <div class="symbutton button formula" onClick={this.insertAtKaret("∨")}>∨</div>
+                <div class="symbutton button formula" onClick={this.insertAtKaret("→")}>→</div>
+                <div class="symbutton button formula" onClick={this.insertAtKaret("↔")}>↔</div>
+                <div class="symbutton button formula" onClick={this.insertAtKaret("∀")}>∀</div>
+                <div class="symbutton button formula" onClick={this.insertAtKaret("∃")}>∃</div>
               </div>
           </div>
           <div id="proveRow">
-            <input type="text" size="60" name="flaField" id="flaField" class="formula"></input>
-            <input type="submit" value="Run" id="proveButton" class="button"></input>
+            <input 
+              type="text" 
+              size="60" 
+              name="flaField"
+              id="flaField" 
+              class="formula" 
+              onChange={this.updateInput} 
+              value={this.state.inputText}>
+            </input>
+            <input value="Run" id="proveButton" class="button" onClick={this.handleClick}></input>
           </div>
         </form>
       
@@ -121,19 +232,9 @@ class TreeProof extends React.Component {
             you enter a modal formula, you will see a choice of how the accessibility
             relation should be constrained. For modal predicate logic, constant domains
             and rigid terms are assumed.</p>
-          
-          <h3>Source code</h3>
 
-          <p>The source is <a href="https://www.github.com/wo/tpg">on github</a>.</p>
-          
-          <h3>Contact</h3>
-
-          <p>Comments, bug reports and suggestions are always welcome: 
-            <script language="javascript">
-              document.write(("<a href='mailto:wo%umsu.de'>wo%umsu.de</a>.").replace(/%/g, '@'));
-            </script>
-          </p>
-
+          <div id="model"> </div>
+          <div id="rootAnchor"> </div>
         </div>
       //</div>
     );

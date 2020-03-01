@@ -14,7 +14,7 @@
 import {ModelFinder} from './modelfinder.js';
 import {AtomicFormula} from './formula.js';
 
-export function Prover(initFormulas, parser, accessibilityConstraints) {
+function Prover(initFormulas, parser, accessibilityConstraints) {
 
     console.log("*** initializing prover");
 
@@ -517,7 +517,7 @@ Prover.seriality.premiseCanBeReflexive = false; // can be applied to wRw
 Prover.seriality.toString = function() { return 'seriality' }
 
 
-export function Tree(prover) {
+function Tree(prover) {
     if (!prover) return; // for copy() function
     this.prover = prover;
     this.parser = prover.parser;
@@ -806,7 +806,7 @@ Tree.prototype.toString = function() {
     }
 }
 
-export function Branch(tree, nodes, literals, freeVariables, skolemSymbols, todoList, closed) {
+function Branch(tree, nodes, literals, freeVariables, skolemSymbols, todoList, closed) {
     this.tree = tree;
     this.nodes = nodes || [];
     this.literals = literals || [];
@@ -1048,7 +1048,7 @@ Branch.prototype.toString = function() {
 }
 
 
-export function Node(formula, fromRule, fromNodes) {
+function Node(formula, fromRule, fromNodes) {
     // Each non-initial node on a branch is the result of applying a rule to
     // (zero or more) earlier nodes on the same branch. This information about a
     // node's origin is needed to display the final sentence tableau, and for
@@ -1070,3 +1070,5 @@ Node.prototype.getExpansionRule = function() {
 Node.prototype.toString = function() {
     return this.formula.string;
 }
+
+export {Tree, Branch, Node, Prover};

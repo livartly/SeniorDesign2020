@@ -4,6 +4,7 @@
 
 import {Prover} from './prover.js';
 import {Model} from './modelfinder.js';
+import {Node} from './prover.js';
 
 function SenTree(fvTree, parser) {
     // turns fvTree into a textbook tableau, but does not translate back into
