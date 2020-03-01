@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 
-import TruthTableBuilder from './truth-table-builder/TruthTableBuilder';
+import TruthTableBuilder from './truth-table-builder/TruthTableBuilderContainer';
 
 class Solver extends Component {
   render() {
