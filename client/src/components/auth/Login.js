@@ -43,22 +43,36 @@ class Login extends Component {
   render() {
     const { errors } = this.props;
     return (
-      <div className="">
-        <div className="">
-          <div className="">
-            <div className="">
-              <h4>
-                <b>Login</b> below
-              </h4>
+      <div className="container main">
+        <div className="row">
+          <div className= "eight columns">
+            <div className= "left">
+              <p>Welcome to <b>WolframBeta</b> the site created by computer science students for computer students!</p>
+              <p>Discrete structures can be hard to understand so we have created a site to assist students with finding solutions for:</p>
+              <h5>·Symbolic Representations, Tautologies, Propositional Logic</h5>
+              <h5>·Recursive definitions</h5>
+              <h5>·Sets</h5>
+              <h5>·Relations, Topological Sorting, Functions, Order of Magnitude</h5>
+              <h5>·Boolean Matrices</h5>
+              <p>Log in to access problem solving features, resources, and more!</p>
+            </div>
+          </div>
+          <div className="four columns">
+            <div className="center">
+              <p>
+                <b>Login below</b>
+              </p>
               <p className="">
                 Don't have an account?
                 <Link
-                  to="/register">Register
+                  to="/register"> Register Here
                 </Link>
               </p>
-            </div>
-            <form noValidate onSubmit={this.onSubmit}>
+              <form noValidate onSubmit={this.onSubmit}>
               <div className="">
+                <p className="">
+                  <b>Email</b>
+                </p>
                 <input
                   onChange={this.onChange}
                   value={this.state.email}
@@ -70,13 +84,16 @@ class Login extends Component {
                       errors.emailnotfound
                   })}
                 />
-                <label htmlFor="email">Email</label>
+                <label htmlFor="email"></label>
                 <span className="">
                   {errors.email}
                   {errors.emailnotfound}
                 </span>
               </div>
               <div className="">
+              <p className="">
+                  <b>Password</b>
+                </p>
                 <input
                   onChange={this.onChange}
                   value={this.state.password}
@@ -88,7 +105,7 @@ class Login extends Component {
                       errors.passwordincorrect
                   })}
                 />
-                <label htmlFor="password">Password</label>
+                <label htmlFor="password"></label>
                 <span className="">
                   {errors.password}
                   {errors.passwordincorrect}
@@ -100,6 +117,7 @@ class Login extends Component {
                 </button>
               </div>
             </form>
+            </div>
           </div>
         </div>
       </div>

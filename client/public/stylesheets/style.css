@@ -15,7 +15,7 @@
 .main {padding-top: 3%;}
 .row {padding: 2% 0;}
 .red {background-color: #ffffff;}
-.grey {background-color:#000000;}
+.grey {background-color:#666;}
 
 
 /*Typography
@@ -27,7 +27,7 @@ body {
 }
 a {
 	text-decoration: none;
-	color: #5EEC95;
+	color: rgb(134, 201, 255);
 }
 
 .button-primary {
@@ -225,7 +225,7 @@ img {max-width: 100%;}
 img.avatar {
 }
 .logo { 
-	float: left;
+	float: right;
 	margin: 0 auto; 
 	display: relative;
 	left: 30px;
