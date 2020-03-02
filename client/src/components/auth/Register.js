@@ -48,18 +48,31 @@ class Register extends Component {
     return (
       <div className="container main">
         <div className="row">
+        <div className= "eight columns">
+            <div className= "left">
+              {/* <p>Welcome to <b>WolframBeta</b> the site created by computer science students for computer students!</p> */}
+              <h2>Built for students</h2>
+              <h2>by students.</h2>
+              <p>Discrete structures can be hard to understand so we have created a site to assist students with finding solutions for:</p>
+              <h5>·Symbolic Representations, Tautologies, Propositional Logic</h5>
+              <h5>·Recursive definitions</h5>
+              <h5>·Sets</h5>
+              <h5>·Relations, Topological Sorting, Functions, Order of Magnitude</h5>
+              <h5>·Boolean Matrices</h5>
+              <p>Log in to access problem solving features, resources, and more!</p>
+            </div>
+          </div>
           <div className="four columns">
             <div className="center">
-              <h4>
-                <b>Register</b> below
-                </h4>
+              <p>
+                <b>Register below </b>
+                </p>
               <p className="">
-                Already have an account?
+                Already have an account? 
                   <Link to="/login"> Login Here</Link>
               </p>
-            </div>
-            <form noValidate onSubmit={this.onSubmit}>
-              <div className="">
+              <form noValidate onSubmit={this.onSubmit}>
+              {/* <div className=""> */}
               <p className="">
                   <b>Username</b>
                 </p>
@@ -77,8 +90,8 @@ class Register extends Component {
                 <span className="">
                   {errors.username}
                 </span>
-              </div>
-              <div className="">
+              {/* </div> */}
+              {/* <div className=""> */}
               <p className="">
                   <b>Email</b>
                 </p>
@@ -96,8 +109,8 @@ class Register extends Component {
                 <span className="">
                   {errors.email}
                 </span>
-              </div>
-              <div className="">
+              {/* </div> */}
+              {/* <div className=""> */}
               <p className="">
                   <b>Password</b>
                 </p>
@@ -115,8 +128,8 @@ class Register extends Component {
                 <span className="">
                   {errors.password1}
                 </span>
-              </div>
-              <div className="">
+              {/* </div> */}
+              {/* <div className=""> */}
               <p className="">
                   <b>Confirm Password</b>
                 </p>
@@ -135,13 +148,14 @@ class Register extends Component {
                 <span className="">
                   {errors.password2}
                 </span>
-              </div>
+              {/* </div> */}
               <div className="">
                 <button type="submit">
                   Sign up
                 </button>
               </div>
             </form>
+            </div>
           </div>
         </div>
       </div>

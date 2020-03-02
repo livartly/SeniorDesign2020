@@ -46,8 +46,10 @@ class Login extends Component {
       <div className="container main">
         <div className="row">
           <div className= "eight columns">
-            <div className= "left">
-              <p>Welcome to <b>WolframBeta</b> the site created by computer science students for computer students!</p>
+            <div className= "left grey">
+              {/* <p>Welcome to <b>WolframBeta</b> the site created by computer science students for computer students!</p> */}
+              <h2>Built for students</h2>
+              <h2>by students.</h2>
               <p>Discrete structures can be hard to understand so we have created a site to assist students with finding solutions for:</p>
               <h5>·Symbolic Representations, Tautologies, Propositional Logic</h5>
               <h5>·Recursive definitions</h5>

@@ -15,7 +15,7 @@
 .main {padding-top: 3%;}
 .row {padding: 2% 0;}
 .red {background-color: #ffffff;}
-.grey {background-color:#666;}
+.grey {background-color:#9999;}
 
 
 /*Typography
@@ -27,7 +27,7 @@ body {
 }
 a {
 	text-decoration: none;
-	color: rgb(134, 201, 255);
+	color: rgb(163, 203, 255);
 }
 
 .button-primary {
@@ -44,15 +44,15 @@ h1 {
 }
 /*Tile Body*/
 h2 {
-	font-family: "Ubuntu", sans-serif;
-	font-size: 1.1em;
+	font-family: "Heebo", sans-serif;
+	font-size: 4em;
 	color: #000000; 
-	text-align: center;
+	text-align: left;
 }
 /*Copyright Footer Line*/
 h3 {
 	font-family: "Ubuntu", sans-serif;
-	font-size: .8em;
+	font-size: 1em;
 	color: #FFFFFF; 
 	text-align: center;
 }
@@ -60,9 +60,9 @@ h3 {
 /*Footer Text*/
 h4 {
 	font-family: "Heebo", sans-serif;
-	font-size: 2em;
+	font-size: 1em;
 	margin: 0.67em;
-	color: #FFFFFF;
+	color: rgb(64, 147, 255);
 	text-align: center;
 }
 /*About Us Signature*/
@@ -72,6 +72,14 @@ h5 {
 	margin: 0.67em;
 	color: #000000;
 	text-align: left;
+}
+/*About Us Signature*/
+h6 {
+	font-family: 'Heebo', sans-serif;
+	font-size: 1.2em;
+	margin: 0.67em;
+	color: #FFFFFF;
+	text-align: center;
 }
 
 .videos { 
@@ -118,7 +126,7 @@ header.main_nav {
 	margin-right: auto;
 }
 .navbar {
-	background-color: #000000;
+	background-color: #666;
 	text-align: center;
 	padding: 24px 8px 2px;
 	font-weight: 900;
@@ -309,7 +317,7 @@ ul.social li.instagram a:hover{color: rgb(81, 127, 237);}
 ul.social li.youtube a:hover{color: rgb(187, 0, 0);}
 ul.social li.facebook a :hover{color: #355CB6;}
 p.copyright {
-	position: fixed;
+	position: center;
 	text-align: center;
 	color: #666;
 	font-size: 1em;
