@@ -5,7 +5,7 @@ import { withRouter } from 'react-router-dom';
 import { sendProblem } from '../../../actions/problemActions';
 
 const mapStateToProps = ({ auth }) => ({
-  userID: auth.user.id
+  user: auth.user
 });
 
 const mapDispatchToProps = dispatch => ({

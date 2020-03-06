@@ -30,6 +30,14 @@ Router.post('/', function (req, res) {
   );
 });
 
+Router.get('/', function (req, res) {
+  Problem.find({}).then(
+    problems => res.status(200).json({ problems })
+  ).catch(
+    error => res.status(400).json(error)
+  );
+});
+
 
 
 export default Router;

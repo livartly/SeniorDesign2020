@@ -7,6 +7,14 @@ const ProblemSchema = new Schema({
     type: Schema.Types.ObjectId,
     required: true
   },
+  username: {
+    type: String,
+    required: true
+  },
+  email: {
+    type: String,
+    required: true
+  },
   typeIndex: {
     type: Number,
     required: true

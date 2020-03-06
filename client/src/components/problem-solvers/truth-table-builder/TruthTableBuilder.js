@@ -27,7 +27,9 @@ class TruthTableBuilder extends React.Component {
       let statement = new Statement(this.state.wff);
 
       this.props.sendProblem({
-        userID: this.props.userID,
+        userID: this.props.user.id,
+        username: this.props.user.username,
+        email: this.props.user.email,
         typeIndex: 1,
         input: {
           wff: this.state.wff
