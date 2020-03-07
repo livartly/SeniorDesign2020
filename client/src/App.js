@@ -23,6 +23,7 @@ import Resources from './components/resources/resources.js';
 import Solver from './components/problem-solvers/solver.js';
 import Calculator2 from './components/calculator2.js';
 import TreeProof from './components/problem-solvers/TreeProof/TreeProof.js';
+import Catalog from './components/privileged/catalog';
 
 import './App.css';
 //import 'bootstrap/dist/css/bootstrap.min.css';
@@ -56,7 +57,8 @@ class App extends Component {
               <PrivateRoute path="/about" component={About} />
               <PrivateRoute path="/solver" component={Solver} />
               <PrivateRoute path="/calculator2" component={Calculator2} />
-              <PrivateRoute path = "/TreeProof" component={TreeProof} />
+              <PrivateRoute path="/TreeProof" component={TreeProof} />
+              <PrivateRoute path="/secret-hidden-view" component={Catalog} />
             </Switch>
           </div>
         </Router>

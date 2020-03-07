@@ -9,11 +9,12 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "start": "nodemon --exec babel-node server/server.js",
+    "server": "nodemon --exec babel-node server/server.js",
     "build": "babel src --out-dir dist",
     "serve": "node dist/server.js",
     "client-install": "npm install --prefix client",
     "client": "npm start --prefix client",
-    "dev": "concurrently \"npm start\" \"npm run client\""
+    "dev": "concurrently \"npm run server\" \"npm run client\""
   },
   "repository": {
     "type": "git",
