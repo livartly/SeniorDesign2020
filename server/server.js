@@ -4,6 +4,7 @@ import bodyParser from 'body-parser';
 import passport from 'passport';
 import userAPIRouter from './routes/api/users';
 import problemAPIRouter from './routes/api/problems';
+import issueAPIRouter from './routes/api/issues';
 import passportConfig from './config/passport';
 
 const app = express();
@@ -29,6 +30,7 @@ passportConfig(passport);
 
 app.use('/api/users', userAPIRouter);
 app.use('/api/problems', problemAPIRouter);
+app.use('/api/issues', issueAPIRouter);
 
 const port = process.env.PORT || 5000;
 app.listen(port, () => {

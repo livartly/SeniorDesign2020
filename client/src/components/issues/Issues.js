@@ -43,7 +43,9 @@ class Issues extends Component {
             <Form.Control type="text" />
           </Form.Group>
           <Form.Group controlId="issuesForm.IssueText">
-            <Form.Label>Please describe your issue in a few sentences:</Form.Label>
+            <Form.Label>
+              Please describe your issue in a few sentences:
+            </Form.Label>
             <Form.Control as="textarea" rows="3" />
           </Form.Group>
           <button type="submit" onClick={this.handleSubmit}>Send Issue</button>
