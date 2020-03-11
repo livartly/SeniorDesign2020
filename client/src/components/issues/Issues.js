@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import Form from 'react-bootstrap/Form';
+import axios from 'axios';
 
 const issueTypes = [
   "Site is broken (General)",
@@ -10,12 +11,50 @@ const issueTypes = [
 class Issues extends Component {
   constructor(props) {
     super(props);
-
+    this.state = {
+      userID: this.props.user.id,
+      username: this.props.user.username,
+      email: this.props.user.email,
+      subject: "",
+      issueType: issueTypes[0],
+      textBody: "",
+      error: null
+    };
     this.handleSubmit = this.handleSubmit.bind(this);
   }
 
   handleSubmit(e) {
     e.preventDefault();
+    if (this.state.subject === "") {
+      this.setState({ error: "Please enter a subject line" });
+    } else if (this.state.textBody === "") {
+      this.setState({
+        error: "Please enter a few sentences describing your issue"
+      });
+    } else {
+      axios.post('/api/issues', {
+        userID: this.state.userID,
+        username: this.state.username,
+        email: this.state.email,
+        subject: this.state.subject,
+        issueType: this.state.issueType,
+        textBody: this.state.textBody
+      }).then(() => {
+        //TODO: Make a visual confirmation that issue was submitted
+        console.log("OK submitted");
+      }).catch(error => {
+        //TODO: Make a visual component explaining the error
+        this.setState({ error });
+      });
+    }
+  }
+
+  handleChange(field) {
+    return (e) => {
+      this.setState({
+        [field]: e.currentTarget.value
+      });
+    };
   }
 
   renderIssueTypeOptions() {
@@ -40,13 +79,17 @@ class Issues extends Component {
           </Form.Group>
           <Form.Group controlId="issuesForm.SubjectInput">
             <Form.Label>Subject Line</Form.Label>
-            <Form.Control type="text" />
+            <Form.Control type="text" onChange={this.handleChange("subject")} />
           </Form.Group>
           <Form.Group controlId="issuesForm.IssueText">
             <Form.Label>
               Please describe your issue in a few sentences:
             </Form.Label>
-            <Form.Control as="textarea" rows="3" />
+            <Form.Control
+              as="textarea"
+              rows="3"
+              onChange={this.handleChange("textBody")}
+            />
           </Form.Group>
           <button type="submit" onClick={this.handleSubmit}>Send Issue</button>
         </Form>

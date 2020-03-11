@@ -2,7 +2,7 @@ import Issues from './Issues';
 import { connect } from 'react-redux';
 
 const mapStateToProps = ({ auth }) => ({
-  auth
+  user: auth.user
 });
 
 export default connect(
