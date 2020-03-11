@@ -1,4 +1,4 @@
-import Issues from './Issues';
+import Feedback from './Feedback';
 import { connect } from 'react-redux';
 
 const mapStateToProps = ({ auth }) => ({
@@ -8,4 +8,4 @@ const mapStateToProps = ({ auth }) => ({
 export default connect(
   mapStateToProps,
   {}
-)(Issues);
+)(Feedback);

@@ -8,7 +8,7 @@ const issueTypes = [
   "User Data"
 ];
 
-class Issues extends Component {
+class Feedback extends Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -29,7 +29,7 @@ class Issues extends Component {
       this.setState({ error: "Please enter a subject line" });
     } else if (this.state.textBody === "") {
       this.setState({
-        error: "Please enter a few sentences describing your issue"
+        error: "Please enter a few sentences describing your feedback"
       });
     } else {
       axios.post('/api/issues', {
@@ -40,7 +40,7 @@ class Issues extends Component {
         issueType: this.state.issueType,
         textBody: this.state.textBody
       }).then(() => {
-        //TODO: Make a visual confirmation that issue was submitted
+        //TODO: Make a visual confirmation that feedback was submitted
         console.log("OK submitted");
       }).catch(error => {
         //TODO: Make a visual component explaining the error
@@ -64,26 +64,26 @@ class Issues extends Component {
   render() {
     return (
       <div>
-        <h1>Submit an Issue with the site</h1>
+        <h1>Submit feedback about the site</h1>
         <p>
-          If you encounter an issue while using this site, please
+          If you would like to submit feedback regarding this site, please
           let us know and we will get back to you via email once we
-          resolve the issue. Thanks for helping us improve the site.
+          read your feedback. Thanks for helping us improve the site.
         </p>
         <Form>
-          <Form.Group controlId="issuesForm.TypeSelect">
-            <Form.Label>Type of Issue</Form.Label>
+          <Form.Group controlId="feedbackForm.TypeSelect">
+            <Form.Label>Type of Feedback</Form.Label>
             <Form.Control as="select">
               {this.renderIssueTypeOptions()}
             </Form.Control>
           </Form.Group>
-          <Form.Group controlId="issuesForm.SubjectInput">
+          <Form.Group controlId="feedbackForm.SubjectInput">
             <Form.Label>Subject Line</Form.Label>
             <Form.Control type="text" onChange={this.handleChange("subject")} />
           </Form.Group>
-          <Form.Group controlId="issuesForm.IssueText">
+          <Form.Group controlId="feedbackForm.FeedbackText">
             <Form.Label>
-              Please describe your issue in a few sentences:
+              Please describe your feedback in a few sentences:
             </Form.Label>
             <Form.Control
               as="textarea"
@@ -91,11 +91,13 @@ class Issues extends Component {
               onChange={this.handleChange("textBody")}
             />
           </Form.Group>
-          <button type="submit" onClick={this.handleSubmit}>Send Issue</button>
+          <button type="submit" onClick={this.handleSubmit}>
+            Send Feedback
+          </button>
         </Form>
       </div>
     );
   }
 }
 
-export default Issues;
+export default Feedback;
