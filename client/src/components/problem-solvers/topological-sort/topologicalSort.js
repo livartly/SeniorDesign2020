@@ -3,7 +3,7 @@ import Statement from '../../../engine/statement.js';
 
 import Table from 'react-bootstrap/Table';
 
-//import sortLegend from './sortLegend.js/index.js';
+import SortLegend from './SortLegend.js';
 
 class topologicalSort extends React.Component {
   constructor(props) {
@@ -84,9 +84,20 @@ class topologicalSort extends React.Component {
   render() {
     return (
       <div>
-        <div className="container main">
-          <h1>Hello!</h1>
-          </div>
+      <div className="box">
+        <p>Topological Sorting</p>
+        <SortLegend />
+        <p>Example Input: </p>
+        <p>Node name:  dependency, dependency[duration]</p>
+        <p>Dry Dishes: get soap, wash dishes[10]</p>
+        <span>{this.state.error ? this.state.error : ""}</span>
+        <br />
+        <textarea value={this.state.wff} onChange={this.updateWff}></textarea>
+        <br />
+        <button onClick={this.handleClick}>Submit</button>
+        <br />
+        {this.makeTable(this.state.out)}
+      </div>
         </div>
     );
   }
