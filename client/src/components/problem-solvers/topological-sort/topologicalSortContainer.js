@@ -1,4 +1,4 @@
-import topologicalSort from './topologicalSort';
+import topologicalSort from './TopologicalSort';
 import { connect } from 'react-redux';
 import { withRouter } from 'react-router-dom';
 

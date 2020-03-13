@@ -1,11 +1,11 @@
 import React, { Component } from 'react';
 
-import topologicalSort from './topological-sort/topologicalSortContainer';
+import TopologicalSort from './topological-sort/TopologicalSortContainer';
 class sortSolver extends Component {
   render() {
     return (
       <div>
-        <topologicalSort />
+        <TopologicalSort />
       </div>
     );
   }
