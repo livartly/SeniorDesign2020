@@ -4,8 +4,6 @@
 
 // Check if this set is a proper subset of otherSet
 Set.prototype.properSubset = function (otherSet) {
-
-    // Proper subset size must be < size of parent set
     if (this.size >= otherSet.size)
         return false;
     else {
