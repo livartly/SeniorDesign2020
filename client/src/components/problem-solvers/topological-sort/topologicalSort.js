@@ -3,7 +3,7 @@ import Statement from '../../../engine/statement.js';
 
 import Table from 'react-bootstrap/Table';
 
-import SortLegend from './SortLegend.js';
+import SortLegend from './sortLegend.js';
 
 class topologicalSort extends React.Component {
   constructor(props) {

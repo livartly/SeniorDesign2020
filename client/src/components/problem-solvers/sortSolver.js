@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 
-import TopologicalSort from './topological-sort/TopologicalSortContainer';
+import TopologicalSort from './topological-sort/topologicalSortContainer.js';
 class sortSolver extends Component {
   render() {
     return (

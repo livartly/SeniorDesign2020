@@ -26,6 +26,7 @@ import TreeProof from './components/problem-solvers/TreeProof/TreeProof.js';
 import Catalog from './components/privileged/catalog';
 import Feedback from './components/feedback/FeedbackContainer';
 import sortSolver from './components/problem-solvers/sortSolver.js';
+import SetOps from './components/problem-solvers/Sets/setOps.js';
 
 import './App.css';
 //import 'bootstrap/dist/css/bootstrap.min.css';
@@ -63,6 +64,7 @@ class App extends Component {
               <PrivateRoute path="/secret-hidden-view" component={Catalog} />
               <PrivateRoute path="/feedback" component={Feedback} />
               <PrivateRoute path="/topological-sort" component={sortSolver} />
+              <PrivateRoute path="/set-ops" component={SetOps} />
             </Switch>
           </div>
         </Router>
