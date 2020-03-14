@@ -3,87 +3,90 @@ import Statement from '../../../engine/statement.js';
 
 import Table from 'react-bootstrap/Table';
 
-import SortLegend from './sortLegend.js';
+import SortLegend from './SortLegend.js';
 
-class topologicalSort extends React.Component {
+class TopologicalSort extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      wff: "",
-      out: "",
-      error: null
+      error: null,
+      nodes: [
+        {
+          name: "",
+          dependencies: ""
+        }
+      ]
     };
-    this.updateWff = this.updateWff.bind(this);
-    this.handleClick = this.handleClick.bind(this);
-  }
 
-  updateWff(e) {
-    this.setState({ wff: e.currentTarget.value });
+    this.makeNodesForm = this.makeNodesForm.bind(this);
+    this.updateDependencies = this.updateDependencies.bind(this);
+    this.updateName = this.updateName.bind(this);
   }
 
   handleClick(e) {
     e.preventDefault();
-    try {
-      let statement = new Statement(this.state.wff);
+  }
 
-      this.props.sendProblem({
-        userID: this.props.user.id,
-        username: this.props.user.username,
-        email: this.props.user.email,
-        typeIndex: 1,
-        input: {
-          wff: this.state.wff
+  updateName(idx) {
+    return e => {
+      var nextName = e.currentTarget.value;
+      this.setState(prevState => {
+        var newNode = {
+          name: nextName,
+          dependencies: prevState.nodes[idx].dependencies
+        };
+        var nextNodes = [];
+        for (var i = 0; i<prevState.nodes.length; i++) {
+          nextNodes.push(prevState.nodes[i]);
         }
+        nextNodes[idx] = newNode;
+        return {
+          nodes: nextNodes
+        };
       });
-
-      this.setState({ out: statement.table(), error: null });
-    }
-    catch (err) {
-      this.setState({ error: err.message });
-    }
-
+    };
   }
 
-  makeTable(outMarkdownString) {
-    if (outMarkdownString === "") return;
-    let outArray = outMarkdownString.split('\n');
-    return (
-      <Table striped bordered>
-        <thead>
-          <tr>
-            {outArray[0]
-              .slice(1, outArray[0].length - 1)
-              .split('|')
-              .map((item, i) =>
-                <th key={i}>{item.replace(/&#124;/g, '|')}</th>
-              )
-            }
-          </tr>
-        </thead>
-        <tbody>
-          {outArray.slice(2).map((item, i) => (this.makeRow(item, i)))}
-        </tbody>
-      </Table>
-    );
-  }
-
-  makeRow(rowArray, i) {
-    return (
-      <tr key={i}>
-        {rowArray
-          .slice(1, rowArray.length - 1)
-          .split('|')
-          .map((item, j) =>
-            <td key={j}>{item}</td>
-          )
+  updateDependencies(idx) {
+    return e => {
+      var nextDependencies = e.currentTarget.value
+      this.setState(prevState => {
+        var newNode = {
+          dependencies: nextDependencies,
+          name: prevState.nodes[idx].name
+        };
+        var nextNodes = [];
+        for (var i = 0; i<prevState.nodes.length; i++) {
+          nextNodes.push(prevState.nodes[i]);
         }
-      </tr>
-    );
+        nextNodes[idx] = newNode;
+        return {
+          nodes: nextNodes
+        };
+      });
+    };
+  }
+
+  makeNodesForm() {
+    return this.state.nodes.map((node, idx) => {
+      return(
+        <div key={idx}>
+          <input 
+            value={this.state.nodes[idx].name}
+            onChange={this.updateName(idx)}
+          ></input>
+          <input 
+            value={this.state.nodes[idx].dependencies} 
+            onChange={this.updateDependencies(idx)}
+          ></input>
+        </div>
+      );
+    });
   }
 
   render() {
+    console.log(this.state);
     return (
-      <div>
       <div className="box">
         <p>Topological Sorting</p>
         <SortLegend />
@@ -92,15 +95,13 @@ class topologicalSort extends React.Component {
         <p>Dry Dishes: get soap, wash dishes[10]</p>
         <span>{this.state.error ? this.state.error : ""}</span>
         <br />
-        <textarea value={this.state.wff} onChange={this.updateWff}></textarea>
+        {this.makeNodesForm()}
         <br />
         <button onClick={this.handleClick}>Submit</button>
         <br />
-        {this.makeTable(this.state.out)}
       </div>
-        </div>
     );
   }
 }
 
-export default topologicalSort;
+export default TopologicalSort;

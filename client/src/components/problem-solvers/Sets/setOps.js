@@ -1,5 +1,5 @@
 import React from 'react';
-import Solver from '../../../engine/Sets/setOpsSolver.js';
+//import Solver from '../../../engine/Sets/setOpsSolver.js';
 
 class SetOps extends React.Component {
   constructor(props) {
