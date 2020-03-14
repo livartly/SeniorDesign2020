@@ -21,10 +21,33 @@ class TopologicalSort extends React.Component {
     this.makeNodesForm = this.makeNodesForm.bind(this);
     this.updateDependencies = this.updateDependencies.bind(this);
     this.updateName = this.updateName.bind(this);
+    this.handleClick2 = this.handleClick2.bind(this);
   }
 
   handleClick(e) {
     e.preventDefault();
+  }
+
+  // On click Add Node button, add another input box
+  handleClick2(e) {
+    e.preventDefault();
+    this.setState(prevState => {
+
+      // Deep copy
+      var nextNodes = [];
+      for (var i = 0; i<prevState.nodes.length; i++) {
+        nextNodes.push(prevState.nodes[i]);
+      }
+
+      nextNodes.push({
+        name: "",
+        dependencies: ""
+      });
+      return {
+        nodes: nextNodes
+      };
+    });
+
   }
 
   updateName(idx) {
@@ -97,6 +120,7 @@ class TopologicalSort extends React.Component {
         <br />
         {this.makeNodesForm()}
         <br />
+        <button onClick={this.handleClick2}>Add Node</button>
         <button onClick={this.handleClick}>Submit</button>
         <br />
       </div>
