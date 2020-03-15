@@ -27,8 +27,10 @@ import Catalog from './components/privileged/catalog';
 import Feedback from './components/feedback/FeedbackContainer';
 import sortSolver from './components/problem-solvers/sortSolver.js';
 import SetOps from './components/problem-solvers/Sets/setOps.js';
+import PertChartSolver from './components/problem-solvers/PertChartSolver';
 
 import './App.css';
+import PertChart from './components/problem-solvers/pert-chart/PertChart';
 //import 'bootstrap/dist/css/bootstrap.min.css';
 
 if (localStorage.jwtToken) {
@@ -65,6 +67,7 @@ class App extends Component {
               <PrivateRoute path="/feedback" component={Feedback} />
               <PrivateRoute path="/topological-sort" component={sortSolver} />
               <PrivateRoute path="/set-ops" component={SetOps} />
+              <PrivateRoute path="/pert-chart" component={PertChartSolver} />
             </Switch>
           </div>
         </Router>
