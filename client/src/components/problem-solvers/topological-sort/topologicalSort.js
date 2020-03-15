@@ -1,11 +1,6 @@
 import React from 'react';
-import Statement from '../../../engine/statement.js';
-
 import Table from 'react-bootstrap/Table';
-
-import SortLegend from './SortLegend.js';
-
-    // Include toposort 
+// Include toposort 
 import toposort from 'toposort';
 
 class TopologicalSort extends React.Component {
@@ -54,21 +49,26 @@ class TopologicalSort extends React.Component {
           }
       }
 
-      console.log("Sorted:")
       // Print sorted 2d array
+      var tempOutput = "";
       for(var i=0; i<topoArray.length; i++)
       {
-          console.log(topoArray[i]);
+          //console.log(topoArray[i]);
+          var tempStringOutput = topoArray[i].toString();
+          //console.log(tempStringOutput);
+          tempOutput = tempOutput + " " + tempStringOutput;
       }
+
+      document.getElementById("output").innerHTML = tempOutput;
+
       }
       catch(e)
       {
         this.setState({error: "Input contains cyclic dependency!"})
       }
-
-    
       return {
-        nodes: edges
+        //nodes: edges
+        topoArray
       };
     
   }
@@ -163,34 +163,25 @@ class TopologicalSort extends React.Component {
         <h1>Topological Sorting</h1>
         <h4>Input graph nodes and dependencies to output a topological sort. </h4>
         <div className="row">
-          <div className= "four columns">
-            <div className="left">
-              <p>Input</p>
-              <p>Example:</p>
-              <p>"Node Name:        Node Dependencies(comma seperated):"</p>
+          <div className= "tweleve columns">
+            <div className="center">
+              <p><b>Input</b></p>
+              <p>Enter node name into the left field, and comma seperated dependencies into the right field</p>
+              <p><b>Example: A      B,C</b></p>
               <span>{this.state.error ? this.state.error : ""}</span>
               <br />
               {this.makeNodesForm()}
               <br />
               <button onClick={this.handleClick2}>Add Node</button>
               <button onClick={this.topologicalSort}>Submit</button>
+
+              <p><b>Output</b></p>
+              <pre id="output"></pre>
               <br />
           </div>
         </div>
-
-        <div className= "four columns">
-            <div className="center">
-              <p></p>
-          </div>
-        </div>
-
-        <div className= "four columns">
-            <div className="right">
-              <p>Output</p>
-          </div>
         </div>
         </div>
-      </div>
     );
   }
 }

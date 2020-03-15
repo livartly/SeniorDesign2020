@@ -1,8 +1,4 @@
 import React from 'react';
-<<<<<<< HEAD
-=======
-//import Solver from '../../../engine/Sets/setOpsSolver.js';
->>>>>>> 3d4a137f3fe7310b34bbf6ceaf6c29d52b00f043
 
 //********************************************//
 //
