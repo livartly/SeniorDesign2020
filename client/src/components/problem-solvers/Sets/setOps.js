@@ -1,8 +1,5 @@
 import React from 'react';
-<<<<<<< HEAD
-=======
-//import Solver from '../../../engine/Sets/setOpsSolver.js';
->>>>>>> 3d4a137f3fe7310b34bbf6ceaf6c29d52b00f043
+//import Solver from '../../../engine/Sets/Set.js';
 
 //********************************************//
 //
@@ -106,23 +103,22 @@ class SetOps extends React.Component {
     this.state = {
       setStrings:{
         'A':"",
-        'B':"",
-        'C':""
+        'B':""
       },
-      currletter: 'C'
+      currletter: 'B',
+      out:""
     };
-    this.updateWff = this.updateWff.bind(this);
     this.handleClick = this.handleClick.bind(this);
     this.handleInput = this.handleInput.bind(this);
+    this.handleSubsetASubmit = this.handleSubsetASubmit.bind(this);
+    this.handleSubsetBSubmit = this.handleSubsetBSubmit.bind(this);
+    this.handlePowersetSubmit = this.handlePowersetSubmit.bind(this);
     this.addBox = this.addBox.bind(this);
     this.removeBox = this.removeBox.bind(this);
     this.nextChar = this.nextChar.bind(this);
     this.convertStringToSet = this.convertStringToSet.bind(this);
     this.makeInputForm = this.makeInputForm.bind(this);
-  }
-
-  updateWff(e) {
-    this.setState({});
+    this.showOutput = this.showOutput.bind(this);
   }
 
   handleClick(e) {
@@ -131,9 +127,9 @@ class SetOps extends React.Component {
   }
 
   // Function to increment a character to next in the alphabet
-  // If character is 'Z', incrementing it will overflow into non-alphabetic characters
-  nextChar(c) {
-    return String.fromCharCode(c.charCodeAt(0) + 1);
+  // inc MUST BE an int
+  nextChar(c, inc) {
+    return String.fromCharCode(c.charCodeAt(0) + inc);
   }
 
   // Converts a given string to a Set object
@@ -147,21 +143,29 @@ class SetOps extends React.Component {
   }
 
   addBox() {
-    console.log("Add set input box");
     this.setState(prevState => {
       var nextSetStrs = {};
       for (var s in prevState.setStrings) {
         nextSetStrs[s] = prevState.setStrings[s];
       }
       
-      var nextLetter = this.nextChar(prevState.currletter);
+      var nextLetter = this.nextChar(prevState.currletter, 1);
       nextSetStrs[nextLetter] = "";
       return {setStrings:nextSetStrs, currletter:nextLetter};
     })
   }
 
   removeBox() {
-    console.log("Remove most recent box");
+    this.setState(prevState => {
+      var nextSetStrs = {};
+      for (var s in prevState.setStrings) {
+        nextSetStrs[s] = prevState.setStrings[s];
+      }
+      
+      var nextLetter = this.nextChar(prevState.currletter, -1);
+      nextSetStrs[nextLetter] = "";
+      return {setStrings:nextSetStrs, currletter:nextLetter};
+    })
   }
 
   makeInputForm() {
@@ -169,7 +173,7 @@ class SetOps extends React.Component {
       return (
         <div key={idx}>
           {setStr} = 
-          <input onChange={this.handleInput(setStr)}></input><button>P</button>
+          <input onChange={this.handleInput(setStr)}></input><button onClick={this.handlePowersetSubmit(setStr)}>𝓟</button>
         </div>
       );
     });
@@ -191,20 +195,80 @@ class SetOps extends React.Component {
     }
   }
 
+  handleSubsetASubmit() {
+    // Map to store sets and associated letters
+    let m = new Map();
+
+    // Get each set string and convert it to a matching Set
+    let strings = Object.values(this.state.setStrings);
+    let setKeys = Object.keys(this.state.setStrings);
+    for (var i = 0; i < setKeys.length; i++)
+      m.set(setKeys[i], this.convertStringToSet(strings[i]));
+
+    let output = (m.get('A').properSubset(m.get('B')));
+    this.setState({out:output.toString()});
+  }
+
+  handleSubsetBSubmit() {
+    // Map to store sets and associated letters
+    let m = new Map();
+
+    // Get each set string and convert it to a matching Set
+    let strings = Object.values(this.state.setStrings);
+    let setKeys = Object.keys(this.state.setStrings);
+    for (var i = 0; i < setKeys.length; i++)
+      m.set(setKeys[i], this.convertStringToSet(strings[i]));
+
+    let output = (m.get('B').properSubset(m.get('A')));
+    this.setState({out:output.toString()});
+  }
+
+  handlePowersetSubmit(idx) {
+    return () => {
+      let s = this.convertStringToSet(this.state.setStrings[idx]);
+      this.setState({out:s.powerset().toString()})
+    }
+  }
+
+  showOutput() {
+    if (this.state.out === "") return;
+    return (
+      <div>
+        <p>{this.state.out}</p>
+      </div>
+    );
+  }
+
   // Draw page
   render() {
-    console.log(this.state);
     return (
       <div className="box">
-        <h3>Set Operations Solver</h3>
-        <p>Enter sets:</p>
+        <h3>Subset Calculator</h3>
+        <p>Subset Calculator</p>
+        <p>Please enter the contents of each set, separated by commas.</p>
+        <p>Enter sets to determine subset or powerset:</p>
         {
           this.makeInputForm()
         }
-        <button onClick={this.addBox}>+</button><button onClick={this.removeBox}>-</button>
+        <button onClick={this.handleSubsetASubmit}>A ⊆ B?</button><button onClick={this.handleSubsetBSubmit}>B ⊆ A?</button>
+        {this.showOutput()}
+
+        <h3>Set Logic Calculator</h3>
+        <p>Set Logic Calculator</p>
+        <p>Enter the contents of the sets, separated by commas.</p>
       </div>
     );
   }
 }
 
 export default SetOps;
+
+
+/* To solve set logic equations:
+* - Remove all whitespace from equation string
+* - Check for invalid characters (letters that aren't in the map, special chars, invalid operations, etc.)
+* - Walk through every letter of the string
+* - If letter is an Set, check next char for op, then next char for target set
+* - Otherwise, step to next char
+*/
+

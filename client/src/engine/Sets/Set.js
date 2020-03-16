@@ -88,3 +88,5 @@ Set.prototype.cartesianProduct = function (otherSet) {
 
     return product;
 }
+
+export {Set};
