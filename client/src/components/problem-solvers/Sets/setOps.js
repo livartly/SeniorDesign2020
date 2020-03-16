@@ -1,5 +1,4 @@
 import React from 'react';
-//import Solver from '../../../engine/Sets/Set.js';
 
 //********************************************//
 //

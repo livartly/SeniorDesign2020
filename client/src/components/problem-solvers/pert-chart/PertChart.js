@@ -1,9 +1,6 @@
 import React from 'react';
-import Table from 'react-bootstrap/Table';
-// Include toposort 
-import toposort from 'toposort';
 
-class TopologicalSort extends React.Component {
+class PertChart extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -27,7 +24,7 @@ class TopologicalSort extends React.Component {
   topologicalSort(e) {
     e.preventDefault();
 
-      var edges = [];
+/*       var edges = [];
       for (var node of this.state.nodes) {
           var nodeDependencies = node.dependencies.split(",");
           for (var toNode of nodeDependencies) {
@@ -65,10 +62,10 @@ class TopologicalSort extends React.Component {
       catch(e)
       {
         this.setState({error: "Input contains cyclic dependency!"})
-      }
+      } */
       return {
         //nodes: edges
-        topoArray
+        //topoArray
       };
     
   }
@@ -160,14 +157,14 @@ class TopologicalSort extends React.Component {
   render() {
     return (
       <div className="container main">
-        <h1>Topological Sorting</h1>
-        <h4>Input graph nodes and dependencies to output a topological sort. </h4>
+        <h1>Pert Charts</h1>
+        <h4>Input graph nodes, dependencies, and duration to output a pert chart. </h4>
         <div className="row">
           <div className= "tweleve columns">
             <div className="center">
               <p><b>Input</b></p>
-              <p>Enter node name into the left field, and comma seperated dependencies into the right field</p>
-              <p><b>Example: A      B,C</b></p>
+              <p>Enter node name into the left field, comma seperated dependencies into the center field, and durations into the right field.</p>
+              <p><b>Example: A      B,C 10</b></p>
               <span>{this.state.error ? this.state.error : ""}</span>
               <br />
               {this.makeNodesForm()}
@@ -186,4 +183,4 @@ class TopologicalSort extends React.Component {
   }
 }
 
-export default TopologicalSort;
+export default PertChart;

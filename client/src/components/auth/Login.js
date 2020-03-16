@@ -46,7 +46,7 @@ class Login extends Component {
       <div className="container main">
         <div className="row">
           <div className= "eight columns">
-            <div className= "left grey">
+            <div className= "left">
               {/* <p>Welcome to <b>WolframBeta</b> the site created by computer science students for computer students!</p> */}
               <h2>Built for students</h2>
               <h2>by students.</h2>
