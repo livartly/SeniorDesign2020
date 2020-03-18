@@ -1,17 +1,24 @@
 import React, { Component } from 'react';
 import axios from 'axios';
 
-import Table from 'react-bootstrap/Table';
+import { Table } from 'react-bootstrap';
+import ProblemInputModal from './ProblemInputModal';
+
+import { PROBLEM_TYPE_LIST } from './constants';
 
 class ProblemList extends Component {
   constructor(props) {
     super(props);
     this.state = {
       problems: [],
-      error: null
+      error: null,
+      modalShow: false,
+      selectedProblem: {}
     };
 
     this.makeTableBody = this.makeTableBody.bind(this);
+    this.closeModal = this.closeModal.bind(this);
+    this.openModal = this.openModal.bind(this);
   }
 
   componentDidMount() {
@@ -26,15 +33,27 @@ class ProblemList extends Component {
     });
   }
 
+  openModal(problem) {
+    return () => {
+      this.setState({
+        modalShow: true,
+        selectedProblem: problem
+      });
+    };
+  }
+
   makeTableBody() {
     return this.state.problems.map((problem, i) => (
-      <tr key={i}>
+      <tr onClick={this.openModal(problem)} key={i}>
         <td>{i + 1}</td>
-        <td>{problem.typeIndex}</td>
+        <td>{PROBLEM_TYPE_LIST[problem.typeIndex]}</td>
         <td>{problem.username}</td>
-        <td>{problem.input.wff}</td>
       </tr>
     ));
+  }
+
+  closeModal() {
+    this.setState({ modalShow: false });
   }
 
   render() {
@@ -44,15 +63,19 @@ class ProblemList extends Component {
           <thead>
             <tr>
               <th>#</th>
-              <th>type #</th>
-              <th>username</th>
-              <th>input</th>
+              <th>Type</th>
+              <th>Username</th>
             </tr>
           </thead>
           <tbody>
             {this.makeTableBody()}
           </tbody>
         </Table>
+        <ProblemInputModal
+          show={this.state.modalShow}
+          onHide={this.closeModal}
+          problem={this.state.selectedProblem}
+        />
       </div>
     );
   }

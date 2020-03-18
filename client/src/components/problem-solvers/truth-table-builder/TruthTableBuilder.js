@@ -5,6 +5,8 @@ import Table from 'react-bootstrap/Table';
 
 import Legend from './Legend.js';
 
+import { sendProblem } from '../../../utils/problemsAPIUtil';
+
 class TruthTableBuilder extends React.Component {
   constructor(props) {
     super(props);
@@ -26,7 +28,8 @@ class TruthTableBuilder extends React.Component {
     try {
       let statement = new Statement(this.state.wff);
 
-      this.props.sendProblem({
+      // This will occur asynchronously (not blocking)
+      sendProblem({
         userID: this.props.user.id,
         username: this.props.user.username,
         email: this.props.user.email,
