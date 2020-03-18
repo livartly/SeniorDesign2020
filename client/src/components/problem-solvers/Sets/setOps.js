@@ -93,7 +93,7 @@ Set.prototype.cartesianProduct = function (otherSet) {
 
 //********************************************//
 //
-// Begin code for the /set-ops page
+// Begin code for SUBSET and POWERSET calculations
 //
 //********************************************//
 class SetOps extends React.Component {
@@ -112,8 +112,6 @@ class SetOps extends React.Component {
     this.handleSubsetASubmit = this.handleSubsetASubmit.bind(this);
     this.handleSubsetBSubmit = this.handleSubsetBSubmit.bind(this);
     this.handlePowersetSubmit = this.handlePowersetSubmit.bind(this);
-    this.addBox = this.addBox.bind(this);
-    this.removeBox = this.removeBox.bind(this);
     this.nextChar = this.nextChar.bind(this);
     this.convertStringToSet = this.convertStringToSet.bind(this);
     this.makeInputForm = this.makeInputForm.bind(this);
@@ -136,35 +134,32 @@ class SetOps extends React.Component {
     // First, remove all whitespace from string
     str = str.replace(/ /g, '');
 
+    var parenthesesCount = 0;
+    var startPos = -10;
+    for (var i = 0; i < str.length; i++) {
+      if (str[i] === '{') {
+        parenthesesCount++;
+        startPos = i;
+      }
+      if (str[i] === '}')
+        parenthesesCount--;
+
+      if (parenthesesCount === 0 && startPos >= 0) {
+        let oldSubstring = str.substring(startPos, i + 1);
+        let newSubstring = oldSubstring.replace(/,/g, '«');   // Temporarily replace commas inside {} with a random character nobody will use
+        str = str.replace(oldSubstring, newSubstring);
+        startPos = -10;
+      }
+    }
+
     // Split string at commas, send created array to Set constructor
-    let s = new Set(str.split(','));
+    let splitArray = str.split(',');
+    for (i = 0; i < splitArray.length; i++) {
+      if (splitArray[i].length > 1)
+        splitArray[i] = splitArray[i].replace(/«/g, ',');   // Swap temp character back to comma for readability
+    }
+    let s = new Set(splitArray);
     return s;
-  }
-
-  addBox() {
-    this.setState(prevState => {
-      var nextSetStrs = {};
-      for (var s in prevState.setStrings) {
-        nextSetStrs[s] = prevState.setStrings[s];
-      }
-      
-      var nextLetter = this.nextChar(prevState.currletter, 1);
-      nextSetStrs[nextLetter] = "";
-      return {setStrings:nextSetStrs, currletter:nextLetter};
-    })
-  }
-
-  removeBox() {
-    this.setState(prevState => {
-      var nextSetStrs = {};
-      for (var s in prevState.setStrings) {
-        nextSetStrs[s] = prevState.setStrings[s];
-      }
-      
-      var nextLetter = this.nextChar(prevState.currletter, -1);
-      nextSetStrs[nextLetter] = "";
-      return {setStrings:nextSetStrs, currletter:nextLetter};
-    })
   }
 
   makeInputForm() {
@@ -225,7 +220,7 @@ class SetOps extends React.Component {
   handlePowersetSubmit(idx) {
     return () => {
       let s = this.convertStringToSet(this.state.setStrings[idx]);
-      this.setState({out:s.powerset().toString()})
+      this.setState({out:"Number of elements in Powerset: " + s.powerset().length + "\n" + s.powerset().toString()})
     }
   }
 
@@ -251,23 +246,9 @@ class SetOps extends React.Component {
         }
         <button onClick={this.handleSubsetASubmit}>A ⊆ B?</button><button onClick={this.handleSubsetBSubmit}>B ⊆ A?</button>
         {this.showOutput()}
-
-        <h3>Set Logic Calculator</h3>
-        <p>Set Logic Calculator</p>
-        <p>Enter the contents of the sets, separated by commas.</p>
       </div>
     );
   }
 }
 
 export default SetOps;
-
-
-/* To solve set logic equations:
-* - Remove all whitespace from equation string
-* - Check for invalid characters (letters that aren't in the map, special chars, invalid operations, etc.)
-* - Walk through every letter of the string
-* - If letter is an Set, check next char for op, then next char for target set
-* - Otherwise, step to next char
-*/
-

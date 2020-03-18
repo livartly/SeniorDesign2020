@@ -26,7 +26,7 @@ import TreeProof from './components/problem-solvers/TreeProof/TreeProof.js';
 import Catalog from './components/privileged/catalog';
 import Feedback from './components/feedback/FeedbackContainer';
 import sortSolver from './components/problem-solvers/sortSolver.js';
-import SetOps from './components/problem-solvers/Sets/setOps.js';
+import SetOpsPage from './components/problem-solvers/Sets/setOpsPage.js';
 import PertChartSolver from './components/problem-solvers/PertChartSolver';
 
 import './App.css';
@@ -66,7 +66,7 @@ class App extends Component {
               <PrivateRoute path="/secret-hidden-view" component={Catalog} />
               <PrivateRoute path="/feedback" component={Feedback} />
               <PrivateRoute path="/topological-sort" component={sortSolver} />
-              <PrivateRoute path="/set-ops" component={SetOps} />
+              <PrivateRoute path="/set-ops" component={SetOpsPage} />
               <PrivateRoute path="/pert-chart" component={PertChartSolver} />
             </Switch>
           </div>
