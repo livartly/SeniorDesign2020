@@ -84,7 +84,7 @@ class Home extends Component {
                 <button type="button" class="btn btn-danger">Master's Theorem</button>
                 </Link>
                 <p></p>
-                <Link to="/">
+                <Link to="/MagnitudeOrder">
                 <button type="button" class="btn btn-danger">Order Verifications</button>
                 </Link>
               </div>

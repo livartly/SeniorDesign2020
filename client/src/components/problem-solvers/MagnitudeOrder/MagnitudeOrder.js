@@ -1,6 +1,6 @@
 import React from 'react'
 
-class OrderOfMagnitude extends React.Component 
+class MagnitudeOrder extends React.Component 
 {
     constructor(props)
     {
@@ -120,10 +120,10 @@ class OrderOfMagnitude extends React.Component
       var c2 = 0
       var N = 2
       
-      alert("TRYING TO SOLVE PROBLEM")
+     // alert("TRYING TO SOLVE PROBLEM")
       
-      alert(FxArray)
-      alert(GxArray)
+      //alert(FxArray)
+     // alert(GxArray)
       
       for(var i = 0; i < FxArray.length; i++)
         {
@@ -162,10 +162,10 @@ class OrderOfMagnitude extends React.Component
                    }
                  else
                    {
-                     alert(FxArray[i])
+                     //alert(FxArray[i])
                      exponent = FxArray[i].slice(FxArray[i].indexOf('^') + 1, FxArray[i].length)
                      FxArray[i] = FxArray[i].replace("x", Math.pow(N, exponent).toString()) 
-                     alert(FxArray[i])
+                    // alert(FxArray[i])
                    }
                  
                   FxArray[i] = FxArray[i].slice(0, FxArray[i].indexOf('^'))
@@ -189,7 +189,7 @@ class OrderOfMagnitude extends React.Component
            }
         }
       
-      alert(GxArray.length)
+      //alert(GxArray.length)
       for(var i = 0; i < GxArray.length; i++)
         {
           GxArray[i] = GxArray[i].trim()
@@ -227,10 +227,10 @@ class OrderOfMagnitude extends React.Component
                    }
                  else
                    {
-                     alert(GxArray[i])
+                     //alert(GxArray[i])
                      exponent = GxArray[i].slice(GxArray[i].indexOf('^') + 1, GxArray[i].length)
                      GxArray[i] = GxArray[i].replace("x", Math.pow(N, exponent).toString()) 
-                     alert(GxArray[i])
+                     //alert(GxArray[i])
                    }
                   
                   GxArray[i] = GxArray[i].slice(0, GxArray[i].indexOf('^'))
@@ -263,7 +263,7 @@ class OrderOfMagnitude extends React.Component
                    var tempString = FxArray[i].toString().split(FxArray[i].indexOf("log"), FxArray[i].length)
                    var number = parseFloat(FxArray[i].split(FxArray[i].indexOf("log") + 3, FxArray[i].length).toString().trim())
                    
-                   FxArray[i].replace(FxArray[i],split(FxArray[i].indexof("log"), FxArray[i].length), Math.log(number))
+                   FxArray[i].replace(FxArray[i].split(FxArray[i].indexof("log"), FxArray[i].length), Math.log(number))
                 }
         }
       
@@ -274,13 +274,13 @@ class OrderOfMagnitude extends React.Component
                    var tempString = GxArray[i].toString().split(GxArray[i].indexOf("log"), GxArray[i].length)
                    var number = parseFloat(GxArray[i].split(GxArray[i].indexOf("log") + 3, GxArray[i].length).toString().trim())
                    
-                   GxArray[i].replace(GxArray[i],split(GxArray[i].indexof("log"), GxArray[i].length), Math.log(number))
+                   GxArray[i].replace(GxArray[i].split(GxArray[i].indexof("log"), GxArray[i].length), Math.log(number))
                 }
         }
       
       
-      alert(FxArray)
-      alert(GxArray)
+     // alert(FxArray)
+     // alert(GxArray)
       
     }
 
@@ -289,11 +289,11 @@ class OrderOfMagnitude extends React.Component
         return (
             <div id = "Main">
                 <div id = "TitleBar">
-                    <h2 id = "Title"> 
-                        <a>
-                            Order of Magnitude 
+                  <h2 id = "Title"> 
+                        <a id="Hyperlink" href=".">
+                            Order Verification
                         </a>
-                    </h2>
+                  </h2>
                     <p>
                       Enter in two functions f(x) and g(x). If these functions have the same Order of Magnitude
                       <br></br> then the solver will provide the n, constant1, and constant2 values such that
@@ -344,7 +344,4 @@ class OrderOfMagnitude extends React.Component
     }
 }
 
-ReactDOM.render(
-<OrderOfMagnitude />,
- document.getElementById('root')
- );
+export default MagnitudeOrder;
