@@ -44,13 +44,10 @@ class ProblemList extends Component {
 
   makeTableBody() {
     return this.state.problems.map((problem, i) => (
-      <tr key={i}>
+      <tr onClick={this.openModal(problem)} key={i}>
         <td>{i + 1}</td>
         <td>{PROBLEM_TYPE_LIST[problem.typeIndex]}</td>
         <td>{problem.username}</td>
-        <td onClick={this.openModal(problem)}>
-          Show Input
-        </td>
       </tr>
     ));
   }
@@ -68,7 +65,6 @@ class ProblemList extends Component {
               <th>#</th>
               <th>Type</th>
               <th>Username</th>
-              <th>Input</th>
             </tr>
           </thead>
           <tbody>
