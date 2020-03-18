@@ -6,23 +6,26 @@ class Home extends Component {
     return (
       <div>
         <div className="container main">
-          <h1>Compute expert-level answers using Wolfram’s breakthrough algorithms, knowledgebase and AI technology</h1>
+          <h5>Compute expert-level answers using Wolfram’s breakthrough algorithms and knowledgebase. Select a 
+          topic to be redirected to its functional page.
+          </h5>
             <div className="row">
 
                 <div className="four columns">
                 <div className="left">
                   <h5>Symbolic Representation</h5>
                   <Link to="/solver">
-                  <button type="button" class="btn btn-success">    Truth Tables    </button>
+                  <button type="button" class="btn btn-success">Truth Tables</button>
+                  </Link>
+                  <p></p>
+                  <Link to="/TreeProof">
+                  <button type="button" class="btn btn-success">Propositional  Logic</button>
                   </Link>
                   <p></p>
                   <Link to="/">
                   <button type="button" class="btn btn-success">Recurrance Relations</button>
                   </Link>
                   <p></p>
-                  <Link to="/TreeProof">
-                  <button type="button" class="btn btn-success">Propositional  Logic</button>
-                  </Link>
                 </div>
                 </div>
 
@@ -30,15 +33,15 @@ class Home extends Component {
                 <div className="center">
                   <h5>Relations + Sorting</h5>
                   <Link to="/">
-                  <button type="button" class="btn btn-primary">Closures</button>
+                  <button type="button" class="btn btn-info">Closures</button>
                   </Link>
                   <p></p>
                   <Link to="/">
-                  <button type="button" class="btn btn-primary">Multiplicities</button>
+                  <button type="button" class="btn btn-info">Multiplicities</button>
                   </Link>
                   <p></p>
-                  <Link to="/">
-                  <button type="button" class="btn btn-primary">Topological Sort</button>
+                  <Link to="/topological-sort">
+                  <button type="button" class="btn btn-info">Topological Sort</button>
                   </Link>
                 </div>
                 </div>
@@ -47,12 +50,13 @@ class Home extends Component {
                 <div className="right">
                   <h5>Functions</h5>
                   <Link to="/">
-                  <button type="button" class="btn btn-info">Form Conversions</button>
+                  <button type="button" class="btn btn-primary">Cycles</button>
                   </Link>
                   <p></p>
                   <Link to="/">
-                  <button type="button" class="btn btn-info">Cycles</button>
+                  <button type="button" class="btn btn-primary">Form Conversions</button>
                   </Link>
+                  <p></p>
                 </div>
                 </div>
               </div>
@@ -62,13 +66,14 @@ class Home extends Component {
               <div className="four columns">
               <div className="left">
                 <h5>Graphs</h5>
+                <Link to="/pert-chart">
+                <button type="button" class="btn btn-warning">Pert Charts</button>
+                </Link>
+                <p></p>
                 <Link to="/">
                 <button type="button" class="btn btn-warning">Hasse Diagrams</button>
                 </Link>
                 <p></p>
-                <Link to="/">
-                <button type="button" class="btn btn-warning">Pert Charts</button>
-                </Link>
               </div>
               </div>
 
@@ -88,12 +93,12 @@ class Home extends Component {
               <div className="four columns">
               <div className="right">
                 <h5>Sets</h5>
-                <Link to="/">
-                <button type="button" class="btn btn-primary">Subsets</button>
+                <Link to="/set-ops">
+                <button type="button" class="btn btn-success">Subsets</button>
                 </Link>
                 <p></p>
-                <Link to="/">
-                <button type="button" class="btn btn-primary">Powersets</button>
+                <Link to="/set-ops">
+                <button type="button" class="btn btn-success">Powersets</button>
                 </Link>
               </div>
               </div>
