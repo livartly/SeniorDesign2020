@@ -80,7 +80,7 @@ class Home extends Component {
               <div className="four columns">
               <div className="center">
                 <h5>Order of Magnitude</h5>
-                <Link to="/">
+                <Link to="/Master-Theorem">
                 <button type="button" class="btn btn-danger">Master's Theorem</button>
                 </Link>
                 <p></p>
