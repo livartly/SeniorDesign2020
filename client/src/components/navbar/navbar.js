@@ -14,7 +14,7 @@ class Navbar extends Component {
           <Link to="/" className="navhome">HOME</Link>
           <Link to="/resources" className="navvideos">RESOURCES</Link>
           <Link to="about" className="navsfx">ABOUT</Link>
-          <Link to="/" className="navcontact">CONTACT</Link>
+          <Link to="/feedback" className="navcontact">CONTACT</Link>
           <Link to="#" onClick={this.handleLogout.bind(this)}>LOGOUT</Link>
         </p>
       </nav>

@@ -1,17 +1,20 @@
 import React, { Component } from 'react';
 import axios from 'axios';
 
-import Table from 'react-bootstrap/Table';
+import { Table } from 'react-bootstrap';
+import ProblemInputModal from './ProblemInputModal';
 
 class ProblemList extends Component {
   constructor(props) {
     super(props);
     this.state = {
       problems: [],
-      error: null
+      error: null,
+      modalShow: false
     };
 
     this.makeTableBody = this.makeTableBody.bind(this);
+    this.closeModal = this.closeModal.bind(this);
   }
 
   componentDidMount() {
@@ -32,9 +35,13 @@ class ProblemList extends Component {
         <td>{i + 1}</td>
         <td>{problem.typeIndex}</td>
         <td>{problem.username}</td>
-        <td>{problem.input.wff}</td>
+        <td onClick={() => this.setState({ modalShow: true })}>Show Input</td>
       </tr>
     ));
+  }
+
+  closeModal() {
+    this.setState({ modalShow: false });
   }
 
   render() {
@@ -44,15 +51,16 @@ class ProblemList extends Component {
           <thead>
             <tr>
               <th>#</th>
-              <th>type #</th>
-              <th>username</th>
-              <th>input</th>
+              <th>Type Index</th>
+              <th>Username</th>
+              <th>Unput</th>
             </tr>
           </thead>
           <tbody>
             {this.makeTableBody()}
           </tbody>
         </Table>
+        <ProblemInputModal show={this.state.modalShow} onHide={this.closeModal} />
       </div>
     );
   }
