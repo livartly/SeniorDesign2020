@@ -71,7 +71,11 @@ class ProblemList extends Component {
             {this.makeTableBody()}
           </tbody>
         </Table>
-        <ProblemInputModal show={this.state.modalShow} onHide={this.closeModal} problem={this.state.selectedProblem} />
+        <ProblemInputModal
+          show={this.state.modalShow}
+          onHide={this.closeModal}
+          problem={this.state.selectedProblem}
+        />
       </div>
     );
   }
