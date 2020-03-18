@@ -201,9 +201,6 @@ class MastersTheorem extends React.Component
       return;
     }
 
-  
-  
-  
     render()
     {
         return (
@@ -252,11 +249,4 @@ class MastersTheorem extends React.Component
     }
 }
 
-ReactDOM.render(
-<MastersTheorem />,
- document.getElementById('root')
- );
-
- //Author: William Blackburn
- //CS499- Senior Design
- //MastersTheorem.js - Used to solve Recurrence Equations using Master's Theorem
+export default MastersTheorem;

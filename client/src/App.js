@@ -28,6 +28,8 @@ import Feedback from './components/feedback/FeedbackContainer';
 import sortSolver from './components/problem-solvers/sortSolver.js';
 import SetOpsPage from './components/problem-solvers/Sets/setOpsPage.js';
 import PertChartSolver from './components/problem-solvers/PertChartSolver';
+import MastersTheoremSolver from './components/problem-solvers/MastersTheoremSolver';
+import MagnitudeOrderSolver from './components/problem-solvers/MagnitudeOrderSolver';
 
 import './App.css';
 import PertChart from './components/problem-solvers/pert-chart/PertChart';
@@ -68,6 +70,8 @@ class App extends Component {
               <PrivateRoute path="/topological-sort" component={sortSolver} />
               <PrivateRoute path="/set-ops" component={SetOpsPage} />
               <PrivateRoute path="/pert-chart" component={PertChartSolver} />
+              <PrivateRoute path="/Master-Theorem" component={MastersTheoremSolver} />
+              <PrivateRoute path="/MagnitudeOrder" component={MagnitudeOrderSolver} />
             </Switch>
           </div>
         </Router>
