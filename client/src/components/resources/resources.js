@@ -18,13 +18,13 @@ class Resources extends Component {
           <div className="twelve columns">
             <h1>Referenced Resources</h1>
             <p>As WolframBeta is an open source free tool for students, we have used open source resources to help build it. Those resources and their respective links are down below.</p>
-            <b>·Resource Name, </b><a href="" >Resouce link</a><p></p>
+            <b>·Topological Sort, </b><a href="https://www.cs.usfca.edu/~galles/visualization/TopoSortDFS.html" >Resouce link</a><p></p>
             <b>·Resource Name, </b><a href="" >Resouce link</a><p></p>
             <b>·Resource Name, </b><a href="" >Resouce link</a><p></p>
             <b>·Resource Name, </b><a href="" >Resouce link</a><p></p>
           </div>
 
-          <div className="contactme"><a href=""><b>CONTACT</b></a></div>
+          <div className="contactme"><a href=""><b>LOG OUT</b></a></div>
         </div>
       </div>
     );
