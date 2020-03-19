@@ -18,7 +18,7 @@ class Home extends Component {
                   <button type="button" class="btn btn-success">Truth Tables</button>
                   </Link>
                   <p></p>
-                  <Link to="/TreeProof">
+                  <Link to="/propositional-logic">
                   <button type="button" class="btn btn-success">Propositional  Logic</button>
                   </Link>
                   <p></p>
@@ -126,7 +126,7 @@ class Home extends Component {
                 <button type="button">About</button>
                 </Link>
                 <Link to="/feedback">
-                <button type="button">Feedback</button>
+                <button type="button">Contact</button>
                 </Link>
               </div>
 

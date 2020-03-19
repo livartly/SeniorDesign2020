@@ -163,7 +163,7 @@ header.main_nav {
 	transition: all 0.5s ease 0s;
 }
 .navhome {
-	margin-left: 2%;
+	margin-left: -2%;
 	margin-right: 2%;
 	-webkit-transition: all 0.5s ease 0s;
 	-o-transition: all 0.5s ease 0s;
@@ -185,6 +185,7 @@ header.main_nav {
 }
 .navcontact {
 	margin-left: 2%;
+	margin-right: 2%;
 	-webkit-transition: all 0.5s ease 0s;
 	-o-transition: all 0.5s ease 0s;
 	transition: all 0.5s ease 0s;

@@ -162,6 +162,7 @@ class TopologicalSort extends React.Component {
       <div className="container main">
         <h1>Topological Sorting</h1>
         <h4>Input graph nodes and dependencies to output a topological sort. </h4>
+        <p></p>
         <div className="row">
           <div className= "tweleve columns">
             <div className="center">

@@ -1,4 +1,5 @@
 import React from 'react'
+import {Link} from 'react-router-dom'
 
 class MagnitudeOrder extends React.Component 
 {
@@ -287,22 +288,24 @@ class MagnitudeOrder extends React.Component
     render()
     {
         return (
-            <div id = "Main">
-                <div id = "TitleBar">
-                  <h2 id = "Title"> 
-                        <a id="Hyperlink" href=".">
-                            Order Verification
-                        </a>
-                  </h2>
+          <div>
+          <div className="container main">
+          <h1>Order Verification</h1>
+          <div className="row">
+            <div className= "tweleve columns">
+              <div className="center">
+    
+                <p><b>Entering formulas: </b>
+
                     <p>
                       Enter in two functions f(x) and g(x). If these functions have the same Order of Magnitude
                       <br></br> then the solver will provide the n, constant1, and constant2 values such that
-                      <br></br> (x > n, constant1 * g(x) {'<'} f(x) {'<'} constant2 * g(x)) <br></br><br></br> Example:<br></br> f(x) = x^2 + 5 <br></br> g(x) = x^2 + x^1 + logx
+                      <br></br> (x > n, constant1 * g(x) {'<'} f(x) {'<'} constant2 * g(x)) <br></br><br></br> <b>Example:</b><br></br> f(x) = x^2 + 5 <br></br> g(x) = x^2 + x^1 + logx
                       <br></br>
                       <br></br> Please limit variable usage to only use x
                       
                     </p>
-                 </div> 
+                </p>
 
                 <form id = "FunctionInputForm">
                     <label>
@@ -311,7 +314,7 @@ class MagnitudeOrder extends React.Component
                           
                         </input>
                         {' '}
-                    </label><br></br><br></br>
+                    </label>
                   
                     <label>
                          g(x):
@@ -319,9 +322,9 @@ class MagnitudeOrder extends React.Component
                           
                         </input>
                         {' '}
-                    </label><br></br>
+                    </label>
                   
-                    <label><br></br>
+                    <label>
                          <button id = "SubmitButton"   onClick = {this.HandleClick}>
                            Submit
                          </button>
@@ -339,6 +342,46 @@ class MagnitudeOrder extends React.Component
                    </label>
 				       </div>
                 
+          </div>
+          </div>
+          </div>
+          </div>
+                    {/* Footer */}
+                    <footer>
+          <div class="row grey">
+            <div class="container main">
+
+              <p class="copyright">
+                <h6>Site Map</h6>
+              </p>
+              <div className="four columns">
+                <Link to="/">
+                <button type="button">Home</button>
+                </Link>
+                <Link to="/resources">
+                <button type="button">Resources</button>
+                </Link>
+              </div>
+
+              <div className="four columns">
+                <Link to="/about">
+                <button type="button">About</button>
+                </Link>
+                <Link to="/feedback">
+                <button type="button">Contact</button>
+                </Link>
+              </div>
+
+              <div className= "tweleve columns">
+              <p class="copyright">
+                  <h3>&copy; 2020 Wolfram Beta. All Rights Reserved.</h3>
+              </p>
+              </div>
+
+            </div>
+
+            </div>
+          </footer>
           </div>
         )
     }

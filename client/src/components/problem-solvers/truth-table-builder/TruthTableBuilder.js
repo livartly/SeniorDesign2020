@@ -1,7 +1,7 @@
 import React from 'react';
 import Statement from '../../../engine/statement.js';
 
-import Table from 'react-bootstrap/Table';
+import { Table, Form, Row, Col, Card } from 'react-bootstrap';
 
 import Legend from './Legend.js';
 
@@ -17,6 +17,7 @@ class TruthTableBuilder extends React.Component {
     };
     this.updateWff = this.updateWff.bind(this);
     this.handleClick = this.handleClick.bind(this);
+    this.insertAtKaret = this.insertAtKaret.bind(this);
   }
 
   updateWff(e) {
@@ -26,7 +27,8 @@ class TruthTableBuilder extends React.Component {
   handleClick(e) {
     e.preventDefault();
     try {
-      let statement = new Statement(this.state.wff);
+      console.log(this.convertBack(this.state.wff));
+      let statement = new Statement(this.convertBack(this.state.wff));
 
       // This will occur asynchronously (not blocking)
       sendProblem({
@@ -84,19 +86,104 @@ class TruthTableBuilder extends React.Component {
     );
   }
 
+  insertAtKaret(sym) {
+    return () => {
+      this.setState((prevState) => ({
+        wff: prevState.wff + sym
+      }));
+    };
+  }
+
+  renderSymbols(str) {
+    str = str.replace('&', '∧');
+    str = str.replace('^', '∧');
+    str = str.replace('<->', '↔');
+    str = str.replace('->', '→');
+    str = str.replace('~', '¬');
+    str = str.replace(' v ', ' ∨ '); // 'v' letter => or symbol
+    str = str.replace(/(\\neg|\\lnot)[\{ ]?\}?/g, '¬');
+    str = str.replace(/(\\vee|\\lor)[\{ ]?\}?/g, '∨');
+    str = str.replace(/(\\wedge|\\land)[\{ ]?\}?/g, '∧');
+    str = str.replace(/(\\to|\\rightarrow)[\{ ]?\}?/g, '→');
+    str = str.replace(/\\leftrightarrow[\{ ]?\}?/g, '↔');
+    return str;
+  }
+
+  convertBack(str) {
+    str = str.replace(/∧/g, '&');
+    str = str.replace(/↔/g, '<->');
+    str = str.replace(/→/g, '->');
+    str = str.replace(/¬/g, '~');
+    str = str.replace(/∨/g, '||');
+    return str;
+  }
+
   render() {
     return (
-      <div className="box">
-        <p>Truth Table Builder</p>
-        <Legend />
-        <p>Type a wff in the box</p>
-        <span>{this.state.error ? this.state.error : ""}</span>
-        <br />
-        <textarea value={this.state.wff} onChange={this.updateWff}></textarea>
-        <br />
-        <button onClick={this.handleClick}>Submit</button>
-        <br />
-        {this.makeTable(this.state.out)}
+      <div className="container" style={{ marginTop: "50px" }}>
+        <Form>
+          <h1>Truth Table Builder</h1>
+          <Form.Group controlId="truthTableBuilder.textInput">
+            <Form.Label>Well Formed Formula</Form.Label>
+            <div id="symbolButtonRow">
+              <div id="symbolButtons">
+                <div
+                  className="symbutton button formula"
+                  onClick={this.insertAtKaret("¬")}
+                >¬</div>
+                <div
+                  className="symbutton button formula"
+                  onClick={this.insertAtKaret("∧")}
+                >∧</div>
+                <div
+                  className="symbutton button formula"
+                  onClick={this.insertAtKaret("∨")}
+                >∨</div>
+                <div
+                  className="symbutton button formula"
+                  onClick={this.insertAtKaret("→")}
+                >→</div>
+                <div
+                  className="symbutton button formula"
+                  onClick={this.insertAtKaret("↔")}
+                >↔</div>
+              </div>
+            </div>
+            <Row style={{ padding: 0 }}>
+              <Col md={10}>
+                <Form.Control
+                  type="text"
+                  value={this.state.wff}
+                  onChange={this.updateWff}
+                />
+              </Col>
+              <Col md={2}>
+                <button onClick={this.handleClick}>Submit</button>
+              </Col>
+            </Row>
+            <span style={{ color: 'red' }}>
+              {this.state.error ? this.state.error : ""}
+            </span>
+          </Form.Group>
+          <Form.Group controlId="truthTableBuilder.cardOutput">
+            <Form.Label>Result</Form.Label>
+            <Card body style={{ minHeight: "100px" }}>
+              {this.makeTable(this.state.out)}
+            </Card>
+          </Form.Group>
+          <Form.Group controlId="truthTableBuilder.instructions">
+            <Form.Label>Instructions</Form.Label>
+            <p>
+              This site will take a well formed formula as input and construct
+              a truth table describing the input. Valid variables must be one
+              capital or lowercase letter only. Ensure that too many variables
+              are not present in the input or the site may hang. The following
+              legend lists all valid symbols that can be used as operators in
+              decreasing order of precedence.
+            </p>
+            <Legend />
+          </Form.Group>
+        </Form>
       </div>
     );
   }
