@@ -1,4 +1,5 @@
 import React from 'react';
+import {Link} from 'react-router-dom'
 import {Array} from '../../../engine/TreeProof/array.js';
 import {Formula, AtomicFormula, QuantifiedFormula, BinaryFormula, ModalFormula, NegatedFormula} from '../../../engine/TreeProof/formula.js';
 import {ModelFinder, Model} from '../../../engine/TreeProof/modelfinder.js';
@@ -123,10 +124,42 @@ class TreeProof extends React.Component {
 
   render() {
     return (
-      <div id = "Main">
-        <div id="titlebar">
-          <h2 id="title"><a id="titlelink" href=".">Tree Proof Generator</a></h2>
-        </div>
+      <div>
+      <div className="container main">
+      <h1>Propositional Logic</h1>
+      <h4>Enter a formula of standard propositional, predicate, or modal logic. </h4>
+
+      <div className="row">
+        <div className= "tweleve columns">
+          <div className="center">
+            <div id="intro">
+                
+            <p>The page will try to find either a countermodel or
+              a <a href="https://en.wikipedia.org/wiki/Method_of_analytic_tableau">tree
+              proof (a.k.a. semantic tableau)</a>. 
+            </p>
+
+            </div> 
+
+            <p><b>Entering formulas: </b>
+            
+              To enter logic symbols, use the buttons above the text field, or
+              type
+              <span class="formula">~</span> for <span class="formula">¬</span>,
+              <span class="formula">&</span> for <span class="formula">∧</span>,
+              <span class="formula">v</span> for <span class="formula">∨</span>,
+              <span class="formula">-&gt;</span> for <span class="formula">→</span>,
+              <span class="formula">&lt;-&gt;</span> for <span class="formula">↔</span>,
+            </p>
+          
+            <p><b>Syntax of formulas: </b>
+            
+            Any alphabetic character is allowed as a propositional constant, predicate,
+            individual constant, or variable. The character may be followed by digits as
+            indices. Predicates and function terms must be in prefix notation. The order of precedence among
+            connectives is <span class="formula">¬, ∧, ∨, →, ↔</span>. Association is to
+            the right. 
+          </p>
 
         <form id="inputForm" action="." method="get" onsubmit="return false">
           <div id="symbolButtonRow">
@@ -152,39 +185,49 @@ class TreeProof extends React.Component {
             <input value="Run" id="proveButton" class="button" onClick={this.handleClick}></input>
           </div>
         </form>
-      
-        <div id="intro">
-          <noscript><p><b>Enable JavaScript to use this page!.</b></p></noscript>
-              
-          <p>Enter a formula of standard propositional, predicate, or modal logic. The
-            page will try to find either a countermodel or
-            a <a href="https://en.wikipedia.org/wiki/Method_of_analytic_tableau">tree
-            proof (a.k.a. semantic tableau)</a>. 
-          </p>
-
-        </div> 
-        <h3>Entering formulas</h3>
-          
-          <p>To enter logic symbols, use the buttons above the text field, or
-            type
-            <span class="formula">~</span> for <span class="formula">¬</span>,
-            <span class="formula">&</span> for <span class="formula">∧</span>,
-            <span class="formula">v</span> for <span class="formula">∨</span>,
-            <span class="formula">-&gt;</span> for <span class="formula">→</span>,
-            <span class="formula">&lt;-&gt;</span> for <span class="formula">↔</span>,
-          </p>
-          
-          <h3>Syntax of formulas</h3>
-          
-          <p>Any alphabetic character is allowed as a propositional constant, predicate,
-            individual constant, or variable. The character may be followed by digits as
-            indices. Predicates and function terms must be in prefix notation. The order of precedence among
-            connectives is <span class="formula">¬, ∧, ∨, →, ↔</span>. Association is to
-            the right. 
-          </p>
 
           <div id="model"> </div>
           <div id="rootAnchor"> </div>
+          </div>
+          </div>
+          </div>
+      </div>
+             {/* Footer */}
+             <footer>
+          <div class="row grey">
+            <div class="container main">
+
+              <p class="copyright">
+                <h6>Site Map</h6>
+              </p>
+              <div className="four columns">
+                <Link to="/">
+                <button type="button">Home</button>
+                </Link>
+                <Link to="/resources">
+                <button type="button">Resources</button>
+                </Link>
+              </div>
+
+              <div className="four columns">
+                <Link to="/about">
+                <button type="button">About</button>
+                </Link>
+                <Link to="/feedback">
+                <button type="button">Contact</button>
+                </Link>
+              </div>
+
+              <div className= "tweleve columns">
+              <p class="copyright">
+                  <h3>&copy; 2020 Wolfram Beta. All Rights Reserved.</h3>
+              </p>
+              </div>
+
+            </div>
+
+            </div>
+          </footer>
       </div>
     );
   }
