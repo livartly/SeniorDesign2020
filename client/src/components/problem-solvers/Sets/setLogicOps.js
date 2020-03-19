@@ -307,7 +307,12 @@ class SetLogicOps extends React.Component {
             }
           }
         }
-        console.log(m.get('?'));
+
+        // Convert set to array for formatting output
+        let e = Array.from(m.get('?').entries());
+        let elementArray = [];
+        e.forEach(elem => elementArray.push(elem[0]));
+        this.setState({out:elementArray.toString()});
       }
     }
   }
@@ -388,6 +393,9 @@ class SetLogicOps extends React.Component {
             <button onClick={this.addBox}>+</button>
 
             <p>Enter Formula: </p><input onChange={this.updateFormula()}></input> <button onClick={this.handleFormulaSubmit}>Submit</button>
+
+
+            {this.showOutput()}
           </div>
         </div>
       </div>
