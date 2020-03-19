@@ -14,7 +14,7 @@ class Home extends Component {
                 <div className="four columns">
                 <div className="left">
                   <h5>Symbolic Representation</h5>
-                  <Link to="/truth-table">
+                  <Link to="/solver">
                   <button type="button" class="btn btn-success">Truth Tables</button>
                   </Link>
                   <p></p>

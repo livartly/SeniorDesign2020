@@ -1,4 +1,5 @@
 import React from 'react'
+import {Link} from 'react-router-dom'
 
 class MastersTheorem extends React.Component 
 {
@@ -204,19 +205,23 @@ class MastersTheorem extends React.Component
     render()
     {
         return (
-            <div id = "Main">
-                <div id = "TitleBar">
-                    <h2 id = "Title"> 
-                        <a id="Hyperlink" href=".">
-                            Master's Theorem 
-                        </a>
-                    </h2>
+          <div>
+          <div className="container main">
+          <h1>Master's Theorem</h1>
+          <h4>Enter a formula of standard propositional, predicate, or modal logic. </h4>
+          <p></p>
+          <div className="row">
+            <div className= "tweleve columns">
+              <div className="center">
+    
+                <p><b>Entering formulas: </b>
+
                     <p>
-                      Enter a valid Recurrence Equation in order to solve it using Master's theorem. Press the 'Submit' button 
-                      <br></br> to get your answer. <br></br><br></br> Ex: S(n) = 2S(n/4) + n^2
+                      Enter a valid Recurrence Equation in order to solve it using Master's theorem.
+                     <br></br><br></br> Ex: S(n) = 2S(n/4) + n^2
                       
                     </p>
-                 </div> 
+                </p>
             
 
                 <form id = "RecurrenceEquationForm">
@@ -244,6 +249,46 @@ class MastersTheorem extends React.Component
                    </label>
 				       </div>
                 
+          </div>
+          </div>
+          </div>
+          </div>
+                       {/* Footer */}
+                       <footer>
+          <div class="row grey">
+            <div class="container main">
+
+              <p class="copyright">
+                <h6>Site Map</h6>
+              </p>
+              <div className="four columns">
+                <Link to="/">
+                <button type="button">Home</button>
+                </Link>
+                <Link to="/resources">
+                <button type="button">Resources</button>
+                </Link>
+              </div>
+
+              <div className="four columns">
+                <Link to="/about">
+                <button type="button">About</button>
+                </Link>
+                <Link to="/feedback">
+                <button type="button">Contact</button>
+                </Link>
+              </div>
+
+              <div className= "tweleve columns">
+              <p class="copyright">
+                  <h3>&copy; 2020 Wolfram Beta. All Rights Reserved.</h3>
+              </p>
+              </div>
+
+            </div>
+
+            </div>
+          </footer>
           </div>
         )
     }

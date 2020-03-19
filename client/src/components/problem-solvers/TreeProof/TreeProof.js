@@ -128,7 +128,7 @@ class TreeProof extends React.Component {
       <div className="container main">
       <h1>Propositional Logic</h1>
       <h4>Enter a formula of standard propositional, predicate, or modal logic. </h4>
-
+      <p></p>
       <div className="row">
         <div className= "tweleve columns">
           <div className="center">
