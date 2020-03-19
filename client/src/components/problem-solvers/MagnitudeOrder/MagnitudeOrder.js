@@ -300,7 +300,7 @@ class MagnitudeOrder extends React.Component
                     <p>
                       Enter in two functions f(x) and g(x). If these functions have the same Order of Magnitude
                       <br></br> then the solver will provide the n, constant1, and constant2 values such that
-                      <br></br> (x > n, constant1 * g(x) {'<'} f(x) {'<'} constant2 * g(x)) <br></br><br></br> Example:<br></br> f(x) = x^2 + 5 <br></br> g(x) = x^2 + x^1 + logx
+                      <br></br> (x > n, constant1 * g(x) {'<'} f(x) {'<'} constant2 * g(x)) <br></br><br></br> <b>Example:</b><br></br> f(x) = x^2 + 5 <br></br> g(x) = x^2 + x^1 + logx
                       <br></br>
                       <br></br> Please limit variable usage to only use x
                       

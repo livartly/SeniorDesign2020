@@ -218,8 +218,10 @@ class MastersTheorem extends React.Component
 
                     <p>
                       Enter a valid Recurrence Equation in order to solve it using Master's theorem.
-                     <br></br><br></br> Ex: S(n) = 2S(n/4) + n^2
-                      
+                     <br></br><br></br> <b>Example:</b>
+                     <br></br>
+                     <p>S(n) = 2S(n/4) + n^2</p>
+    
                     </p>
                 </p>
             
@@ -231,7 +233,7 @@ class MastersTheorem extends React.Component
                         
                         </input>
                          {'  '}
-                      
+                        
                         <button id = "SubmitButton"  onClick = {this.HandleClick}>
                            Submit
                         </button>
@@ -253,8 +255,8 @@ class MastersTheorem extends React.Component
           </div>
           </div>
           </div>
-                       {/* Footer */}
-                       <footer>
+          {/* Footer */}
+          <footer>
           <div class="row grey">
             <div class="container main">
 
