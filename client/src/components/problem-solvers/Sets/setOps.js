@@ -1,4 +1,5 @@
 import React from 'react';
+import {Link} from 'react-router-dom'
 
 //********************************************//
 //
@@ -236,17 +237,23 @@ class SetOps extends React.Component {
   // Draw page
   render() {
     return (
-      <div className="box">
-        <h3>Subset Calculator</h3>
-        <p>Subset Calculator</p>
-        <p>Please enter the contents of each set, separated by commas.</p>
-        <p>Enter sets to determine subset or powerset:</p>
-        {
-          this.makeInputForm()
-        }
-        <button onClick={this.handleSubsetASubmit}>A ⊆ B?</button><button onClick={this.handleSubsetBSubmit}>B ⊆ A?</button>
-        {this.showOutput()}
+      <div className="container main">
+      <h1>Sets</h1>
+      <h4>Subset and Set Logic calculators</h4>
+      <div className="row">
+        <div className= "tweleve columns">
+          <div className="center">
+            <p><b>Subset Calculator</b></p>
+            <p>Enter sets to determine subset or powerset:</p>
+            {
+              this.makeInputForm()
+            }
+            <button onClick={this.handleSubsetASubmit}>A ⊆ B?</button><button onClick={this.handleSubsetBSubmit}>B ⊆ A?</button>
+            {this.showOutput()}
+          </div>
+        </div>
       </div>
+    </div>
     );
   }
 }
