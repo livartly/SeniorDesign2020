@@ -14,11 +14,11 @@ class Home extends Component {
                 <div className="four columns">
                 <div className="left">
                   <h5>Symbolic Representation</h5>
-                  <Link to="/solver">
+                  <Link to="/truth-table">
                   <button type="button" class="btn btn-success">Truth Tables</button>
                   </Link>
                   <p></p>
-                  <Link to="/TreeProof">
+                  <Link to="/propositional-logic">
                   <button type="button" class="btn btn-success">Propositional  Logic</button>
                   </Link>
                   <p></p>

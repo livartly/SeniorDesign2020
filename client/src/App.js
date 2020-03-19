@@ -64,7 +64,7 @@ class App extends Component {
               <PrivateRoute path="/about" component={About} />
               <PrivateRoute path="/solver" component={Solver} />
               <PrivateRoute path="/calculator2" component={Calculator2} />
-              <PrivateRoute path="/TreeProof" component={TreeProof} />
+              <PrivateRoute path="/propositional-logic" component={TreeProof} />
               <PrivateRoute path="/secret-hidden-view" component={Catalog} />
               <PrivateRoute path="/feedback" component={Feedback} />
               <PrivateRoute path="/topological-sort" component={sortSolver} />
