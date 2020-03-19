@@ -1,7 +1,7 @@
 import React from 'react';
 import Statement from '../../../engine/statement.js';
 
-import Table from 'react-bootstrap/Table';
+import { Table, Form, Row, Col, Card } from 'react-bootstrap';
 
 import Legend from './Legend.js';
 
@@ -21,12 +21,13 @@ class TruthTableBuilder extends React.Component {
   }
 
   updateWff(e) {
-    this.setState({ wff: this.renderSymbols(e.currentTarget.value) });
+    this.setState({ wff: e.currentTarget.value });
   }
 
   handleClick(e) {
     e.preventDefault();
     try {
+      console.log(this.convertBack(this.state.wff));
       let statement = new Statement(this.convertBack(this.state.wff));
 
       // This will occur asynchronously (not blocking)
@@ -109,37 +110,80 @@ class TruthTableBuilder extends React.Component {
   }
 
   convertBack(str) {
-    str = str.replace('∧', '&');
-    str = str.replace('↔', '<->');
-    str = str.replace('→', '->');
-    str = str.replace('¬', '~');
-    str = str.replace('∨', '||');
+    str = str.replace(/∧/g, '&');
+    str = str.replace(/↔/g, '<->');
+    str = str.replace(/→/g, '->');
+    str = str.replace(/¬/g, '~');
+    str = str.replace(/∨/g, '||');
     return str;
   }
 
   render() {
     return (
-      <div className="box">
-        <p>Truth Table Builder</p>
-        <Legend />
-        <p>Type a wff in the box</p>
-        <span>{this.state.error ? this.state.error : ""}</span>
-        <br />
-        <div id="symbolButtonRow">
-          insert <span class="hideOnTablet">symbol:</span>
-          <div id="symbolButtons">
-            <div class="symbutton button formula" onClick={this.insertAtKaret("¬")}>¬</div>
-            <div class="symbutton button formula" onClick={this.insertAtKaret("∧")}>∧</div>
-            <div class="symbutton button formula" onClick={this.insertAtKaret("∨")}>∨</div>
-            <div class="symbutton button formula" onClick={this.insertAtKaret("→")}>→</div>
-            <div class="symbutton button formula" onClick={this.insertAtKaret("↔")}>↔</div>
-          </div>
-        </div>
-        <textarea value={this.state.wff} onChange={this.updateWff}></textarea>
-        <br />
-        <button onClick={this.handleClick}>Submit</button>
-        <br />
-        {this.makeTable(this.state.out)}
+      <div className="container" style={{ marginTop: "50px" }}>
+        <Form>
+          <h1>Truth Table Builder</h1>
+          <Form.Group controlId="truthTableBuilder.textInput">
+            <Form.Label>Well Formed Formula</Form.Label>
+            <div id="symbolButtonRow">
+              <div id="symbolButtons">
+                <div
+                  className="symbutton button formula"
+                  onClick={this.insertAtKaret("¬")}
+                >¬</div>
+                <div
+                  className="symbutton button formula"
+                  onClick={this.insertAtKaret("∧")}
+                >∧</div>
+                <div
+                  className="symbutton button formula"
+                  onClick={this.insertAtKaret("∨")}
+                >∨</div>
+                <div
+                  className="symbutton button formula"
+                  onClick={this.insertAtKaret("→")}
+                >→</div>
+                <div
+                  className="symbutton button formula"
+                  onClick={this.insertAtKaret("↔")}
+                >↔</div>
+              </div>
+            </div>
+            <Row style={{ padding: 0 }}>
+              <Col md={10}>
+                <Form.Control
+                  type="text"
+                  value={this.state.wff}
+                  onChange={this.updateWff}
+                />
+              </Col>
+              <Col md={2}>
+                <button onClick={this.handleClick}>Submit</button>
+              </Col>
+            </Row>
+            <span style={{ color: 'red' }}>
+              {this.state.error ? this.state.error : ""}
+            </span>
+          </Form.Group>
+          <Form.Group controlId="truthTableBuilder.cardOutput">
+            <Form.Label>Result</Form.Label>
+            <Card body style={{ minHeight: "100px" }}>
+              {this.makeTable(this.state.out)}
+            </Card>
+          </Form.Group>
+          <Form.Group controlId="truthTableBuilder.instructions">
+            <Form.Label>Instructions</Form.Label>
+            <p>
+              This site will take a well formed formula as input and construct
+              a truth table describing the input. Valid variables must be one
+              capital or lowercase letter only. Ensure that too many variables
+              are not present in the input or the site may hang. The following
+              legend lists all valid symbols that can be used as operators in
+              decreasing order of precedence.
+            </p>
+            <Legend />
+          </Form.Group>
+        </Form>
       </div>
     );
   }
