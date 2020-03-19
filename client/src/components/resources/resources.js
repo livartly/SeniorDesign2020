@@ -14,16 +14,14 @@ class Resources extends Component {
             <b>·Stanford University, </b><a href="https://web.stanford.edu/class/cs103x/cs103x-notes.pdf" >Discrete Structures Lecture Notes</a><p></p>
             <b>·Truth Tables, </b><a href="https://www.youtube.com/watch?v=LNSfM86I8is" >Video Walkthrough</a><p></p>
             <b>·Propositional Logic, </b><a href="https://www.geeksforgeeks.org/proposition-logic/" >Introduction</a><p></p>
-            <b>·Reference Name, </b><a href="" >Reference link</a><p></p>
           </div>
 
           <div className="twelve columns">
             <h1>Referenced Resources</h1>
             <p>As WolframBeta is an open source free tool for students, we have used open source resources to help build it. Those resources and their respective links are down below.</p>
             <b>·Topological Sort, </b><a href="https://www.cs.usfca.edu/~galles/visualization/TopoSortDFS.html" >DFS Visualization Tool</a><p></p>
-            <b>·Resource Name, </b><a href="" >Resouce link</a><p></p>
-            <b>·Resource Name, </b><a href="" >Resouce link</a><p></p>
-            <b>·Resource Name, </b><a href="" >Resouce link</a><p></p>
+            <b>·Tree Proof Generator, </b><a href="https://github.com/wo/tpg" >Github Repository</a><p></p>
+            <b>·Truth Table Builder, </b><a href="https://github.com/jdkato/Tombstone.js" >Github Repository</a><p></p>
           </div>
         </div>
       </div>
