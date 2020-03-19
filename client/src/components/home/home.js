@@ -126,7 +126,7 @@ class Home extends Component {
                 <button type="button">About</button>
                 </Link>
                 <Link to="/feedback">
-                <button type="button">Feedback</button>
+                <button type="button">Contact</button>
                 </Link>
               </div>
 
