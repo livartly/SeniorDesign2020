@@ -15,27 +15,27 @@ const Legend = (props) => (
       </thead>
       <tbody>
         <tr>
-          <td>~</td>
+          <td>~ or ¬</td>
           <td>Negation</td>
           <td>~P ("not P")</td>
         </tr>
         <tr>
-          <td>&amp;</td>
+          <td>&amp; or ∧</td>
           <td>Conjunction</td>
           <td>P &amp; Q ("P and Q")</td>
         </tr>
         <tr>
-          <td>||</td>
+          <td>|| or ∨</td>
           <td>Disjunction</td>
           <td>P || Q ("P or Q")</td>
         </tr>
         <tr>
-          <td>-></td>
+          <td>-> or →</td>
           <td>Implication</td>
           <td>P -> Q ("If P, then Q")</td>
         </tr>
         <tr>
-          <td>&lt;-&gt;</td>
+          <td>&lt;-&gt; or ↔</td>
           <td>Equivalence</td>
           <td>P &lt;-&gt; Q ("P if and only if Q")</td>
         </tr>

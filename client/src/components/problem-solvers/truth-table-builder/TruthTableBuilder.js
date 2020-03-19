@@ -17,16 +17,17 @@ class TruthTableBuilder extends React.Component {
     };
     this.updateWff = this.updateWff.bind(this);
     this.handleClick = this.handleClick.bind(this);
+    this.insertAtKaret = this.insertAtKaret.bind(this);
   }
 
   updateWff(e) {
-    this.setState({ wff: e.currentTarget.value });
+    this.setState({ wff: this.renderSymbols(e.currentTarget.value) });
   }
 
   handleClick(e) {
     e.preventDefault();
     try {
-      let statement = new Statement(this.state.wff);
+      let statement = new Statement(this.convertBack(this.state.wff));
 
       // This will occur asynchronously (not blocking)
       sendProblem({
@@ -84,6 +85,38 @@ class TruthTableBuilder extends React.Component {
     );
   }
 
+  insertAtKaret(sym) {
+    return () => {
+      this.setState((prevState) => ({
+        wff: prevState.wff + sym
+      }));
+    };
+  }
+
+  renderSymbols(str) {
+    str = str.replace('&', '∧');
+    str = str.replace('^', '∧');
+    str = str.replace('<->', '↔');
+    str = str.replace('->', '→');
+    str = str.replace('~', '¬');
+    str = str.replace(' v ', ' ∨ '); // 'v' letter => or symbol
+    str = str.replace(/(\\neg|\\lnot)[\{ ]?\}?/g, '¬');
+    str = str.replace(/(\\vee|\\lor)[\{ ]?\}?/g, '∨');
+    str = str.replace(/(\\wedge|\\land)[\{ ]?\}?/g, '∧');
+    str = str.replace(/(\\to|\\rightarrow)[\{ ]?\}?/g, '→');
+    str = str.replace(/\\leftrightarrow[\{ ]?\}?/g, '↔');
+    return str;
+  }
+
+  convertBack(str) {
+    str = str.replace('∧', '&');
+    str = str.replace('↔', '<->');
+    str = str.replace('→', '->');
+    str = str.replace('¬', '~');
+    str = str.replace('∨', '||');
+    return str;
+  }
+
   render() {
     return (
       <div className="box">
@@ -92,6 +125,16 @@ class TruthTableBuilder extends React.Component {
         <p>Type a wff in the box</p>
         <span>{this.state.error ? this.state.error : ""}</span>
         <br />
+        <div id="symbolButtonRow">
+          insert <span class="hideOnTablet">symbol:</span>
+          <div id="symbolButtons">
+            <div class="symbutton button formula" onClick={this.insertAtKaret("¬")}>¬</div>
+            <div class="symbutton button formula" onClick={this.insertAtKaret("∧")}>∧</div>
+            <div class="symbutton button formula" onClick={this.insertAtKaret("∨")}>∨</div>
+            <div class="symbutton button formula" onClick={this.insertAtKaret("→")}>→</div>
+            <div class="symbutton button formula" onClick={this.insertAtKaret("↔")}>↔</div>
+          </div>
+        </div>
         <textarea value={this.state.wff} onChange={this.updateWff}></textarea>
         <br />
         <button onClick={this.handleClick}>Submit</button>
