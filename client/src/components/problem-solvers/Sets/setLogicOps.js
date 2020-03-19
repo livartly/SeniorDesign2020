@@ -120,6 +120,8 @@ class SetLogicOps extends React.Component {
     this.handleFormulaSubmit = this.handleFormulaSubmit.bind(this);
     this.updateFormula = this.updateFormula.bind(this);
     this.evalChild = this.evalChild.bind(this);
+    this.checkSyntax = this.checkSyntax.bind(this);
+    this.insert = this.insert.bind(this);
   }
 
   handleClick(e) {
@@ -226,6 +228,17 @@ class SetLogicOps extends React.Component {
     }
   }
 
+  insert(main_string, ins_string, pos) {
+    if(typeof(pos) == "undefined") {
+      pos = 0;
+    }
+    if(typeof(ins_string) == "undefined") {
+     ins_string = '';
+    }
+    return main_string.slice(0, pos) + ins_string + main_string.slice(pos);
+  }
+
+
   handleFormulaSubmit() {
     let f = this.state.formula;
     let supportedOperations = new Set(['X', '&', '|', '-', '(', ')']);
@@ -239,14 +252,8 @@ class SetLogicOps extends React.Component {
     for (var i = 0; i < setKeys.length; i++)
       m.set(setKeys[i], this.convertStringToSet(strings[i]));
 
-    console.log(m);
-
     // Remove whitespace, check for invalid characters
-    // Supported operators: X(Cartesian Product), &(Intersection), |(union), -(Difference)
-    var isAlpha = function(ch) {
-        return /^[A-Z]$/i.test(ch);
-    }
-
+    // Supported operators: X(✕), &(∩), |(∪), -(Difference)
     f = f.replace(/ /g, "");
     let openParenthsesCount = 0;
     let closedParenthsesCount = 0;
@@ -273,22 +280,76 @@ class SetLogicOps extends React.Component {
 
     if (evalFlag) {
       // Evaluate expression and set output
-      var index     = [0];          // Pass-by-Reference array index for iterating through f
-      let lhs       = new Set();    // Left-Hand-Side of the current expression being evaluated
-      let rhs       = new Set();    // Right-hand-Side of the current expression being evaluated
-      let operation = '';           // Character representation of operation being performed on lhs and rhs
-      let curSet    = new Set();    // Current result of expression, stored as a set
+      var index = [0];          // Pass-by-Reference array index for iterating through f
+      
+      // Valid syntax, evaluate input
+      if (this.checkSyntax(f)) {
+        for (; index[0] < f.length; index[0]++) {
+          if (m.has(f[index[0]])) {
+            if ((index[0] + 2) < f.length && m.has(f[index[0] + 2])) {
+              let lhs = m.get(f[index[0]]);
+              index[0] = index[0] + 2;
+              let rhs = m.get((f[index[0]]));
+              
+              // Get operation
+              let sol = new Set();
+              if (f[index[0] - 1] === '&')
+                sol = lhs.intersection(rhs);
+              else if (f[index[0] - 1] === '|')
+                sol = lhs.union(rhs);
+              else if (f[index[0] - 1] === 'X')
+                sol = lhs.cartesianProduct(rhs);
+              else if (f[index[0] - 1] === '-')
+                sol = lhs.subtract(rhs);
 
-      for (; index[0] < f.length; index[0]++) {
-        if (f[index[0]] === '(') {
-          this.evalChild(f, index);
+              m.set('?', sol);
+              f = this.insert(f, "?", index[0] + 1);
+            }
+          }
         }
-        else if (m.has(f[index[0]])) {
-        }
+
+        // Convert set to array for formatting output
+        let e = Array.from(m.get('?').entries());
+        let elementArray = [];
+        e.forEach(elem => elementArray.push(elem[0]));
+        this.setState({out:elementArray.toString()});
       }
-
-      console.log("Final index: " + index[0]);
     }
+  }
+  
+  checkSyntax(f) {
+    var isAlpha = function(ch) {
+      return /^[A-Z]$/i.test(ch);
+    }
+    var parenthses = new Set(['(', ')']);
+
+    for (var i = 0; i < f.length; i++) {
+      // Can't have 2 sets next to eachother without an operation
+      if (isAlpha(f[i]) && isAlpha(f[i + 1])) {
+        console.log("Invalid Syntax: \"" + f[i] + f[i + 1] + "\"");
+        return false;
+        break;
+      }
+      // Check for parentheses syntax
+      else if (f[i] === '(' && (f[i + 1] != '(' && !isAlpha(f[i + 1]))) {
+        console.log("Invalid Syntax: \"" + f[i] + f[i + 1] + "\"");
+        return false;
+        break;
+      }
+      else if (f[i] === ')' && (f[i + 1] != ')' && isAlpha(f[i + 1]))) {
+        console.log("Invalid Syntax: \"" + f[i] + f[i + 1] + "\"");
+        return false;
+        break;
+      }
+      // Check operator syntax
+      else if (!parenthses.has(f[i]) && !isAlpha(f[i]) && !parenthses.has(f[i + 1]) && !isAlpha(f[i + 1])) {
+        console.log("Invalid Syntax: \"" + f[i] + f[i + 1] + "\"");
+        return false;
+        break;
+      }
+    }
+
+    return true;
   }
   
   // Evaluates parenthses in formula
@@ -302,9 +363,9 @@ class SetLogicOps extends React.Component {
       
       // End of substring
       if (f[index[0]] === ')') {
-        index[0]++;
-        let substr = f.substring(startIdx, index[0]);
-        console.log("Substring: " + substr);
+        let substr = f.substring(startIdx, index[0] + 1);
+        console.log("SUB: " + substr);
+        return substr;
       }
     }
   }
@@ -332,6 +393,9 @@ class SetLogicOps extends React.Component {
             <button onClick={this.addBox}>+</button>
 
             <p>Enter Formula: </p><input onChange={this.updateFormula()}></input> <button onClick={this.handleFormulaSubmit}>Submit</button>
+
+
+            {this.showOutput()}
           </div>
         </div>
       </div>
