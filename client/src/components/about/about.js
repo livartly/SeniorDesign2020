@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import {Link} from 'react-router-dom'
 
 class About extends Component {
   render() {
@@ -38,6 +39,44 @@ class About extends Component {
             </div>
           </div>
         </div>
+
+          {/* Footer */}
+          <footer>
+          <div class="row grey">
+            <div class="container main">
+
+              <p class="copyright">
+                <h6>Site Map</h6>
+              </p>
+              <div className="four columns">
+                <Link to="/">
+                <button type="button">Home</button>
+                </Link>
+                <Link to="/resources">
+                <button type="button">Resources</button>
+                </Link>
+              </div>
+
+              <div className="four columns">
+                <Link to="/about">
+                <button type="button">About</button>
+                </Link>
+                <Link to="/feedback">
+                <button type="button">Feedback</button>
+                </Link>
+              </div>
+
+              <div className= "tweleve columns">
+              <p class="copyright">
+                  <h3>&copy; 2020 Wolfram Beta. All Rights Reserved.</h3>
+              </p>
+              </div>
+
+            </div>
+
+            </div>
+          </footer>
+
       </div>
     );
   }
