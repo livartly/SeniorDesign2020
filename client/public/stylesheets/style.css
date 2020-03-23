@@ -140,14 +140,14 @@ header.main_nav {
 	margin-left: auto;
 	margin-right: auto;
 }
-.navbar {
+/* .navbar {
 	background-color: #666;
 	text-align: center;
 	padding: 24px 8px 2px;
 	font-weight: 900;
 	font-size: x-large;
 	color: #5EEC95;
-}
+} */
 .portfolionav {
 	background-color: #000000;
 	text-align: center;
@@ -247,6 +247,9 @@ ul.youtubesocial li.facebook a:hover{color: #355CB6;}
 img {max-width: 100%;}
 .gallery-item:hover {opacity: 0.8;}
 img.avatar {
+	display: block;
+	margin: 20px auto; 
+	width: 50%;
 }
 .logo { 
 	float: right;
