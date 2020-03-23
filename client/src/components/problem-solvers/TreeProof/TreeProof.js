@@ -185,49 +185,17 @@ class TreeProof extends React.Component {
             <input value="Run" id="proveButton" class="button" onClick={this.handleClick}></input>
           </div>
         </form>
-
+        </div>
+          </div>
+        <div className= "tweleve columns">
+          <div className="center">
           <div id="model"> </div>
           <div id="rootAnchor"> </div>
           </div>
           </div>
+
           </div>
       </div>
-             {/* Footer */}
-             <footer>
-          <div class="row grey">
-            <div class="container main">
-
-              <p class="copyright">
-                <h6>Site Map</h6>
-              </p>
-              <div className="four columns">
-                <Link to="/">
-                <button type="button">Home</button>
-                </Link>
-                <Link to="/resources">
-                <button type="button">Resources</button>
-                </Link>
-              </div>
-
-              <div className="four columns">
-                <Link to="/about">
-                <button type="button">About</button>
-                </Link>
-                <Link to="/feedback">
-                <button type="button">Contact</button>
-                </Link>
-              </div>
-
-              <div className= "tweleve columns">
-              <p class="copyright">
-                  <h3>&copy; 2020 Wolfram Beta. All Rights Reserved.</h3>
-              </p>
-              </div>
-
-            </div>
-
-            </div>
-          </footer>
       </div>
     );
   }

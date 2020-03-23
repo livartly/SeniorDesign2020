@@ -1,109 +1,230 @@
 import React, { Component } from 'react';
 import {Link} from 'react-router-dom'
+import {Card} from 'react-bootstrap'
+import {Button} from 'react-bootstrap'
 
 class Home extends Component {
   render() {
     return (
       <div>
         <div className="container main">
-          <h5>Compute expert-level answers using Wolfram’s breakthrough algorithms and knowledgebase. Select a 
-          topic to be redirected to its functional page.
-          </h5>
-            <div className="row">
+          <Card>
+            <Card.Header>Home</Card.Header>
+            <Card.Body>
+              <Card.Title><h7>Compute Expert-level Answers</h7></Card.Title>
+              <Card.Text>
+                <h8>Use Wolfram Beta's breakthrough algorithms and knowledgebase. Select a 
+            section to be redirected to its functional page or check out our bank of selected resources.
+                </h8>
+              </Card.Text>
+              <Link to="/resources">
+              <Button variant="primary">RESOURCES</Button>
+              </Link>
+            </Card.Body>
+          </Card>
 
-                <div className="four columns">
-                <div className="left">
-                  <h5>Symbolic Representation</h5>
-                  <Link to="/solver">
-                  <button type="button" class="btn btn-success">Truth Tables</button>
-                  </Link>
-                  <p></p>
-                  <Link to="/propositional-logic">
-                  <button type="button" class="btn btn-success">Propositional  Logic</button>
-                  </Link>
-                  <p></p>
-                  <Link to="/">
-                  <button type="button" class="btn btn-success">Recurrance Relations</button>
-                  </Link>
-                  <p></p>
-                </div>
-                </div>
-
-                <div className="four columns">
-                <div className="center">
-                  <h5>Relations + Sorting</h5>
-                  <Link to="/">
-                  <button type="button" class="btn btn-info">Closures</button>
-                  </Link>
-                  <p></p>
-                  <Link to="/">
-                  <button type="button" class="btn btn-info">Multiplicities</button>
-                  </Link>
-                  <p></p>
-                  <Link to="/topological-sort">
-                  <button type="button" class="btn btn-info">Topological Sort</button>
-                  </Link>
-                </div>
-                </div>
-
-                <div className="four columns">
-                <div className="right">
-                  <h5>Functions</h5>
-                  <Link to="/">
-                  <button type="button" class="btn btn-primary">Cycles</button>
-                  </Link>
-                  <p></p>
-                  <Link to="/">
-                  <button type="button" class="btn btn-primary">Form Conversions</button>
-                  </Link>
-                  <p></p>
-                </div>
-                </div>
-              </div>
-
-
-          <div className="row">
-              <div className="four columns">
-              <div className="left">
-                <h5>Graphs</h5>
-                <Link to="/pert-chart">
-                <button type="button" class="btn btn-warning">Pert Charts</button>
+          <div class="container">
+            <div class="row">
+              <div class="card-deck">
+              <Card style={{ width: '20rem' }}>
+              <Card.Img variant="top" src="icons/truthTable-01.png" />
+              <Card.Body>
+                <Card.Title><h7>1.1</h7></Card.Title>
+                <Card.Text>
+                  <h8>Statements, Symbolic Representations, and Tautologies.
+                  </h8>
+                </Card.Text>
+                <Link to="/solver">
+                <Button variant="primary">TRUTH TABLES</Button>
                 </Link>
-                <p></p>
-                <Link to="/">
-                <button type="button" class="btn btn-warning">Hasse Diagrams</button>
+              </Card.Body>
+            </Card>
+            <br>
+            </br>
+            <Card style={{ width: '20rem' }}>
+              <Card.Img variant="top" src="icons/propositionalLogic.jpg" />
+              <Card.Body>
+                <Card.Title><h7>1.2</h7></Card.Title>
+                <Card.Text>
+                  <h8>Propositional Logic, also includes Predicate and Modal Logic.
+                  </h8>
+                </Card.Text>
+                <Link to="propositional-logic">
+                <Button variant="primary">PREP LOGIC</Button>
                 </Link>
-                <p></p>
-              </div>
-              </div>
-
-              <div className="four columns">
-              <div className="center">
-                <h5>Order of Magnitude</h5>
-                <Link to="/Master-Theorem">
-                <button type="button" class="btn btn-danger">Master's Theorem</button>
+              </Card.Body>
+            </Card>
+            <br>
+            </br>
+            <Card style={{ width: '20rem' }}>
+              <Card.Img variant="top" src="icons/recursion.png" />
+              <Card.Body>
+                <Card.Title><h7>3.1</h7></Card.Title>
+                <Card.Text>
+                  <h8>Recursive Definitions, also includes Recursive Sequences.
+                  </h8>
+                </Card.Text>
+                <Link to="">
+                <Button variant="primary">RECURSIVE</Button>
                 </Link>
-                <p></p>
-                <Link to="/MagnitudeOrder">
-                <button type="button" class="btn btn-danger">Order Verifications</button>
-                </Link>
-              </div>
-              </div>
-
-              <div className="four columns">
-              <div className="right">
-                <h5>Sets</h5>
+              </Card.Body>
+            </Card>
+            <br>
+            </br>
+            <Card style={{ width: '20rem' }}>
+              <Card.Img variant="top" src="icons/set.png" />
+              <Card.Body>
+                <Card.Title><h7>4.1</h7></Card.Title>
+                <Card.Text>
+                  <h8>Sets, also includes Subset Determination and Powersets. 
+                  </h8>
+                </Card.Text>
                 <Link to="/set-ops">
-                <button type="button" class="btn btn-success">Subsets</button>
+                <Button variant="primary">SETS</Button>
                 </Link>
-                <p></p>
-                <Link to="/set-ops">
-                <button type="button" class="btn btn-success">Powersets</button>
-                </Link>
-              </div>
+              </Card.Body>
+            </Card>
+            <br>
+            </br>
               </div>
             </div>
           </div>
+
+          <div class="container">
+            <div class="row">
+              <div class="card-deck">
+              <Card style={{ width: '20rem' }}>
+              <Card.Img variant="top" src="icons/hasseDiagram.png" />
+              <Card.Body>
+                <Card.Title><h7>5.1a</h7></Card.Title>
+                <Card.Text>
+                  <h8>Multiplicity Classifier, also includes Hasse Diagrams.
+                  </h8>
+                </Card.Text>
+                <Link to="/">
+                <Button variant="primary">HASSE</Button>
+                </Link>
+              </Card.Body>
+            </Card>
+            <br>
+            </br>
+            <Card style={{ width: '20rem' }}>
+              <Card.Img variant="top" src="icons/closure.png" />
+              <Card.Body>
+                <Card.Title><h7>5.1b</h7></Card.Title>
+                <Card.Text>
+                  <h8>Equivalence Class, also includes Reflexive and other Closures.
+                  </h8>
+                </Card.Text>
+                <Link to="">
+                <Button variant="primary">CLSOURES</Button>
+                </Link>
+              </Card.Body>
+            </Card>
+            <br>
+            </br>
+            <Card style={{ width: '20rem' }}>
+              <Card.Img variant="top" src="icons/pertChart.png" />
+              <Card.Body>
+                <Card.Title><h7>5.2a</h7></Card.Title>
+                <Card.Text>
+                  <h8>PERT Charts, includes table input and graphical output.
+                  </h8>
+                </Card.Text>
+                <Link to="">
+                <Button variant="primary">PERT</Button>
+                </Link>
+              </Card.Body>
+            </Card>
+            <br>
+            </br>
+            <Card style={{ width: '20rem' }}>
+              <Card.Img variant="top" src="icons/topSort.png" />
+              <Card.Body>
+                <Card.Title><h7>5.2b</h7></Card.Title>
+                <Card.Text>
+                  <h8>Topological Sort with node and dependancy inputs.
+                  </h8>
+                </Card.Text>
+                <Link to="/topological-sort">
+                <Button variant="primary">SORT</Button>
+                </Link>
+              </Card.Body>
+            </Card>
+            <br>
+            </br>
+              </div>
+            </div>
+          </div>
+
+          <div class="container">
+            <div class="row">
+              <div class="card-deck">
+              <Card style={{ width: '20rem' }}>
+              <Card.Img variant="top" src="icons/function.jpg" />
+              <Card.Body>
+                <Card.Title><h7>5.4</h7></Card.Title>
+                <Card.Text>
+                  <h8>Functions, Form Conversion, and Composition of cycles functionality.
+                  </h8>
+                </Card.Text>
+                <Link to="/">
+                <Button variant="primary">FUNCTIONS</Button>
+                </Link>
+              </Card.Body>
+            </Card>
+            <br>
+            </br>
+            <Card style={{ width: '20rem' }}>
+              <Card.Img variant="top" src="icons/orderverification.png" />
+              <Card.Body>
+                <Card.Title><h7>5.5a</h7></Card.Title>
+                <Card.Text>
+                  <h8>Order of Magnitude includes Same Order Verification problem input.
+                  </h8>
+                </Card.Text>
+                <Link to="/MagnitudeOrder">
+                <Button variant="primary">ORDER</Button>
+                </Link>
+              </Card.Body>
+            </Card>
+            <br>
+            </br>
+            <Card style={{ width: '20rem' }}>
+              <Card.Img variant="top" src="icons/masters.png" />
+              <Card.Body>
+                <Card.Title><h7>5.5b</h7></Card.Title>
+                <Card.Text>
+                  <h8>Order of Magnitude Master's Theorem with recurrence relation input.
+                  </h8>
+                </Card.Text>
+                <Link to="Master-Theorem">
+                <Button variant="primary">MASTERS</Button>
+                </Link>
+              </Card.Body>
+            </Card>
+            <br>
+            </br>
+            <Card style={{ width: '20rem' }}>
+              <Card.Img variant="top" src="icons/matrix.png" />
+              <Card.Body>
+                <Card.Title><h7>5.7</h7></Card.Title>
+                <Card.Text>
+                  <h8>Matrices, includes Boolean Matrices calculator. Allows two boolean matrices input.
+                  </h8>
+                </Card.Text>
+                <Link to="/">
+                <Button variant="primary">MATRICIES</Button>
+                </Link>
+              </Card.Body>
+            </Card>
+            <br>
+            </br>
+              </div>
+            </div>
+          </div>
+          </div>
+
           {/* Footer */}
           <footer>
           <div class="row grey">

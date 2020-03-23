@@ -82,6 +82,21 @@ h6 {
 	text-align: center;
 }
 
+/*Card Title Font*/
+h7 {
+	font-family: 'Heebo', sans-serif;
+	font-size: 2.2em;
+	text-align: left;
+	color: #000000;
+}
+
+/*Card Body Font*/
+h8 {
+	font-family: 'Ubuntu', sans-serif;
+	font-size: 1.2em;
+	text-align: left;
+	color: #000000;
+}
 .videos { 
 		margin: auto; 
 		text-align: center;
