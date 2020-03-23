@@ -1,13 +1,13 @@
-import Navbar from './navbar';
+import TopNav from './navbar';
 import { connect } from 'react-redux';
 import { withRouter } from 'react-router-dom';
 import { logoutUser } from '../../actions/authActions';
 
 const mapStateToProps = ({ auth }) => ({
-  auth
+  user: auth.user
 });
 
 export default connect(
   mapStateToProps,
   { logoutUser }
-)(withRouter(Navbar));
+)(withRouter(TopNav));
