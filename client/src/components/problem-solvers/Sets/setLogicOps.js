@@ -182,16 +182,7 @@ class SetLogicOps extends React.Component {
   }
 
   removeBox() {
-    this.setState(prevState => {
-      var nextSetStrs = {};
-      for (var s in prevState.setStrings) {
-        nextSetStrs[s] = prevState.setStrings[s];
-      }
-      
-      var nextLetter = this.nextChar(prevState.currletter, -1);
-      nextSetStrs[nextLetter] = "";
-      return {setStrings:nextSetStrs, currletter:nextLetter};
-    })
+    
   }
 
   makeInputForm() {
@@ -223,6 +214,7 @@ class SetLogicOps extends React.Component {
 
   updateFormula(str) {
     // Store formula in State
+    // TODO: Add buttons and in-line conversions for special operation characters
     return e => {
         this.setState({formula:e.currentTarget.value});
     }
@@ -241,7 +233,7 @@ class SetLogicOps extends React.Component {
 
   handleFormulaSubmit() {
     let f = this.state.formula;
-    let supportedOperations = new Set(['X', '&', '|', '-', '(', ')']);
+    let supportedOperations = new Set(['*', '&', '|', '-', '(', ')']);
 
     let m = new Map();
 
@@ -253,7 +245,7 @@ class SetLogicOps extends React.Component {
       m.set(setKeys[i], this.convertStringToSet(strings[i]));
 
     // Remove whitespace, check for invalid characters
-    // Supported operators: X(✕), &(∩), |(∪), -(Difference)
+    // Supported operators: *(✕), &(∩), |(∪), -(Difference)
     f = f.replace(/ /g, "");
     let openParenthsesCount = 0;
     let closedParenthsesCount = 0;
@@ -297,8 +289,9 @@ class SetLogicOps extends React.Component {
                 sol = lhs.intersection(rhs);
               else if (f[index[0] - 1] === '|')
                 sol = lhs.union(rhs);
-              else if (f[index[0] - 1] === 'X')
+              else if (f[index[0] - 1] === '*') {
                 sol = lhs.cartesianProduct(rhs);
+              }
               else if (f[index[0] - 1] === '-')
                 sol = lhs.subtract(rhs);
 
@@ -309,6 +302,7 @@ class SetLogicOps extends React.Component {
         }
 
         // Convert set to array for formatting output
+        // TODO: Fix output for cartesian product
         let e = Array.from(m.get('?').entries());
         let elementArray = [];
         e.forEach(elem => elementArray.push(elem[0]));
