@@ -1,61 +1,80 @@
 import React, { Component } from 'react';
 import {Link} from 'react-router-dom'
-
+import {Card} from 'react-bootstrap'
+import {Button} from 'react-bootstrap'
 class About extends Component {
   render() {
     return (
       <div>
-      <div className="container main">
-        <h1>Wolfram Beta is a website created by students, for students.</h1>
-        <h5>Whether you are struggling with discrete structures and mathematics or are 
+        <div className="container main">
+          <Card>
+            <Card.Header>Home</Card.Header>
+            <Card.Body>
+              <Card.Title><h7>Wolfram Beta is a website created by students for students</h7></Card.Title>
+              <Card.Text>
+              <h8>Whether you are struggling with discrete structures and mathematics or are 
           just looking to learn, Wolfram Beta has everything you need. Created by a team of 
           computer science majors, Wolfram Beta contains a wide variety of problem solvers
-          to help you find answers. Not able to find what you are looking for? Feel free to  
-          <Link to="/feedback"> contact us </Link>
-        for further instruction and concerns.
-        </h5>
-        <p></p>
-        <div className="row">
-          <div className="four columns">
-            <div className="left">
-              <div className="leftimage">
-                <img src="images/question.png" width="100%" alt="Answers Image" />
-                <h1>Get Answers!</h1>
-                <h5>Enter Discrete Mathematics problems and receive instant answers</h5>
-              </div>
-              <Link to="/">
-              <button type="button" class="button button-primary">SOLVERS</button>
-              </Link>
-            </div>
-          </div>
-
-          <div className="four columns">
-            <div className="center">
-              <div className="rightimage">
-                <img src="images/descriptor.png" width="100%" alt="Resources Image" />
-              </div>
-              <h1>Access Resources</h1>
-              <h5>Visit our list of additional resources hand picked for struggling students </h5>
-              <Link to="/resources">
-              <button type="button" class="button button-primary">VISIT</button>
-              </Link>
-            </div>
-          </div>
-
-          <div className="four columns">
-            <div className="right">
-              <div className="rightimage">
-                <img src="images/project-management.png" width="100%" alt="Admin Image" />
-                <h1>Admin Assistance</h1>
-                <h5>Message us for administrative assistance with specific inquiries and issues.</h5>
-              </div>
+          to help you find answers. Not able to find what you are looking for? Feel free to contact us
+          for further instruction and concerns.
+        </h8>
+              </Card.Text>
               <Link to="/feedback">
-              <button type="button" class="button button-primary">CONTACT</button>
+              <Button variant="primary">CONTACT</Button>
               </Link>
+            </Card.Body>
+          </Card>
+
+          <div class="container">
+            <div class="row">
+              <div class="card-deck">
+              <Card style={{ width: '20rem' }}>
+              <Card.Img variant="top" src="images/question.png" />
+              <Card.Body>
+                <Card.Title><h7>Get Answers!</h7></Card.Title>
+                <Card.Text>
+                  <h8>Enter Discrete Mathematics problems and receive instant answers
+                  </h8>
+                </Card.Text>
+                <Link to="/solver">
+                <Button variant="primary">TRUTH TABLES</Button>
+                </Link>
+              </Card.Body>
+            </Card>
+            <br>
+            </br>
+            <Card style={{ width: '20rem' }}>
+              <Card.Img variant="top" src="images/book.png" />
+              <Card.Body>
+                <Card.Title><h7>Access Resources</h7></Card.Title>
+                <Card.Text>
+                  <h8>Visit our list of additional resources hand picked for struggling students
+                  </h8>
+                </Card.Text>
+                <Link to="propositional-logic">
+                <Button variant="primary">PREP LOGIC</Button>
+                </Link>
+              </Card.Body>
+            </Card>
+            <br>
+            </br>
+            <Card style={{ width: '20rem' }}>
+              <Card.Img variant="top" src="images/project-management.png" />
+              <Card.Body>
+                <Card.Title><h7>Admin Assistance</h7></Card.Title>
+                <Card.Text>
+                  <h8>Message us for administrative assistance with specific inquiries and issues.
+                  </h8>
+                </Card.Text>
+                <Link to="">
+                <Button variant="primary">RECURSIVE</Button>
+                </Link>
+              </Card.Body>
+            </Card>
+              </div>
             </div>
           </div>
-        </div>
-      </div>
+          </div>
                 {/* Footer */}
                 <footer>
           <div class="row grey">
