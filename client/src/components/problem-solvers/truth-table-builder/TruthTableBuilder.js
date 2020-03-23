@@ -123,6 +123,18 @@ class TruthTableBuilder extends React.Component {
       <div className="container" style={{ marginTop: "50px" }}>
         <Form>
           <h1>Truth Table Builder</h1>
+          <Form.Group controlId="truthTableBuilder.instructions">
+            <Form.Label>Instructions</Form.Label>
+            <p>
+              This site will take a well formed formula as input and construct
+              a truth table describing the input. Valid variables must be one
+              capital or lowercase letter only. Ensure that too many variables
+              are not present in the input or the site may hang. The following
+              legend lists all valid symbols that can be used as operators in
+              decreasing order of precedence.
+            </p>
+            <Legend />
+          </Form.Group>
           <Form.Group controlId="truthTableBuilder.textInput">
             <Form.Label>Well Formed Formula</Form.Label>
             <div id="symbolButtonRow">
@@ -170,18 +182,6 @@ class TruthTableBuilder extends React.Component {
             <Card body style={{ minHeight: "100px" }}>
               {this.makeTable(this.state.out)}
             </Card>
-          </Form.Group>
-          <Form.Group controlId="truthTableBuilder.instructions">
-            <Form.Label>Instructions</Form.Label>
-            <p>
-              This site will take a well formed formula as input and construct
-              a truth table describing the input. Valid variables must be one
-              capital or lowercase letter only. Ensure that too many variables
-              are not present in the input or the site may hang. The following
-              legend lists all valid symbols that can be used as operators in
-              decreasing order of precedence.
-            </p>
-            <Legend />
           </Form.Group>
         </Form>
       </div>
