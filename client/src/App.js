@@ -20,7 +20,6 @@ import Navbar from './components/navbar/NavbarContainer';
 import Home from './components/home/home.js';
 import About from './components/about/about.js';
 import Resources from './components/resources/resources.js';
-import Solver from './components/problem-solvers/solver.js';
 import Calculator2 from './components/calculator2.js';
 import TreeProof from './components/problem-solvers/TreeProof/TreeProof.js';
 import Catalog from './components/privileged/catalog';
@@ -33,6 +32,7 @@ import MagnitudeOrderSolver from './components/problem-solvers/MagnitudeOrderSol
 
 import './App.css';
 import PertChart from './components/problem-solvers/pert-chart/PertChart';
+import TruthTableBuilder from './components/problem-solvers/truth-table-builder/TruthTableBuilder';
 //import 'bootstrap/dist/css/bootstrap.min.css';
 
 if (localStorage.jwtToken) {
@@ -62,7 +62,7 @@ class App extends Component {
               <PrivateRoute exact path="/" component={Home} />
               <PrivateRoute path="/resources" component={Resources} />
               <PrivateRoute path="/about" component={About} />
-              <PrivateRoute path="/solver" component={Solver} />
+              <PrivateRoute path="/truth-table-builder" component={TruthTableBuilder} />
               <PrivateRoute path="/calculator2" component={Calculator2} />
               <PrivateRoute path="/propositional-logic" component={TreeProof} />
               <PrivateRoute path="/secret-hidden-view" component={Catalog} />
