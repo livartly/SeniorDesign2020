@@ -19,7 +19,7 @@ class TopNav extends Component {
       <Navbar bg="light" expand="lg">
         <Navbar.Brand href="/">
           <img
-            src="/images/longLogoSmall.jpg"
+            src="/images/logo.jpg"
             alt="Wolfram Beta Logo"
           />
         </Navbar.Brand>

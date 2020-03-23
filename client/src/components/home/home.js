@@ -23,9 +23,10 @@ class Home extends Component {
             </Card.Body>
           </Card>
 
-          <div class="container">
-            <div class="row">
+          <br></br>
+
               <div class="card-deck">
+              <Link to="/truth-table-builder">
                 <Card style={{ width: '20rem' }}>
                   <Card.Img variant="top" src="icons/truthTable-01.png" />
                   <Card.Body>
@@ -34,13 +35,11 @@ class Home extends Component {
                       <h8>Statements, Symbolic Representations, and Tautologies.
                   </h8>
                     </Card.Text>
-                    <Link to="/truth-table-builder">
-                      <Button variant="primary">TRUTH TABLES</Button>
-                    </Link>
                   </Card.Body>
                 </Card>
-                <br>
-                </br>
+                </Link>
+              
+                <Link to="propositional-logic">
                 <Card style={{ width: '20rem' }}>
                   <Card.Img variant="top" src="icons/propositionalLogic.jpg" />
                   <Card.Body>
@@ -49,13 +48,11 @@ class Home extends Component {
                       <h8>Propositional Logic, also includes Predicate and Modal Logic.
                   </h8>
                     </Card.Text>
-                    <Link to="propositional-logic">
-                      <Button variant="primary">PREP LOGIC</Button>
-                    </Link>
                   </Card.Body>
                 </Card>
-                <br>
-                </br>
+                </Link>
+
+                <Link to="">
                 <Card style={{ width: '20rem' }}>
                   <Card.Img variant="top" src="icons/recursion.png" />
                   <Card.Body>
@@ -64,13 +61,11 @@ class Home extends Component {
                       <h8>Recursive Definitions, also includes Recursive Sequences.
                   </h8>
                     </Card.Text>
-                    <Link to="">
-                      <Button variant="primary">RECURSIVE</Button>
-                    </Link>
                   </Card.Body>
                 </Card>
-                <br>
-                </br>
+                </Link>
+
+                <Link to="/set-ops">
                 <Card style={{ width: '20rem' }}>
                   <Card.Img variant="top" src="icons/set.png" />
                   <Card.Body>
@@ -79,20 +74,15 @@ class Home extends Component {
                       <h8>Sets, also includes Subset Determination and Powersets.
                   </h8>
                     </Card.Text>
-                    <Link to="/set-ops">
-                      <Button variant="primary">SETS</Button>
-                    </Link>
                   </Card.Body>
                 </Card>
-                <br>
-                </br>
+                </Link>
               </div>
-            </div>
-          </div>
 
-          <div class="container">
-            <div class="row">
+              <br></br>
+
               <div class="card-deck">
+              <Link to="/">
                 <Card style={{ width: '20rem' }}>
                   <Card.Img variant="top" src="icons/hasseDiagram.png" />
                   <Card.Body>
@@ -101,13 +91,11 @@ class Home extends Component {
                       <h8>Multiplicity Classifier, also includes Hasse Diagrams.
                   </h8>
                     </Card.Text>
-                    <Link to="/">
-                      <Button variant="primary">HASSE</Button>
-                    </Link>
                   </Card.Body>
                 </Card>
-                <br>
-                </br>
+                </Link>
+                
+                <Link to="">
                 <Card style={{ width: '20rem' }}>
                   <Card.Img variant="top" src="icons/closure.png" />
                   <Card.Body>
@@ -116,13 +104,11 @@ class Home extends Component {
                       <h8>Equivalence Class, also includes Reflexive and other Closures.
                   </h8>
                     </Card.Text>
-                    <Link to="">
-                      <Button variant="primary">CLSOURES</Button>
-                    </Link>
                   </Card.Body>
                 </Card>
-                <br>
-                </br>
+                </Link>
+
+                <Link to="">
                 <Card style={{ width: '20rem' }}>
                   <Card.Img variant="top" src="icons/pertChart.png" />
                   <Card.Body>
@@ -131,35 +117,28 @@ class Home extends Component {
                       <h8>PERT Charts, includes table input and graphical output.
                   </h8>
                     </Card.Text>
-                    <Link to="">
-                      <Button variant="primary">PERT</Button>
-                    </Link>
                   </Card.Body>
                 </Card>
-                <br>
-                </br>
+                </Link>
+                
+                <Link to="/topological-sort">
                 <Card style={{ width: '20rem' }}>
                   <Card.Img variant="top" src="icons/topSort.png" />
                   <Card.Body>
                     <Card.Title><h7>5.2b</h7></Card.Title>
                     <Card.Text>
-                      <h8>Topological Sort with node and dependancy inputs.
+                      <h8>Topological Sort- input nodes and dependencies and receive a sorted list.
                   </h8>
                     </Card.Text>
-                    <Link to="/topological-sort">
-                      <Button variant="primary">SORT</Button>
-                    </Link>
                   </Card.Body>
                 </Card>
-                <br>
-                </br>
+                </Link>
               </div>
-            </div>
-          </div>
 
-          <div class="container">
-            <div class="row">
+              <br></br>
+
               <div class="card-deck">
+              <Link to="/">
                 <Card style={{ width: '20rem' }}>
                   <Card.Img variant="top" src="icons/function.jpg" />
                   <Card.Body>
@@ -168,13 +147,11 @@ class Home extends Component {
                       <h8>Functions, Form Conversion, and Composition of cycles functionality.
                   </h8>
                     </Card.Text>
-                    <Link to="/">
-                      <Button variant="primary">FUNCTIONS</Button>
-                    </Link>
                   </Card.Body>
                 </Card>
-                <br>
-                </br>
+                </Link>
+
+                <Link to="/MagnitudeOrder">
                 <Card style={{ width: '20rem' }}>
                   <Card.Img variant="top" src="icons/orderverification.png" />
                   <Card.Body>
@@ -183,13 +160,11 @@ class Home extends Component {
                       <h8>Order of Magnitude includes Same Order Verification problem input.
                   </h8>
                     </Card.Text>
-                    <Link to="/MagnitudeOrder">
-                      <Button variant="primary">ORDER</Button>
-                    </Link>
                   </Card.Body>
                 </Card>
-                <br>
-                </br>
+                </Link>
+                
+                <Link to="Master-Theorem">
                 <Card style={{ width: '20rem' }}>
                   <Card.Img variant="top" src="icons/masters.png" />
                   <Card.Body>
@@ -198,13 +173,11 @@ class Home extends Component {
                       <h8>Order of Magnitude Master's Theorem with recurrence relation input.
                   </h8>
                     </Card.Text>
-                    <Link to="Master-Theorem">
-                      <Button variant="primary">MASTERS</Button>
-                    </Link>
                   </Card.Body>
                 </Card>
-                <br>
-                </br>
+                </Link>
+                
+                <Link to="/">
                 <Card style={{ width: '20rem' }}>
                   <Card.Img variant="top" src="icons/matrix.png" />
                   <Card.Body>
@@ -213,16 +186,12 @@ class Home extends Component {
                       <h8>Matrices, includes Boolean Matrices calculator. Allows two boolean matrices input.
                   </h8>
                     </Card.Text>
-                    <Link to="/">
-                      <Button variant="primary">MATRICIES</Button>
-                    </Link>
                   </Card.Body>
                 </Card>
+                </Link>
                 <br>
                 </br>
               </div>
-            </div>
-          </div>
         </div>
 
         {/* Footer */}
