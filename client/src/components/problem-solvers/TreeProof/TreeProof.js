@@ -170,7 +170,7 @@ class TreeProof extends React.Component {
               onChange={this.updateInput} 
               value={this.state.inputText}>
             </input>
-            <input value="Run" id="proveButton" class="button" onClick={this.handleClick}></input>
+            <input value="Submit" id="proveButton" class="button" onClick={this.handleClick}></input>
           </div>
         </form>
           </Form.Group>
