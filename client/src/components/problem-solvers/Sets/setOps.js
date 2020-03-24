@@ -1,5 +1,6 @@
 import React from 'react';
 import {Link} from 'react-router-dom'
+import { Table, Form, Row, Col, Card } from 'react-bootstrap';
 
 //********************************************//
 //
@@ -237,12 +238,18 @@ class SetOps extends React.Component {
   // Draw page
   render() {
     return (
-      <div className="container main">
-      <h1>Sets</h1>
-      <h4>Subset and Set Logic calculators</h4>
-      <div className="row">
-        <div className= "tweleve columns">
-          <div className="center">
+      <div>
+        <div className="container" style={{ marginTop: "50px" }}>
+        <Form>
+          <h1>Sets</h1>
+          <Form.Group controlId="truthTableBuilder.instructions">
+            <Form.Label>Instructions</Form.Label>
+            <p>
+            Enter sets using numbers seperated with commas for Subset and Set Logic calculators.
+            </p>
+          </Form.Group>
+          </Form>
+
             <p><b>Subset Calculator</b></p>
             <p>Enter sets to determine subset or powerset:</p>
             {
@@ -252,8 +259,6 @@ class SetOps extends React.Component {
             {this.showOutput()}
           </div>
         </div>
-      </div>
-    </div>
     );
   }
 }

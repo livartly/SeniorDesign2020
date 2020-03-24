@@ -377,10 +377,7 @@ class SetLogicOps extends React.Component {
   render() {
     return (
       <div>
-      <div className="container main">
-      <div className="row">
-        <div className= "tweleve columns">
-          <div className="center">
+        <div className="container" style={{ marginTop: "50px" }}>
             <p><b>Set Logic Calculator</b></p>
             <p>Enter the contents of the sets, separated by commas.</p>
             {this.makeInputForm()}
@@ -390,9 +387,6 @@ class SetLogicOps extends React.Component {
 
 
             {this.showOutput()}
-          </div>
-        </div>
-      </div>
     </div>
             {/* Footer */}
             <footer>
