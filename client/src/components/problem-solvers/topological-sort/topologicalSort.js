@@ -2,6 +2,8 @@ import React from 'react';
 import Table from 'react-bootstrap/Table';
 // Include toposort 
 import toposort from 'toposort';
+import { Form, Row, Col, Card } from 'react-bootstrap';
+import {Link} from 'react-router-dom'
 
 class TopologicalSort extends React.Component {
   constructor(props) {
@@ -159,30 +161,73 @@ class TopologicalSort extends React.Component {
 
   render() {
     return (
-      <div className="container main">
+      <div>
+      <div className="container" style={{ marginTop: "50px" }}>
+        <Form>
         <h1>Topological Sorting</h1>
-        <h4>Input graph nodes and dependencies to output a topological sort. </h4>
-        <p></p>
-        <div className="row">
-          <div className= "tweleve columns">
-            <div className="center">
-              <p><b>Input</b></p>
-              <p>Enter node name into the left field, and comma seperated dependencies into the right field</p>
-              <p><b>Example: A      B,C</b></p>
-              <span>{this.state.error ? this.state.error : ""}</span>
+          <Form.Group controlId="truthTableBuilder.instructions">
+            <Form.Label>Instructions</Form.Label>
+            <p>
+            Input graph nodes and dependencies to output a topological sort. Enter node name into the left field, and comma seperated dependencies into the right field.
+            Enter null in an input field of a node that does not have a dependency.
+            </p>
+          </Form.Group>
+          <Form.Group controlId="truthTableBuilder.textInput">
+            <Form.Label>Example</Form.Label>
+            <Form.Label>A B,C</Form.Label>
+            <span>{this.state.error ? this.state.error : ""}</span>
               <br />
               {this.makeNodesForm()}
               <br />
               <button onClick={this.handleClick2}>Add Node</button>
               <button onClick={this.topologicalSort}>Submit</button>
+          </Form.Group>
 
-              <p><b>Output</b></p>
-              <pre id="output"></pre>
-              <br />
-          </div>
-        </div>
-        </div>
-        </div>
+          <Form.Group controlId="truthTableBuilder.cardOutput">
+            <Form.Label>Result</Form.Label>
+            <Card body style={{ minHeight: "100px" }}>
+            <pre id="output"></pre>
+            </Card>
+          </Form.Group>
+        </Form>
+      </div>
+             {/* Footer */}
+      <footer>
+          <div class="row grey">
+            <div class="container main">
+
+              <p class="copyright">
+                <h6>Site Map</h6>
+              </p>
+              <div className="four columns">
+                <Link to="/">
+                <button type="button">Home</button>
+                </Link>
+                <Link to="/resources">
+                <button type="button">Resources</button>
+                </Link>
+              </div>
+
+              <div className="four columns">
+                <Link to="/about">
+                <button type="button">About</button>
+                </Link>
+                <Link to="/feedback">
+                <button type="button">Contact</button>
+                </Link>
+              </div>
+
+              <div className= "tweleve columns">
+              <p class="copyright">
+                  <h3>&copy; 2020 Wolfram Beta. All Rights Reserved.</h3>
+              </p>
+              </div>
+
+            </div>
+
+            </div>
+          </footer>
+    </div>
     );
   }
 }
