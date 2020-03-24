@@ -125,7 +125,8 @@ class SetLogicOps extends React.Component {
       },
       currletter: 'B',
       formula:"",
-      out:""
+      out:"",
+      maxInputs:false
     };
     this.handleClick = this.handleClick.bind(this);
     this.handleInput = this.handleInput.bind(this);
@@ -236,16 +237,20 @@ class SetLogicOps extends React.Component {
   }
 
   addBox() {
-    this.setState(prevState => {
-      var nextSetStrs = {};
-      for (var s in prevState.setStrings) {
-        nextSetStrs[s] = prevState.setStrings[s];
-      }
-      
-      var nextLetter = this.nextChar(prevState.currletter, 1);
-      nextSetStrs[nextLetter] = "";
-      return {setStrings:nextSetStrs, currletter:nextLetter};
-    })
+    if (Object.keys(this.state.setStrings).length < 10) {
+      this.setState(prevState => {
+        var nextSetStrs = {};
+        for (var s in prevState.setStrings) {
+          nextSetStrs[s] = prevState.setStrings[s];
+        }
+        
+        var nextLetter = this.nextChar(prevState.currletter, 1);
+        nextSetStrs[nextLetter] = "";
+        return {setStrings:nextSetStrs, currletter:nextLetter};
+      })
+    }
+    else
+      this.setState({maxInputs:true});
   }
 
   removeBox() {
@@ -452,7 +457,7 @@ infixToPostfix(infix) {
             <p><b>Set Logic Calculator</b></p>
             <p>Enter the contents of the sets, separated by commas.</p>
             {this.makeInputForm()}
-            <button onClick={this.addBox}>+</button>
+            <button onClick={this.addBox} disabled={this.state.maxInputs}>+</button>
 
             <p>Enter Formula: </p><input onChange={this.updateFormula()}></input> <button onClick={this.handleFormulaSubmit}>Submit</button>
 
