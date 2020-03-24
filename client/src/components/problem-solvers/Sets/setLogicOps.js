@@ -92,6 +92,24 @@ Set.prototype.cartesianProduct = function (otherSet) {
   return product;
 }
 
+String.prototype.isNumeric = function() {
+  return !isNaN(parseFloat(this)) && isFinite(this);
+}
+
+Array.prototype.clean = function() {
+  for(var i = 0; i < this.length; i++) {
+      if(this[i] === "") {
+          this.splice(i, 1);
+      }
+  }
+  return this;
+}
+
+var isAlpha = function(ch){
+  return typeof ch === "string" && ch.length === 1
+         && (ch >= "a" && ch <= "z" || ch >= "A" && ch <= "Z");
+}
+
 //********************************************//
 //
 // Begin code for the /set-ops page
@@ -119,10 +137,59 @@ class SetLogicOps extends React.Component {
     this.showOutput = this.showOutput.bind(this);
     this.handleFormulaSubmit = this.handleFormulaSubmit.bind(this);
     this.updateFormula = this.updateFormula.bind(this);
-    this.evalChild = this.evalChild.bind(this);
     this.checkSyntax = this.checkSyntax.bind(this);
     this.insert = this.insert.bind(this);
+    this.infixToPostfix = this.infixToPostfix.bind(this);
   }
+
+  /**
+   * Solves a token list in RPN
+   *
+   * @param   {Array} tokens - A list of tokens (single characters) in RPN
+   * 
+   * @param   {Array} setMap - A table of sets which are referred to 
+   *
+   * @returns {Set} - The resulting set
+   */
+  solveRPN(tokens, setMap) {
+    var tokenStack = [];
+    for (var token of tokens) {
+      if (['*', '&', '|', '-'].includes(token)) {
+        if (tokenStack.length < 2) {
+          throw "Invalid RPN encountered: " + tokens;
+        }
+        var firstOperand = tokenStack.pop();
+        var secondOperand = tokenStack.pop();
+        if (typeof(firstOperand) === "string") {
+          firstOperand = setMap.get(firstOperand);
+        }
+        if (typeof(secondOperand) === "string") {
+          secondOperand = setMap.get(secondOperand);
+        }
+        if (token === "*") {
+          tokenStack.push(firstOperand.cartesianProduct(secondOperand));
+        }
+        if (token === "&") {
+          tokenStack.push(firstOperand.intersection(secondOperand));
+        }
+        if (token === "|") {
+          tokenStack.push(firstOperand.union(secondOperand));
+        }
+        if (token === "-") {
+          tokenStack.push(secondOperand.subtract(firstOperand));
+        }
+      } else {
+        tokenStack.push(token);
+      }
+    }
+    if (tokenStack.length === 1) {
+      if (typeof(tokenStack[0]) === "string") return setMap[tokenStack[0]];
+      return tokenStack[0];
+    }
+    console.log(tokenStack);
+    throw "Invalid RPN encountered: " + tokens;
+  }
+
 
   handleClick(e) {
     e.preventDefault();
@@ -190,7 +257,7 @@ class SetLogicOps extends React.Component {
       return (
         <div key={idx}>
           {setStr} = 
-          <input onChange={this.handleInput(setStr)}></input><button onClick={this.removeBox}>-</button>
+          <input onChange={this.handleInput(setStr)}></input>
         </div>
       );
     });
@@ -271,42 +338,10 @@ class SetLogicOps extends React.Component {
       evalFlag = true;
 
     if (evalFlag) {
-      // Evaluate expression and set output
-      var index = [0];          // Pass-by-Reference array index for iterating through f
-      
       // Valid syntax, evaluate input
       if (this.checkSyntax(f)) {
-        for (; index[0] < f.length; index[0]++) {
-          if (m.has(f[index[0]])) {
-            if ((index[0] + 2) < f.length && m.has(f[index[0] + 2])) {
-              let lhs = m.get(f[index[0]]);
-              index[0] = index[0] + 2;
-              let rhs = m.get((f[index[0]]));
-              
-              // Get operation
-              let sol = new Set();
-              if (f[index[0] - 1] === '&')
-                sol = lhs.intersection(rhs);
-              else if (f[index[0] - 1] === '|')
-                sol = lhs.union(rhs);
-              else if (f[index[0] - 1] === '*') {
-                sol = lhs.cartesianProduct(rhs);
-              }
-              else if (f[index[0] - 1] === '-')
-                sol = lhs.subtract(rhs);
-
-              m.set('?', sol);
-              f = this.insert(f, "?", index[0] + 1);
-            }
-          }
-        }
-
-        // Convert set to array for formatting output
-        // TODO: Fix output for cartesian product
-        let e = Array.from(m.get('?').entries());
-        let elementArray = [];
-        e.forEach(elem => elementArray.push(elem[0]));
-        this.setState({out:elementArray.toString()});
+        let rpnArray = this.infixToPostfix(f);
+        this.setState({out:this.solveRPN(rpnArray, m)});
       }
     }
   }
@@ -345,25 +380,61 @@ class SetLogicOps extends React.Component {
 
     return true;
   }
-  
-  // Evaluates parenthses in formula
-  // Will update current index of f
-  evalChild(f, index) {
-    var startIdx = index[0];
-    index[0]++;
-    for (; index[0] < f.length; index[0]++) {
-      if (f[index[0]] === '(')
-        this.evalChild(f, index);
-      
-      // End of substring
-      if (f[index[0]] === ')') {
-        let substr = f.substring(startIdx, index[0] + 1);
-        console.log("SUB: " + substr);
-        return substr;
-      }
-    }
-  }
 
+infixToPostfix(infix) {
+  var outputQueue = "";
+  var operatorStack = [];
+  var operators = {
+      "|": {
+          precedence: 2,
+          associativity: "Left"
+      },
+      "*": {
+          precedence: 2,
+          associativity: "Left"
+      },
+      "&": {
+          precedence: 2,
+          associativity: "Left"
+      },
+      "-": {
+          precedence: 2,
+          associativity: "Left"
+      }
+  }
+  infix = infix.replace(/\s+/g, "");
+  infix = infix.split(/([\&\-\*\|\(\)])/).clean();
+  for(var i = 0; i < infix.length; i++) {
+      var token = infix[i];
+      if(isAlpha(token)) {
+          outputQueue += token + " ";
+      } else if("|*&-".indexOf(token) !== -1) {
+          var o1 = token;
+          var o2 = operatorStack[operatorStack.length - 1];
+          while("|*&-".indexOf(o2) !== -1 && ((operators[o1].associativity === "Left" && operators[o1].precedence <= operators[o2].precedence) || (operators[o1].associativity === "Right" && operators[o1].precedence < operators[o2].precedence))) {
+              outputQueue += operatorStack.pop() + " ";
+              o2 = operatorStack[operatorStack.length - 1];
+          }
+          operatorStack.push(o1);
+      } else if(token === "(") {
+          operatorStack.push(token);
+      } else if(token === ")") {
+          while(operatorStack[operatorStack.length - 1] !== "(") {
+              outputQueue += operatorStack.pop() + " ";
+          }
+          operatorStack.pop();
+      }
+  }
+  while(operatorStack.length > 0) {
+      outputQueue += operatorStack.pop() + " ";
+  }
+  outputQueue = outputQueue.replace(/\s/g,'');
+  let outputArray = Array.from(outputQueue);
+  //return outputQueue;
+  return outputArray;
+}
+
+  
   showOutput() {
     if (this.state.out === "") return;
     return (
