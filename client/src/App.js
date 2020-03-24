@@ -32,7 +32,7 @@ import MagnitudeOrderSolver from './components/problem-solvers/MagnitudeOrderSol
 
 import './App.css';
 import PertChart from './components/problem-solvers/pert-chart/PertChart';
-import TruthTableBuilder from './components/problem-solvers/truth-table-builder/TruthTableBuilder';
+import TruthTableBuilder from './components/problem-solvers/truth-table-builder/TruthTableBuilderContainer';
 //import 'bootstrap/dist/css/bootstrap.min.css';
 
 if (localStorage.jwtToken) {
