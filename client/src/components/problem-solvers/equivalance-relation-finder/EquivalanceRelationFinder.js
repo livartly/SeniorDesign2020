@@ -3,6 +3,7 @@ import React from 'react';
 import { Form, Card, Button } from 'react-bootstrap';
 
 import { sendProblem } from '../../../utils/problemsAPIUtil';
+import { validatePartition } from '../../../engine/Relations/equivalenceClass';
 
 class EquivalanceRelationFinder extends React.Component {
   constructor(props) {
@@ -26,10 +27,11 @@ class EquivalanceRelationFinder extends React.Component {
   }
 
   updatePartition(index) {
-    return (event) => {
+    return (e) => {
+      var nextPartition = e.currentTarget.value;
       this.setState(prevState => {
         var partitionListCopy = Array.from(prevState.partitionList);
-        partitionListCopy[index] = event.currentTarget.value;
+        partitionListCopy[index] = nextPartition;
         return {
           partitionList: partitionListCopy
         };
@@ -71,7 +73,7 @@ class EquivalanceRelationFinder extends React.Component {
   handleSubmit(event) {
     event.preventDefault();
     try {
-
+      validatePartition(this.state.setInput, this.state.partitionList);
       // This will occur asynchronously (not blocking)
       // sendProblem({
       //   userID: this.props.user.id,
@@ -92,7 +94,6 @@ class EquivalanceRelationFinder extends React.Component {
   }
 
   render() {
-    console.log(this.state);
     return (
       <div>
         <div className="container" style={{ marginTop: "50px" }}>
@@ -127,6 +128,7 @@ class EquivalanceRelationFinder extends React.Component {
             <Button onClick={this.handleSubmit}>
               Submit
             </Button>
+            <br />
             <span style={{ color: 'red' }}>
               {this.state.error ? this.state.error : ""}
             </span>

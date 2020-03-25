@@ -1,6 +1,6 @@
 import React from 'react';
 import Statement from '../../../engine/statement.js';
-import { Link } from 'react-router-dom'
+import { Link } from 'react-router-dom';
 
 import { Table, Form, Row, Col, Card } from 'react-bootstrap';
 
