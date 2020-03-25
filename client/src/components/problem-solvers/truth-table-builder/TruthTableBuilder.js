@@ -1,6 +1,6 @@
 import React from 'react';
 import Statement from '../../../engine/statement.js';
-import {Link} from 'react-router-dom'
+import { Link } from 'react-router-dom';
 
 import { Table, Form, Row, Col, Card } from 'react-bootstrap';
 
@@ -28,7 +28,6 @@ class TruthTableBuilder extends React.Component {
   handleClick(e) {
     e.preventDefault();
     try {
-      console.log(this.convertBack(this.state.wff));
       let statement = new Statement(this.convertBack(this.state.wff));
 
       // This will occur asynchronously (not blocking)
@@ -122,73 +121,73 @@ class TruthTableBuilder extends React.Component {
   render() {
     return (
       <div>
-      <div className="container" style={{ marginTop: "50px" }}>
-        <Form>
-          <h1>Truth Table Builder</h1>
-          <Form.Group controlId="truthTableBuilder.instructions">
-            <Form.Label>Instructions</Form.Label>
-            <p>
-              This site will take a well formed formula as input and construct
-              a truth table describing the input. Valid variables must be one
-              capital or lowercase letter only. Ensure that too many variables
-              are not present in the input or the site may hang. The following
-              legend lists all valid symbols that can be used as operators in
-              decreasing order of precedence.
+        <div className="container" style={{ marginTop: "50px" }}>
+          <Form>
+            <h1>Truth Table Builder</h1>
+            <Form.Group controlId="truthTableBuilder.instructions">
+              <Form.Label>Instructions</Form.Label>
+              <p>
+                This site will take a well formed formula as input and construct
+                a truth table describing the input. Valid variables must be one
+                capital or lowercase letter only. Ensure that too many variables
+                are not present in the input or the site may hang. The following
+                legend lists all valid symbols that can be used as operators in
+                decreasing order of precedence.
             </p>
-            <Legend />
-          </Form.Group>
-          <Form.Group controlId="truthTableBuilder.textInput">
-            <Form.Label>Well Formed Formula</Form.Label>
-            <div id="symbolButtonRow">
-              <div id="symbolButtons">
-                <div
-                  className="symbutton button formula"
-                  onClick={this.insertAtKaret("¬")}
-                >¬</div>
-                <div
-                  className="symbutton button formula"
-                  onClick={this.insertAtKaret("∧")}
-                >∧</div>
-                <div
-                  className="symbutton button formula"
-                  onClick={this.insertAtKaret("∨")}
-                >∨</div>
-                <div
-                  className="symbutton button formula"
-                  onClick={this.insertAtKaret("→")}
-                >→</div>
-                <div
-                  className="symbutton button formula"
-                  onClick={this.insertAtKaret("↔")}
-                >↔</div>
+              <Legend />
+            </Form.Group>
+            <Form.Group controlId="truthTableBuilder.textInput">
+              <Form.Label>Well Formed Formula</Form.Label>
+              <div id="symbolButtonRow">
+                <div id="symbolButtons">
+                  <div
+                    className="symbutton button formula"
+                    onClick={this.insertAtKaret("¬")}
+                  >¬</div>
+                  <div
+                    className="symbutton button formula"
+                    onClick={this.insertAtKaret("∧")}
+                  >∧</div>
+                  <div
+                    className="symbutton button formula"
+                    onClick={this.insertAtKaret("∨")}
+                  >∨</div>
+                  <div
+                    className="symbutton button formula"
+                    onClick={this.insertAtKaret("→")}
+                  >→</div>
+                  <div
+                    className="symbutton button formula"
+                    onClick={this.insertAtKaret("↔")}
+                  >↔</div>
+                </div>
               </div>
-            </div>
-            <Row style={{ padding: 0 }}>
-              <Col md={10}>
-                <Form.Control
-                  type="text"
-                  value={this.state.wff}
-                  onChange={this.updateWff}
-                />
-              </Col>
-              <Col md={2}>
-                <button onClick={this.handleClick}>Submit</button>
-              </Col>
-            </Row>
-            <span style={{ color: 'red' }}>
-              {this.state.error ? this.state.error : ""}
-            </span>
-          </Form.Group>
-          <Form.Group controlId="truthTableBuilder.cardOutput">
-            <Form.Label>Result</Form.Label>
-            <Card body style={{ minHeight: "100px" }}>
-              {this.makeTable(this.state.out)}
-            </Card>
-          </Form.Group>
-        </Form>
-      </div>
-                        {/* Footer */}
-                        <footer>
+              <Row style={{ padding: 0 }}>
+                <Col md={10}>
+                  <Form.Control
+                    type="text"
+                    value={this.state.wff}
+                    onChange={this.updateWff}
+                  />
+                </Col>
+                <Col md={2}>
+                  <button onClick={this.handleClick}>Submit</button>
+                </Col>
+              </Row>
+              <span style={{ color: 'red' }}>
+                {this.state.error ? this.state.error : ""}
+              </span>
+            </Form.Group>
+            <Form.Group controlId="truthTableBuilder.cardOutput">
+              <Form.Label>Result</Form.Label>
+              <Card body style={{ minHeight: "100px" }}>
+                {this.makeTable(this.state.out)}
+              </Card>
+            </Form.Group>
+          </Form>
+        </div>
+        {/* Footer */}
+        <footer>
           <div class="row grey">
             <div class="container main">
 
@@ -197,32 +196,32 @@ class TruthTableBuilder extends React.Component {
               </p>
               <div className="four columns">
                 <Link to="/">
-                <button type="button">Home</button>
+                  <button type="button">Home</button>
                 </Link>
                 <Link to="/resources">
-                <button type="button">Resources</button>
+                  <button type="button">Resources</button>
                 </Link>
               </div>
 
               <div className="four columns">
                 <Link to="/about">
-                <button type="button">About</button>
+                  <button type="button">About</button>
                 </Link>
                 <Link to="/feedback">
-                <button type="button">Contact</button>
+                  <button type="button">Contact</button>
                 </Link>
               </div>
 
-              <div className= "tweleve columns">
-              <p class="copyright">
+              <div className="tweleve columns">
+                <p class="copyright">
                   <h3>&copy; 2020 Wolfram Beta. All Rights Reserved.</h3>
-              </p>
+                </p>
               </div>
 
             </div>
 
-            </div>
-          </footer>
+          </div>
+        </footer>
       </div>
     );
   }
