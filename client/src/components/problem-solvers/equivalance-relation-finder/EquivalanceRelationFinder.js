@@ -3,7 +3,10 @@ import React from 'react';
 import { Form, Card, Button } from 'react-bootstrap';
 
 import { sendProblem } from '../../../utils/problemsAPIUtil';
-import { validatePartition } from '../../../engine/Relations/equivalenceClass';
+import {
+  validatePartition,
+  findEquivalenceRelations
+} from '../../../engine/Relations/equivalenceClass';
 
 class EquivalanceRelationFinder extends React.Component {
   constructor(props) {
@@ -74,6 +77,7 @@ class EquivalanceRelationFinder extends React.Component {
     event.preventDefault();
     try {
       validatePartition(this.state.setInput, this.state.partitionList);
+      var equivalenceRelation = findEquivalenceRelations(this.state.partitionList);
       // This will occur asynchronously (not blocking)
       // sendProblem({
       //   userID: this.props.user.id,
@@ -85,7 +89,7 @@ class EquivalanceRelationFinder extends React.Component {
       //   }
       // });
 
-      // this.setState({ out: statement.table(), error: null });
+      this.setState({ out: equivalenceRelation.toString(), error: null });
     }
     catch (err) {
       this.setState({ error: err.message });
@@ -135,7 +139,7 @@ class EquivalanceRelationFinder extends React.Component {
             <Form.Group controlId="equivalenceRelationFinder.cardOutput">
               <Form.Label>Result</Form.Label>
               <Card body style={{ minHeight: "100px" }}>
-                {""}
+                {this.state.out}
               </Card>
             </Form.Group>
           </Form>

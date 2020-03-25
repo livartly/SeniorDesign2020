@@ -32,3 +32,23 @@ export const validatePartition = (parentString, partitions) => {
     throw new Error("Invalid Partition: Partitions do not contain all items");
   }
 };
+
+/**
+ * Validate parent set is partitioned completely
+ *
+ * @param   {Array} partitions - list of strings for each partition, 
+ *  comma-delimited
+ *
+ * @returns {Array} - equivalence relation
+ */
+export const findEquivalenceRelations = (partitions) => {
+  var result = [];
+  for (const partition of partitions) {
+    var cleanPartitionString = partition.replace(/ /g, "");
+    var partitionArray = cleanPartitionString.split(',');
+    for (const i of partitionArray)
+      for (const j of partitionArray)
+        result.push([i, j]);
+  }
+  return result;
+};
