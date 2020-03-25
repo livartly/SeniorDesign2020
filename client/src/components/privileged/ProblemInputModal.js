@@ -4,14 +4,14 @@ import { Modal, Button, Card } from 'react-bootstrap';
 import { PROBLEM_TYPE_LIST } from './constants';
 
 const showProblemInput = (input) => {
-  if (!input) return;
-  return Object.keys(input).map((fieldName, i) => {
-    return (
-      <div key={i}>
-        {fieldName}: {input[fieldName]}
-      </div>
-    );
-  });
+  if (!input) return null;
+  return (
+    <div>
+      <pre>
+        {JSON.stringify(input, null, 2)}
+      </pre>
+    </div>
+  );
 };
 
 const ProblemInputModal = (props) => {
