@@ -78,16 +78,18 @@ class EquivalanceRelationFinder extends React.Component {
     try {
       validatePartition(this.state.setInput, this.state.partitionList);
       var equivalenceRelation = findEquivalenceRelations(this.state.partitionList);
+
       // This will occur asynchronously (not blocking)
-      // sendProblem({
-      //   userID: this.props.user.id,
-      //   username: this.props.user.username,
-      //   email: this.props.user.email,
-      //   typeIndex: 1,
-      //   input: {
-      //     wff: this.state.wff
-      //   }
-      // });
+      sendProblem({
+        userID: this.props.user.id,
+        username: this.props.user.username,
+        email: this.props.user.email,
+        typeIndex: 2,
+        input: {
+          setInput: this.state.setInput,
+          partitionList: this.state.partitionList
+        }
+      });
 
       this.setState({ out: equivalenceRelation.toString(), error: null });
     }
