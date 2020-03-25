@@ -41,7 +41,8 @@ class Feedback extends Component {
         textBody: this.state.textBody
       }).then(() => {
         //TODO: Make a visual confirmation that feedback was submitted
-        console.log("OK submitted");
+        alert("Your message has been submitted.");
+        this.props.history.push('/');
       }).catch(error => {
         //TODO: Make a visual component explaining the error
         this.setState({ error });
@@ -58,7 +59,9 @@ class Feedback extends Component {
   }
 
   renderIssueTypeOptions() {
-    return issueTypes.map(issueString => <option>{issueString}</option>);
+    return issueTypes.map(issueString =>
+      <option value={issueString}>{issueString}</option>
+    );
   }
 
   render() {
@@ -73,7 +76,7 @@ class Feedback extends Component {
         <Form>
           <Form.Group controlId="feedbackForm.TypeSelect">
             <Form.Label>Type of Feedback</Form.Label>
-            <Form.Control as="select">
+            <Form.Control as="select" onChange={this.handleChange("issueType")}>
               {this.renderIssueTypeOptions()}
             </Form.Control>
           </Form.Group>
