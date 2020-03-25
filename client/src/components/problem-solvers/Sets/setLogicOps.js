@@ -146,7 +146,7 @@ class SetLogicOps extends React.Component {
     }
   }
 
-  updateFormula(str) {
+  updateFormula() {
     return e => {
       let s = this.renderSymbols(e.currentTarget.value);
       e.currentTarget.value = s;
@@ -248,114 +248,114 @@ class SetLogicOps extends React.Component {
     return true;
   }
 
-infixToPostfix(infix) {
-  var outputQueue = "";
-  var operatorStack = [];
-  var operators = {
-      "∪": {
-          precedence: 2,
-          associativity: "Left"
-      },
-      "✕": {
-          precedence: 2,
-          associativity: "Left"
-      },
-      "∩": {
-          precedence: 2,
-          associativity: "Left"
-      },
-      "-": {
-          precedence: 2,
-          associativity: "Left"
-      }
-  }
-  infix = infix.replace(/\s+/g, "");
-  infix = infix.split(/([\∩\-\✕\∪\(\)])/).clean();
-  for(var i = 0; i < infix.length; i++) {
-      var token = infix[i];
-      if(isAlpha(token)) {
-          outputQueue += token + " ";
-      } else if("∪✕∩-".indexOf(token) !== -1) {
-          var o1 = token;
-          var o2 = operatorStack[operatorStack.length - 1];
-          while("∪✕∩-".indexOf(o2) !== -1 && ((operators[o1].associativity === "Left" && operators[o1].precedence <= operators[o2].precedence) || (operators[o1].associativity === "Right" && operators[o1].precedence < operators[o2].precedence))) {
-              outputQueue += operatorStack.pop() + " ";
-              o2 = operatorStack[operatorStack.length - 1];
-          }
-          operatorStack.push(o1);
-      } else if(token === "(") {
-          operatorStack.push(token);
-      } else if(token === ")") {
-          while(operatorStack[operatorStack.length - 1] !== "(") {
-              outputQueue += operatorStack.pop() + " ";
-          }
-          operatorStack.pop();
-      }
-  }
-  while(operatorStack.length > 0) {
-      outputQueue += operatorStack.pop() + " ";
-  }
-  outputQueue = outputQueue.replace(/\s/g,'');
-  let outputArray = Array.from(outputQueue);
-  //return outputQueue;
-  return outputArray;
-}
-
-/**
- * Solves a token list in RPN
- *
- * @param   {Array} tokens - A list of tokens (single characters) in RPN
- * 
- * @param   {Array} setMap - A table of sets which are referred to 
- *
- * @returns {Set} - The resulting set
- */
-solveRPN(tokens, setMap) {
-  var tokenStack = [];
-  for (var token of tokens) {
-    if (['-', '✕', '∪', '∩'].includes(token)) {
-      if (tokenStack.length < 2) {
-        throw "Invalid RPN encountered: " + tokens;
-      }
-      var firstOperand = tokenStack.pop();
-      var secondOperand = tokenStack.pop();
-      if (typeof(firstOperand) === "string") {
-        firstOperand = setMap.get(firstOperand);
-      }
-      if (typeof(secondOperand) === "string") {
-        secondOperand = setMap.get(secondOperand);
-      }
-      if (token === "✕") {
-        tokenStack.push(firstOperand.cartesianProduct(secondOperand));
-      }
-      if (token === "∩") {
-        tokenStack.push(firstOperand.intersection(secondOperand));
-      }
-      if (token === "∪") {
-        tokenStack.push(firstOperand.union(secondOperand));
-      }
-      if (token === "-") {
-        tokenStack.push(secondOperand.subtract(firstOperand));
-      }
-    } else {
-      tokenStack.push(token);
+  infixToPostfix(infix) {
+    var outputQueue = "";
+    var operatorStack = [];
+    var operators = {
+        "∪": {
+            precedence: 2,
+            associativity: "Left"
+        },
+        "✕": {
+            precedence: 2,
+            associativity: "Left"
+        },
+        "∩": {
+            precedence: 2,
+            associativity: "Left"
+        },
+        "-": {
+            precedence: 2,
+            associativity: "Left"
+        }
     }
+    infix = infix.replace(/\s+/g, "");
+    infix = infix.split(/([\∩\-\✕\∪\(\)])/).clean();
+    for(var i = 0; i < infix.length; i++) {
+        var token = infix[i];
+        if(isAlpha(token)) {
+            outputQueue += token + " ";
+        } else if("∪✕∩-".indexOf(token) !== -1) {
+            var o1 = token;
+            var o2 = operatorStack[operatorStack.length - 1];
+            while("∪✕∩-".indexOf(o2) !== -1 && ((operators[o1].associativity === "Left" && operators[o1].precedence <= operators[o2].precedence) || (operators[o1].associativity === "Right" && operators[o1].precedence < operators[o2].precedence))) {
+                outputQueue += operatorStack.pop() + " ";
+                o2 = operatorStack[operatorStack.length - 1];
+            }
+            operatorStack.push(o1);
+        } else if(token === "(") {
+            operatorStack.push(token);
+        } else if(token === ")") {
+            while(operatorStack[operatorStack.length - 1] !== "(") {
+                outputQueue += operatorStack.pop() + " ";
+            }
+            operatorStack.pop();
+        }
+    }
+    while(operatorStack.length > 0) {
+        outputQueue += operatorStack.pop() + " ";
+    }
+    outputQueue = outputQueue.replace(/\s/g,'');
+    let outputArray = Array.from(outputQueue);
+    //return outputQueue;
+    return outputArray;
   }
-  if (tokenStack.length === 1) {
-    if (typeof(tokenStack[0]) === "string") return setMap[tokenStack[0]];
-    return tokenStack[0];
+
+  /**
+   * Solves a token list in RPN
+   *
+   * @param   {Array} tokens - A list of tokens (single characters) in RPN
+   * 
+   * @param   {Array} setMap - A table of sets which are referred to 
+   *
+   * @returns {Set} - The resulting set
+   */
+  solveRPN(tokens, setMap) {
+    var tokenStack = [];
+    for (var token of tokens) {
+      if (['-', '✕', '∪', '∩'].includes(token)) {
+        if (tokenStack.length < 2) {
+          throw "Invalid RPN encountered: " + tokens;
+        }
+        var firstOperand = tokenStack.pop();
+        var secondOperand = tokenStack.pop();
+        if (typeof(firstOperand) === "string") {
+          firstOperand = setMap.get(firstOperand);
+        }
+        if (typeof(secondOperand) === "string") {
+          secondOperand = setMap.get(secondOperand);
+        }
+        if (token === "✕") {
+          tokenStack.push(firstOperand.cartesianProduct(secondOperand));
+        }
+        if (token === "∩") {
+          tokenStack.push(firstOperand.intersection(secondOperand));
+        }
+        if (token === "∪") {
+          tokenStack.push(firstOperand.union(secondOperand));
+        }
+        if (token === "-") {
+          tokenStack.push(secondOperand.subtract(firstOperand));
+        }
+      } else {
+        tokenStack.push(token);
+      }
+    }
+    if (tokenStack.length === 1) {
+      if (typeof(tokenStack[0]) === "string") return setMap[tokenStack[0]];
+      return tokenStack[0];
+    }
+    throw "Invalid RPN encountered: " + tokens;
   }
-  throw "Invalid RPN encountered: " + tokens;
-}
-  
-showOutput() {
-  if (this.state.out === "") return;
-  return (
-    <div>
-      <p>{this.state.out}</p>
-    </div>
-  );
-}
+    
+  showOutput() {
+    if (this.state.out === "") return;
+    return (
+      <div>
+        <p>{this.state.out}</p>
+      </div>
+    );
+  }
 
 
   insertAtKaret(sym) {
@@ -419,7 +419,7 @@ showOutput() {
               </div>
             </div>
 
-            <input onChange={this.updateFormula()}></input> <Button variant="primary" onClick={this.handleFormulaSubmit}>Submit</Button>
+            <input value={this.state.formula} onChange={this.updateFormula()}></input> <Button variant="primary" onClick={this.handleFormulaSubmit}>Submit</Button>
 
             {this.showOutput()}
     </div>

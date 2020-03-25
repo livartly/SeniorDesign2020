@@ -15,7 +15,7 @@ const Legend = (props) => (
       <tr>
         <td> &amp; or ∩ </td>
         <td>Intersection</td>
-        <td>A &amp; B (A intersect B)</td>
+        <td>A &amp; B ("A intersect B")</td>
       </tr>
       <tr>
         <td> | or ∪ </td>
