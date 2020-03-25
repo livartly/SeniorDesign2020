@@ -2,6 +2,7 @@ import React from 'react';
 import {Link} from 'react-router-dom'
 import { Button } from 'react-bootstrap';
 import {LogicalSet} from "../../../engine/Sets/LogicalSet.js";
+import Legend from "./Legend.js";
 
 
 // Function to determine if a string is numeric
@@ -388,13 +389,14 @@ showOutput() {
             <p><b>Instructions</b></p>
             <p>Enter the contents of the sets, separated by commas. Click the "+" button to add another set. Up to 10 sets are supported.
                Enter the formula in the Formula box, using the listed set letters and operations. Click "Submit" to evaluate.
-               Note that the unary " ' " operator can be represented as "S-A", where A is a subset of S.
             </p>
 
             {this.makeInputForm()}
             <Button variant="primary" onClick={this.addBox} disabled={this.state.maxInputs}>+</Button>
 
             <h3>Formula Input</h3>
+            <Legend />
+            <p>* Note that the unary " ' " operator (negation) can be represented as "S-A", where A is a subset of S.</p>
             <p>Enter Formula: </p>
             <div id="symbolButtonRow">
               <div id="symbolButtons">
