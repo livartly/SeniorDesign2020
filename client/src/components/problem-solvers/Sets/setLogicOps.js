@@ -1,11 +1,12 @@
 import React from 'react';
 import {Link} from 'react-router-dom'
+import { Button } from 'react-bootstrap';
 
-//********************************************//
-//
-// Begin code for Set class functions
-//
-//********************************************//
+
+/*
+* Extention of the Set class to handle basic set logic for section 4.1
+*/
+
 // Check if this set is a proper subset of otherSet
 Set.prototype.properSubset = function (otherSet) {
   if (this.size >= otherSet.size)
@@ -15,6 +16,7 @@ Set.prototype.properSubset = function (otherSet) {
           if (!otherSet.has(elem))
               return false;
       }
+
       return true;
   }
 }
@@ -131,7 +133,6 @@ class SetLogicOps extends React.Component {
     this.handleClick = this.handleClick.bind(this);
     this.handleInput = this.handleInput.bind(this);
     this.addBox = this.addBox.bind(this);
-    this.removeBox = this.removeBox.bind(this);
     this.nextChar = this.nextChar.bind(this);
     this.convertStringToSet = this.convertStringToSet.bind(this);
     this.makeInputForm = this.makeInputForm.bind(this);
@@ -155,7 +156,7 @@ class SetLogicOps extends React.Component {
   solveRPN(tokens, setMap) {
     var tokenStack = [];
     for (var token of tokens) {
-      if (['*', '&', '|', '-'].includes(token)) {
+      if (['-', '✕', '∪', '∩'].includes(token)) {
         if (tokenStack.length < 2) {
           throw "Invalid RPN encountered: " + tokens;
         }
@@ -167,13 +168,13 @@ class SetLogicOps extends React.Component {
         if (typeof(secondOperand) === "string") {
           secondOperand = setMap.get(secondOperand);
         }
-        if (token === "*") {
+        if (token === "✕") {
           tokenStack.push(firstOperand.cartesianProduct(secondOperand));
         }
-        if (token === "&") {
+        if (token === "∩") {
           tokenStack.push(firstOperand.intersection(secondOperand));
         }
-        if (token === "|") {
+        if (token === "∪") {
           tokenStack.push(firstOperand.union(secondOperand));
         }
         if (token === "-") {
@@ -187,7 +188,6 @@ class SetLogicOps extends React.Component {
       if (typeof(tokenStack[0]) === "string") return setMap[tokenStack[0]];
       return tokenStack[0];
     }
-    console.log(tokenStack);
     throw "Invalid RPN encountered: " + tokens;
   }
 
@@ -253,10 +253,6 @@ class SetLogicOps extends React.Component {
       this.setState({maxInputs:true});
   }
 
-  removeBox() {
-    
-  }
-
   makeInputForm() {
     return Object.keys(this.state.setStrings).map((setStr, idx) => {
       return (
@@ -285,10 +281,10 @@ class SetLogicOps extends React.Component {
   }
 
   updateFormula(str) {
-    // Store formula in State
-    // TODO: Add buttons and in-line conversions for special operation characters
     return e => {
-        this.setState({formula:e.currentTarget.value});
+      let s = this.renderSymbols(e.currentTarget.value);
+      e.currentTarget.value = s;
+      this.setState({formula:s});
     }
   }
 
@@ -305,7 +301,7 @@ class SetLogicOps extends React.Component {
 
   handleFormulaSubmit() {
     let f = this.state.formula;
-    let supportedOperations = new Set(['*', '&', '|', '-', '(', ')']);
+    let supportedOperations = new Set(['*', '&', '|', '-', '(', ')', '✕', '∪', '∩']);
 
     let m = new Map();
 
@@ -325,7 +321,7 @@ class SetLogicOps extends React.Component {
     let badToken = false;
     for (var i = 0; i < f.length; i++) {
         if (!supportedOperations.has(f[i]) && !m.get(f[i])) {
-            console.log("Bad or Unknown Input: " + f[i]);
+            throw "Bad or Unknown Input: " + f[i];
             badToken = true;
         }
         if (f[i] === '(')
@@ -335,9 +331,9 @@ class SetLogicOps extends React.Component {
     }
 
     if (closedParenthsesCount < openParenthsesCount)
-      console.log("Missing ')'");
+      throw "Missing ')'";
     else if (openParenthsesCount < closedParenthsesCount)
-      console.log("Missing '('");
+      throw "Missing '('";
 
     if (!badToken && closedParenthsesCount === openParenthsesCount)
       evalFlag = true;
@@ -346,7 +342,7 @@ class SetLogicOps extends React.Component {
       // Valid syntax, evaluate input
       if (this.checkSyntax(f)) {
         let rpnArray = this.infixToPostfix(f);
-        this.setState({out:this.solveRPN(rpnArray, m)});
+        this.setState({out:Array.from(this.solveRPN(rpnArray, m)).toString()});
       }
     }
   }
@@ -357,27 +353,30 @@ class SetLogicOps extends React.Component {
     }
     var parenthses = new Set(['(', ')']);
 
+    if (this.state.formula === "")
+      return false;
+    
     for (var i = 0; i < f.length; i++) {
       // Can't have 2 sets next to eachother without an operation
       if (isAlpha(f[i]) && isAlpha(f[i + 1])) {
-        console.log("Invalid Syntax: \"" + f[i] + f[i + 1] + "\"");
+        throw "Invalid Syntax: \"" + f[i] + f[i + 1] + "\"";
         return false;
         break;
       }
       // Check for parentheses syntax
       else if (f[i] === '(' && (f[i + 1] != '(' && !isAlpha(f[i + 1]))) {
-        console.log("Invalid Syntax: \"" + f[i] + f[i + 1] + "\"");
+        throw "Invalid Syntax: \"" + f[i] + f[i + 1] + "\"";
         return false;
         break;
       }
       else if (f[i] === ')' && (f[i + 1] != ')' && isAlpha(f[i + 1]))) {
-        console.log("Invalid Syntax: \"" + f[i] + f[i + 1] + "\"");
+        throw "Invalid Syntax: \"" + f[i] + f[i + 1] + "\"";
         return false;
         break;
       }
       // Check operator syntax
       else if (!parenthses.has(f[i]) && !isAlpha(f[i]) && !parenthses.has(f[i + 1]) && !isAlpha(f[i + 1])) {
-        console.log("Invalid Syntax: \"" + f[i] + f[i + 1] + "\"");
+        throw "Invalid Syntax: \"" + f[i] + f[i + 1] + "\"";
         return false;
         break;
       }
@@ -390,15 +389,15 @@ infixToPostfix(infix) {
   var outputQueue = "";
   var operatorStack = [];
   var operators = {
-      "|": {
+      "∪": {
           precedence: 2,
           associativity: "Left"
       },
-      "*": {
+      "✕": {
           precedence: 2,
           associativity: "Left"
       },
-      "&": {
+      "∩": {
           precedence: 2,
           associativity: "Left"
       },
@@ -408,15 +407,15 @@ infixToPostfix(infix) {
       }
   }
   infix = infix.replace(/\s+/g, "");
-  infix = infix.split(/([\&\-\*\|\(\)])/).clean();
+  infix = infix.split(/([\∩\-\✕\∪\(\)])/).clean();
   for(var i = 0; i < infix.length; i++) {
       var token = infix[i];
       if(isAlpha(token)) {
           outputQueue += token + " ";
-      } else if("|*&-".indexOf(token) !== -1) {
+      } else if("∪✕∩-".indexOf(token) !== -1) {
           var o1 = token;
           var o2 = operatorStack[operatorStack.length - 1];
-          while("|*&-".indexOf(o2) !== -1 && ((operators[o1].associativity === "Left" && operators[o1].precedence <= operators[o2].precedence) || (operators[o1].associativity === "Right" && operators[o1].precedence < operators[o2].precedence))) {
+          while("∪✕∩-".indexOf(o2) !== -1 && ((operators[o1].associativity === "Left" && operators[o1].precedence <= operators[o2].precedence) || (operators[o1].associativity === "Right" && operators[o1].precedence < operators[o2].precedence))) {
               outputQueue += operatorStack.pop() + " ";
               o2 = operatorStack[operatorStack.length - 1];
           }
@@ -440,13 +439,36 @@ infixToPostfix(infix) {
 }
 
   
-  showOutput() {
-    if (this.state.out === "") return;
-    return (
-      <div>
-        <p>{this.state.out}</p>
-      </div>
-    );
+showOutput() {
+  if (this.state.out === "") return;
+  return (
+    <div>
+      <p>{this.state.out}</p>
+    </div>
+  );
+}
+
+
+  insertAtKaret(sym) {
+    return () => {
+      this.setState((prevState) => ({
+        formula: prevState.formula + sym
+      }));
+    };
+  }
+
+  renderSymbols(str) {
+    str = str.replace('&', '∩');
+    str = str.replace('|', '∪');
+    str = str.replace('*', '✕');
+    return str;
+  }
+
+  convertBack(str) {
+    str = str.replace(/∩/g, '&');
+    str = str.replace(/✕/g, '*');
+    str = str.replace(/∪/g, '|');
+    return str;
   }
 
   // Draw page
@@ -455,12 +477,39 @@ infixToPostfix(infix) {
       <div>
         <div className="container" style={{ marginTop: "50px" }}>
             <p><b>Set Logic Calculator</b></p>
-            <p>Enter the contents of the sets, separated by commas.</p>
+            <p><b>Instructions</b></p>
+            <p>Enter the contents of the sets, separated by commas. Click the "+" button to add another set. Up to 10 sets are supported.
+               Enter the formula in the Formula box, using the listed set letters and operations. Click "Submit" to evaluate.
+               Note that the unary " ' " operator can be represented as "S-A", where A is a subset of S.
+            </p>
+
             {this.makeInputForm()}
-            <button onClick={this.addBox} disabled={this.state.maxInputs}>+</button>
+            <Button variant="primary" onClick={this.addBox} disabled={this.state.maxInputs}>+</Button>
 
-            <p>Enter Formula: </p><input onChange={this.updateFormula()}></input> <button onClick={this.handleFormulaSubmit}>Submit</button>
+            <h3>Formula Input</h3>
+            <p>Enter Formula: </p>
+            <div id="symbolButtonRow">
+              <div id="symbolButtons">
+                <div
+                  className="symbutton button formula"
+                  onClick={this.insertAtKaret("✕")}
+                >✕</div>
+                <div
+                  className="symbutton button formula"
+                  onClick={this.insertAtKaret("∩")}
+                >∩</div>
+                <div
+                  className="symbutton button formula"
+                  onClick={this.insertAtKaret("∪")}
+                >∪</div>
+                <div
+                  className="symbutton button formula"
+                  onClick={this.insertAtKaret("-")}
+                >-</div>
+              </div>
+            </div>
 
+            <input onChange={this.updateFormula()}></input> <Button variant="primary" onClick={this.handleFormulaSubmit}>Submit</Button>
 
             {this.showOutput()}
     </div>

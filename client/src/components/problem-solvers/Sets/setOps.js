@@ -1,12 +1,12 @@
 import React from 'react';
 import {Link} from 'react-router-dom'
-import { Table, Form, Row, Col, Card } from 'react-bootstrap';
+import {Table, Form, Row, Col, Card, Button} from 'react-bootstrap';
 
-//********************************************//
-//
-// Begin code for Set class functions
-//
-//********************************************//
+
+/*
+* Extention of the Set class to handle basic set logic for section 4.1
+*/
+
 // Check if this set is a proper subset of otherSet
 Set.prototype.properSubset = function (otherSet) {
   if (this.size >= otherSet.size)
@@ -16,6 +16,7 @@ Set.prototype.properSubset = function (otherSet) {
           if (!otherSet.has(elem))
               return false;
       }
+
       return true;
   }
 }
@@ -92,6 +93,7 @@ Set.prototype.cartesianProduct = function (otherSet) {
 
   return product;
 }
+
 
 //********************************************//
 //
@@ -220,9 +222,11 @@ class SetOps extends React.Component {
   }
 
   handlePowersetSubmit(idx) {
-    return () => {
-      let s = this.convertStringToSet(this.state.setStrings[idx]);
-      this.setState({out:"Number of elements in Powerset: " + s.powerset().length + "\n" + s.powerset().toString()})
+    if (this.state.setStrings[idx] != "") {
+      return () => {
+        let s = this.convertStringToSet(this.state.setStrings[idx]);
+        this.setState({out:"Number of elements in Powerset: " + s.powerset().length + "\n" + s.powerset().toString()})
+      }
     }
   }
 
@@ -242,16 +246,16 @@ class SetOps extends React.Component {
         <div className="container" style={{ marginTop: "50px" }}>
         <Form>
           <h1>Sets</h1>
-          <Form.Group controlId="truthTableBuilder.instructions">
-            <Form.Label>Instructions</Form.Label>
+          <Form.Group controlId="truthTableBuilder.instructions">  
+          <p><b>Subset Calculator</b></p>
+          <Form.Label>Instructions</Form.Label>
             <p>
-            Enter sets using numbers seperated with commas for Subset and Set Logic calculators.
+            Enter sets using numbers seperated with commas for Subset and Set Logic calculators. Select the "𝓟" button to 
+            generate the powerset of the given set. Select one of the bottom two buttons to determine if A is a proper subset of B 
+            (A is a subset of B that is not equal to B), or if B is a proper subset of A.
             </p>
           </Form.Group>
           </Form>
-
-            <p><b>Subset Calculator</b></p>
-            <p>Enter sets to determine subset or powerset:</p>
             {
               this.makeInputForm()
             }
