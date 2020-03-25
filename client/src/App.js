@@ -29,6 +29,7 @@ import SetOpsPage from './components/problem-solvers/Sets/setOpsPage.js';
 import PertChartSolver from './components/problem-solvers/PertChartSolver';
 import MastersTheoremSolver from './components/problem-solvers/MastersTheoremSolver';
 import MagnitudeOrderSolver from './components/problem-solvers/MagnitudeOrderSolver';
+import EquivalenceRelationFinder from './components/problem-solvers/equivalance-relation-finder/EquivalenceRelationFinderContainer';
 
 import './App.css';
 import PertChart from './components/problem-solvers/pert-chart/PertChart';
@@ -72,6 +73,7 @@ class App extends Component {
               <PrivateRoute path="/pert-chart" component={PertChartSolver} />
               <PrivateRoute path="/Master-Theorem" component={MastersTheoremSolver} />
               <PrivateRoute path="/MagnitudeOrder" component={MagnitudeOrderSolver} />
+              <PrivateRoute path="/equivalence-relation-finder" component={EquivalenceRelationFinder} />
             </Switch>
           </div>
         </Router>
