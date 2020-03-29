@@ -22,10 +22,12 @@ class MultiplicityClosureFinder extends React.Component {
       relation: "",
       out: "",
       error: null,
+      graphData: {}
     };
     this.updateSetInput = this.updateSetInput.bind(this);
     this.updateRelationInput = this.updateRelationInput.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
+    this.showGraph = this.showGraph.bind(this);
   }
 
   updateSetInput(event) {
@@ -81,8 +83,13 @@ class MultiplicityClosureFinder extends React.Component {
 
   }
 
+  showGraph() {
+    var formattedRelation = formatRelation(this.state.relation);
+    var graphData = parseInputDataToGraphData(formattedRelation, 800, 600);
+    this.setState({ graphData });
+  }
+
   render() {
-    window.parseInputDataToGraphData = parseInputDataToGraphData;
     return (
       <div>
         <div className="container" style={{ marginTop: "50px" }}>
@@ -128,8 +135,9 @@ class MultiplicityClosureFinder extends React.Component {
             <Form.Group controlId="multiplicityClosureFinder.cardOutput">
               <Form.Label>Result</Form.Label>
               <Card body style={{ minHeight: "100px" }}>
+                <Button onClick={this.showGraph}>Hasse Diagram</Button>
                 {this.state.out}
-                <HasseDiagram />
+                <HasseDiagram data={this.state.graphData} />
               </Card>
             </Form.Group>
           </Form>
