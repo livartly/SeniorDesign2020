@@ -80,18 +80,74 @@ function isSymmetric (set, relation) {
 
 function findSymmetricClosure (set, relation) {
     var closure = [];
+
+    var relationString = relation.toString();
+    for (var i = 0; i < relation.length; i++) {
+        let x = relation[i][0];
+        let y = relation[i][1];
+        let targetString = "[" + x + "," + y + "]";
+        let inverse = "[" + y + "," + x + "]";
+        if (relationString.includes(targetString) && !relationString.includes(inverse)) {
+            closure.push([y,x]);
+        }
+    }
+    
+    return closure;
 }
 
 function isTransitive (set, relation) {
-    
+    var relationString = relation.toString();
+    for (var a = 0; a < set.length; a++) {
+        for (var b = 0 ; b < set.length; b++) {
+            for (var c = 0; c < set.length; c++) {
+                var targetString = "[" + set[a] + "," + set[b] + "]";
+                var secondTargetString = "[" + set[b] + "," + set[c] + "]";
+                var transitiveString = "[" + set[a] + "," + set[c] + "]";
+                if (relationString.includes(targetString)       &&
+                    relationString.includes(secondTargetString) &&
+                    !relationString.includes(transitiveString))
+                    return false;
+            }
+        }
+    }
+
+    return true;
 }
 
 function findTransitiveClosure (set, relation) {
+    var closure = [];
 
+    var relationString = relation.toString();
+    for (var a = 0; a < set.length; a++) {
+        for (var b = 0 ; b < set.length; b++) {
+            for (var c = 0; c < set.length; c++) {
+                var targetString = "[" + set[a] + "," + set[b] + "]";
+                var secondTargetString = "[" + set[b] + "," + set[c] + "]";
+                var transitiveString = "[" + set[a] + "," + set[c] + "]";
+                if (relationString.includes(targetString) &&
+                    relationString.includes(secondTargetString) && !relationString.includes(transitiveString)) {
+                        if (set[a] != set[c])
+                            closure.push([set[a], set[c]]);
+                    }
+            }
+        }
+    }
+
+    return closure;
 }
 
 function isAntisymmetric (set, relation) {
+    var relationString = relation.toString();
+    for (var i = 0; i < set.length; i++) {
+        for (var j = 0 ; j < set.length; j++) {
+            var targetString = "[" + set[i] + "," + set[j] + "]";
+            var symmetricString = "[" + set[j] + "," + set[i] + "]";
+            if (relationString.includes(targetString) && relationString.includes(symmetricString) && set[i] != set[j])
+                return false;
+        }
+    }
 
+    return true;
 }
 
 function findAntisymmetricClosure (set, relation) {
@@ -99,15 +155,14 @@ function findAntisymmetricClosure (set, relation) {
 }
 
 export const testRelationProperties = (set, relation, props) => {
-    var reflexiveClosure = [];
-    var symmetricClosure = [];
-    var transitiveClosure = [];
-    var antisymmetricClosure = [];
+    var reflexiveClosure = null;
+    var symmetricClosure = null;
+    var transitiveClosure = null;
+    var antisymmetricClosure = null;
     var closureSets = [];
 
     if (isReflexive(set, relation)) {
         props[0] = true;
-        reflexiveClosure = relation;
     }
     else {
         props[0] = false;
@@ -116,7 +171,6 @@ export const testRelationProperties = (set, relation, props) => {
 
     if (isSymmetric(set, relation)) {
         props[1] = true;
-        symmetricClosure = relation;
     }
     else {
         props[1] = false;
@@ -125,7 +179,6 @@ export const testRelationProperties = (set, relation, props) => {
 
     if (isTransitive(set, relation)) {
         props[2] = true;
-        transitiveClosure = relation;
     }
     else {
         props[2] = false;
@@ -134,10 +187,16 @@ export const testRelationProperties = (set, relation, props) => {
 
     if (isAntisymmetric(set, relation)) {
         props[3] = true;
-        antisymmetricClosure = relation;
     }
     else {
         props[3] = false;
-        antisymmetricClosure = findAntisymmetricClosure(set, relation);
+        //antisymmetricClosure = findAntisymmetricClosure(set, relation);
     }
+
+    closureSets.push(reflexiveClosure);
+    closureSets.push(symmetricClosure);
+    closureSets.push(transitiveClosure);
+
+    console.log(closureSets);
+    return closureSets;
 }
