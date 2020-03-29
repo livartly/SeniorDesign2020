@@ -12,6 +12,7 @@ import {
 } from '../../../engine/MultiplicityClosure/multiplicityClosure';
 
 import { parseInputDataToGraphData } from '../../../engine/Relations/hasseDiagram';
+import HasseDiagram from './HasseDiagram';
 
 class MultiplicityClosureFinder extends React.Component {
   constructor(props) {
@@ -116,6 +117,7 @@ class MultiplicityClosureFinder extends React.Component {
               <Form.Label>Result</Form.Label>
               <Card body style={{ minHeight: "100px" }}>
                 {this.state.out}
+                <HasseDiagram />
               </Card>
             </Form.Group>
           </Form>

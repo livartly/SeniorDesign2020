@@ -56,7 +56,30 @@ const getCriticalEdges = (fromToMap, toFromMap) => {
   return result;
 };
 
-export const parseInputDataToGraphData = (inputRelation) => {
+const parseNodesFromLayers = (layers, width, height) => {
+  var nodes = [];
+  var maxX = 0;
+  var maxY = layers.length;
+  for (const layer of layers) {
+    if (layer.length > maxX) maxX = layer.length;
+  }
+  if (maxX === 0 || maxY === 0) return nodes;
+
+  var unitX = Math.floor(width / maxX);
+  var unitY = Math.floor(height / maxY);
+
+  for (var i = 0; i < layers.length; i++) {
+    for (var j = 0; j < layers[i].length; j++) {
+      var node = { id: layers[i][j] };
+      node.x = j * unitX;
+      node.y = i * unitY;
+      nodes.push(node);
+    }
+  }
+  return nodes;
+};
+
+export const parseInputDataToGraphData = (inputRelation, width, height) => {
   // convert all input data to string
   for (var i = 0; i < inputRelation.length; i++) {
     inputRelation[i][0] = inputRelation[i][0].toString();
@@ -65,6 +88,7 @@ export const parseInputDataToGraphData = (inputRelation) => {
 
   var { fromToMap, toFromMap } = parseRelationToMapping(inputRelation);
   var layers = parseLayers(toFromMap);
+  var nodes = parseNodesFromLayers(layers, width, height);
   var criticalEdges = getCriticalEdges(fromToMap, toFromMap);
-  return { fromToMap, toFromMap, layers, criticalEdges };
+  return { fromToMap, toFromMap, layers, nodes, criticalEdges };
 };
