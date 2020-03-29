@@ -42,9 +42,21 @@ class MultiplicityClosureFinder extends React.Component {
     try {
       var formattedSet = formatSet(this.state.setInput);
       var formattedRelation = formatRelation(this.state.relation);
+
+      /* Array to store boolean values representing relation properties.
+       * Index 0 - Reflexive
+       * 1 - Symmetric 
+       * 2 - Transitive
+       * 3 - Antisymmetric
+      */
       var properties = [false, false, false, false];
       
-      testRelationProperties(formattedSet, formattedRelation, properties);
+      /* Array to store relation closures for its properties. If null, the relation satisfies the property and is its own closure.
+       * Index 0 - Reflexive Closure
+       * 1 - Symmetric 
+       * 2 - Transitive
+      */
+      var closures = testRelationProperties(formattedSet, formattedRelation, properties);
       console.log(properties);
 
       // This will occur asynchronously (not blocking)
@@ -58,7 +70,7 @@ class MultiplicityClosureFinder extends React.Component {
         }
       });
 
-      //this.setState({ out: equivalenceRelation.toString(), error: null });
+      this.setState({ out: properties.toString(), error: null });
     }
     catch (err) {
       this.setState({ error: err.message });
