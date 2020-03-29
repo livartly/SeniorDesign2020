@@ -11,6 +11,8 @@ import {
   testRelationProperties
 } from '../../../engine/MultiplicityClosure/multiplicityClosure';
 
+import { parseInputDataToGraphData } from '../../../engine/Relations/hasseDiagram';
+
 class MultiplicityClosureFinder extends React.Component {
   constructor(props) {
     super(props);
@@ -33,7 +35,7 @@ class MultiplicityClosureFinder extends React.Component {
 
   updateRelationInput(event) {
     this.setState({
-        relation:event.currentTarget.value
+      relation: event.currentTarget.value
     });
   }
 
@@ -43,7 +45,7 @@ class MultiplicityClosureFinder extends React.Component {
       var formattedSet = formatSet(this.state.setInput);
       var formattedRelation = formatRelation(this.state.relation);
       var properties = [false, false, false, false];
-      
+
       testRelationProperties(formattedSet, formattedRelation, properties);
       console.log(properties);
 
@@ -67,6 +69,7 @@ class MultiplicityClosureFinder extends React.Component {
   }
 
   render() {
+    window.parseInputDataToGraphData = parseInputDataToGraphData;
     return (
       <div>
         <div className="container" style={{ marginTop: "50px" }}>
