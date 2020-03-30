@@ -23,7 +23,6 @@ class HasseDiagramBuilder extends React.Component {
     };
     this.updateSetInput = this.updateSetInput.bind(this);
     this.updateRelationInput = this.updateRelationInput.bind(this);
-    this.handleSubmit = this.handleSubmit.bind(this);
     this.showGraph = this.showGraph.bind(this);
   }
 
@@ -39,7 +38,7 @@ class HasseDiagramBuilder extends React.Component {
     });
   }
 
-  handleSubmit(event) {
+  showGraph(event) {
     event.preventDefault();
     try {
       var formattedSet = formatSet(this.state.setInput);
@@ -52,38 +51,33 @@ class HasseDiagramBuilder extends React.Component {
        * 3 - Antisymmetric
       */
       var properties = [false, false, false, false];
+      testRelationProperties(formattedSet, formattedRelation, properties);
 
-      /* Array to store relation closures for its properties. If null, the relation satisfies the property and is its own closure.
-       * Index 0 - Reflexive Closure
-       * 1 - Symmetric 
-       * 2 - Transitive
-      */
-      var closures = testRelationProperties(formattedSet, formattedRelation, properties);
-      console.log(properties);
+      // Validation
+      if (properties[0] && properties[2] && properties[3] === false) {
+        this.setState({ error: "Validation Error: relation must be transitive, antisymmetric, and reflexive" });
+        return;
+      }
 
       // This will occur asynchronously (not blocking)
       sendProblem({
         userID: this.props.user.id,
         username: this.props.user.username,
         email: this.props.user.email,
-        typeIndex: 2,
+        typeIndex: 3,
         input: {
-          setInput: this.state.setInput
+          setInput: this.state.setInput,
+          relation: this.state.relation
         }
       });
 
-      this.setState({ out: properties.toString(), error: null });
+      var graphData = parseInputDataToGraphData(formattedRelation, 800, 600);
+      this.setState({ graphData, error: null });
+
     }
     catch (err) {
       this.setState({ error: err.message });
     }
-
-  }
-
-  showGraph() {
-    var formattedRelation = formatRelation(this.state.relation);
-    var graphData = parseInputDataToGraphData(formattedRelation, 800, 600);
-    this.setState({ graphData });
   }
 
   render() {
