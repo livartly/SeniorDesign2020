@@ -22,7 +22,7 @@ class HasseDiagram extends React.Component {
     chart.nodes().labels().fontSize(12);
     chart.nodes().labels().fontWeight(600);
     chart.layout().type("fixed");
-    chart.interactivity().enabled(true);
+    chart.interactivity().enabled(false);
     return (
       <AnyChart
         width={800}
