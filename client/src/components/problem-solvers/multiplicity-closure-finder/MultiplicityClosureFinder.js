@@ -11,6 +11,9 @@ import {
 } from '../../../engine/MultiplicityClosure/multiplicityClosure';
 //import { ListItem } from 'react-bootstrap/lib/Media';
 
+//import { parseInputDataToGraphData } from '../../../engine/Relations/hasseDiagram';
+//import HasseDiagram from './HasseDiagram';
+
 class MultiplicityClosureFinder extends React.Component {
   constructor(props) {
     super(props);
@@ -20,11 +23,12 @@ class MultiplicityClosureFinder extends React.Component {
       relationProperties: [],
       closures: [],
       error: null,
+      graphData: {}
     };
     this.updateSetInput = this.updateSetInput.bind(this);
     this.updateRelationInput = this.updateRelationInput.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
-    this.drawPropertiesOutput = this.drawPropertiesOutput.bind(this);
+    this.showOutput = this.showOutput.bind(this);
   }
 
   updateSetInput(event) {
@@ -35,7 +39,7 @@ class MultiplicityClosureFinder extends React.Component {
 
   updateRelationInput(event) {
     this.setState({
-        relation:event.currentTarget.value
+      relation: event.currentTarget.value
     });
   }
 
@@ -78,12 +82,11 @@ class MultiplicityClosureFinder extends React.Component {
     }
     catch (err) {
       this.setState({ error: err.message });
-      console.log(err);
     }
 
   }
 
-  drawPropertiesOutput() {
+  showOutput() {
         if (this.state.relationProperties.length === 0)
             return;
         else {
@@ -146,7 +149,7 @@ class MultiplicityClosureFinder extends React.Component {
             <Form.Group controlId="multiplicityClosureFinder.cardOutput">
               <Form.Label>Result</Form.Label>
               <Card body style={{ minHeight: "100px" }}>
-                  {this.drawPropertiesOutput()}
+                  {this.showOutput()}
               </Card>
             </Form.Group>
           </Form>

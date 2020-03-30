@@ -45,9 +45,6 @@ function remove_character(str, char_pos) {
   return (part1 + part2);
 }
 
-export const validateRelationInput = (relation) => {
-}
-
 export const formatSet = (setString) => {
     setString = setString.replace(/ /g, '');
     return setString.split(",");
