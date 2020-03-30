@@ -6,6 +6,48 @@ function convertStringtoSet(str) {
     return new LogicalSet(strArray);
 }
 
+export const validateInput = (set, relation) => {
+    set = set.replace(/ /g, '');
+    relation = relation.replace(/ /g, '');
+    let allowedSetChars = ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9', ','];
+    let numbers = ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9'];
+
+    // Validate Set input
+    if (set === "") {
+        throw new Error("Error: Set must not be empty.");
+        return false;
+    }
+
+    for (var i = 0; i < set.length; i++) {
+        if (!allowedSetChars.includes(set[i])) {
+            throw new Error("Error: '" + set[i] + "' not recognized. Sets must be comma separated numerals only.");
+            return false;
+        }
+    }
+
+    // Validate relation
+    const regex = /(\([0-9]+,[0-9]+\),?)*/g;
+    let filtered = relation.match(regex).filter(function f(e) {
+        return e != "";
+    });
+
+    if (filtered[0] != relation) {
+        throw new Error ("Error: Relation must only contain ordered pairs of numerals.");
+        return false;
+    }
+
+    return true;
+}
+
+function remove_character(str, char_pos) {
+  var part1 = str.substring(0, char_pos);
+  var part2 = str.substring(char_pos + 1, str.length);
+  return (part1 + part2);
+}
+
+export const validateRelationInput = (relation) => {
+}
+
 export const formatSet = (setString) => {
     setString = setString.replace(/ /g, '');
     return setString.split(",");
@@ -150,15 +192,10 @@ function isAntisymmetric (set, relation) {
     return true;
 }
 
-function findAntisymmetricClosure (set, relation) {
-
-}
-
 export const testRelationProperties = (set, relation, props) => {
-    var reflexiveClosure = null;
-    var symmetricClosure = null;
-    var transitiveClosure = null;
-    var antisymmetricClosure = null;
+    var reflexiveClosure = [];
+    var symmetricClosure = [];
+    var transitiveClosure = [];
     var closureSets = [];
 
     if (isReflexive(set, relation)) {
@@ -190,13 +227,11 @@ export const testRelationProperties = (set, relation, props) => {
     }
     else {
         props[3] = false;
-        //antisymmetricClosure = findAntisymmetricClosure(set, relation);
     }
 
     closureSets.push(reflexiveClosure);
     closureSets.push(symmetricClosure);
     closureSets.push(transitiveClosure);
 
-    console.log(closureSets);
     return closureSets;
 }

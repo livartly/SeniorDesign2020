@@ -1,15 +1,15 @@
 import React from 'react';
 
-import { Form, Card, Button } from 'react-bootstrap';
+import { Form, Card, Button, ListGroup } from 'react-bootstrap';
 
 import { sendProblem } from '../../../utils/problemsAPIUtil';
 import {
-  validatePartition,
-  findEquivalenceRelations,
   formatSet,
   formatRelation,
-  testRelationProperties
+  testRelationProperties,
+  validateInput
 } from '../../../engine/MultiplicityClosure/multiplicityClosure';
+//import { ListItem } from 'react-bootstrap/lib/Media';
 
 class MultiplicityClosureFinder extends React.Component {
   constructor(props) {
@@ -17,12 +17,14 @@ class MultiplicityClosureFinder extends React.Component {
     this.state = {
       setInput: "",
       relation: "",
-      out: "",
+      relationProperties: [],
+      closures: [],
       error: null,
     };
     this.updateSetInput = this.updateSetInput.bind(this);
     this.updateRelationInput = this.updateRelationInput.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
+    this.drawPropertiesOutput = this.drawPropertiesOutput.bind(this);
   }
 
   updateSetInput(event) {
@@ -40,42 +42,66 @@ class MultiplicityClosureFinder extends React.Component {
   handleSubmit(event) {
     event.preventDefault();
     try {
-      var formattedSet = formatSet(this.state.setInput);
-      var formattedRelation = formatRelation(this.state.relation);
+      if (validateInput(this.state.setInput, this.state.relation)) {
+        var formattedSet = formatSet(this.state.setInput);
+        var formattedRelation = formatRelation(this.state.relation);
 
-      /* Array to store boolean values representing relation properties.
-       * Index 0 - Reflexive
-       * 1 - Symmetric 
-       * 2 - Transitive
-       * 3 - Antisymmetric
-      */
-      var properties = [false, false, false, false];
-      
-      /* Array to store relation closures for its properties. If null, the relation satisfies the property and is its own closure.
-       * Index 0 - Reflexive Closure
-       * 1 - Symmetric 
-       * 2 - Transitive
-      */
-      var closures = testRelationProperties(formattedSet, formattedRelation, properties);
-      console.log(properties);
+        /* Array to store boolean values representing relation properties.
+        * Index 0 - Reflexive
+        * 1 - Symmetric 
+        * 2 - Transitive
+        * 3 - Antisymmetric
+        */
+        var properties = [false, false, false, false];
+        
+        /* Array to store relation closures for its properties. If null, the relation satisfies the property and is its own closure.
+        * Index 0 - Reflexive Closure
+        * 1 - Symmetric 
+        * 2 - Transitive
+        */
+        var relationClosures = testRelationProperties(formattedSet, formattedRelation, properties);
+        this.setState({ closures: relationClosures });
 
-      // This will occur asynchronously (not blocking)
-      sendProblem({
-        userID: this.props.user.id,
-        username: this.props.user.username,
-        email: this.props.user.email,
-        typeIndex: 2,
-        input: {
-          setInput: this.state.setInput
-        }
-      });
+        // This will occur asynchronously (not blocking)
+        /*sendProblem({
+            userID: this.props.user.id,
+            username: this.props.user.username,
+            email: this.props.user.email,
+            typeIndex: 2,
+            input: {
+            setInput: this.state.setInput
+            }
+        });*/
 
-      this.setState({ out: properties.toString(), error: null });
+        this.setState({ relationProperties: properties });
+      }
     }
     catch (err) {
       this.setState({ error: err.message });
+      console.log(err);
     }
 
+  }
+
+  drawPropertiesOutput() {
+        if (this.state.relationProperties.length === 0)
+            return;
+        else {
+            return (
+                <Card.Body>
+                    <Card.Title>Relation Properties</Card.Title>
+                    <Card.Text>Reflexive: {this.state.relationProperties[0].toString()}</Card.Text>
+                    <Card.Text>Symmetric: {this.state.relationProperties[1].toString()}</Card.Text>
+                    <Card.Text>Antisymmetric: {this.state.relationProperties[3].toString()}</Card.Text>
+                    <Card.Text>Transitive: {this.state.relationProperties[2].toString()}</Card.Text>
+
+                    <Card.Title>Relation Closures</Card.Title>
+                    <Card.Text>Reflexive: {this.state.closures[0].toString()}</Card.Text>
+                    <Card.Text>Symmetric: {this.state.closures[1].toString()}</Card.Text>
+                    <Card.Text>Transitive: {this.state.closures[2].toString()}</Card.Text>
+                </Card.Body>
+            );
+        }
   }
 
   render() {
@@ -87,32 +113,28 @@ class MultiplicityClosureFinder extends React.Component {
             <Form.Group controlId="multiplicityClosureFinder.instructions">
               <Form.Label>Instructions</Form.Label>
               <p>
-                Input sets and a relation, p.
+                Input a set S and a relation on S.
               </p>
             </Form.Group>
             <Form.Group controlId="multiplicityClosureFinder.setInput">
               <Form.Label>Set Input</Form.Label>
               <Form.Control
                 type="text"
+                size="lg"
                 value={this.state.setInput}
                 onChange={this.updateSetInput}
                 placeholder="eg. 1,2,3,4,5,6,7,8"
               />
             </Form.Group>
-            <Form.Group controlId="multiplicityClosureFinder.partitionInput">
+            <Form.Group controlId="multiplicityClosureFinder.relationInput">
               <Form.Label>Relation</Form.Label>
               <Form.Control
                 type="text"
+                size="lg"
                 value={this.state.relation}
                 onChange={this.updateRelationInput}
                 placeholder="eg. (1,1), (2,2), (3,3)"
               />
-              <Button
-                variant="secondary"
-                onClick={this.handleAddPartition}
-              >
-                Add Partition
-              </Button>
             </Form.Group>
             <Button onClick={this.handleSubmit}>
               Submit
@@ -124,7 +146,7 @@ class MultiplicityClosureFinder extends React.Component {
             <Form.Group controlId="multiplicityClosureFinder.cardOutput">
               <Form.Label>Result</Form.Label>
               <Card body style={{ minHeight: "100px" }}>
-                {this.state.out}
+                  {this.drawPropertiesOutput()}
               </Card>
             </Form.Group>
           </Form>
