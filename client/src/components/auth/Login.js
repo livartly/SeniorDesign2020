@@ -2,6 +2,8 @@ import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import classnames from 'classnames';
+import { Card } from 'react-bootstrap'
+import { Button } from 'react-bootstrap'
 
 class Login extends Component {
   constructor() {
@@ -47,34 +49,72 @@ class Login extends Component {
         <div className="row">
           <div className= "eight columns">
             <div className= "left">
-              {/* <p>Welcome to <b>WolframBeta</b> the site created by computer science students for computer students!</p> */}
-              <h2>Built for students</h2>
-              <h2>by students.</h2>
-              <p>Discrete structures can be hard to understand so we have created a site to assist students with finding solutions for:</p>
-              <h5>·Symbolic Representations, Tautologies, Propositional Logic</h5>
-              <h5>·Recursive definitions</h5>
-              <h5>·Sets</h5>
-              <h5>·Relations, Topological Sorting, Functions, Order of Magnitude</h5>
-              <h5>·Boolean Matrices</h5>
-              <p>Log in to access problem solving features, resources, and more!</p>
+              <Card>
+                <Card.Body>
+                  <Card.Title><h2>Built for students</h2><h2>by students.</h2></Card.Title>
+                  <Card.Text>
+                <h8>Discrete structures can be hard to understand so we have created a site to assist students with finding solutions for the problem 
+                  types below. Log in to access problem solving features, resources, and more!
+                </h8>
+
+                <br></br>
+                <table class="table table-striped">
+                  <thead>
+                    <tr>
+                      <th scope="col"></th>
+                      <th scope="col"></th>
+                      <th scope="col"></th>
+                      <th scope="col"></th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr>
+                      <td>  Symbolic Representations, Tautologies, Propositional Logic</td>
+                      <td></td>
+                      <td></td>
+                    </tr>
+                    <tr>
+                      <td>  Recursive definitions</td>
+                      <td></td>
+                      <td></td>
+                    </tr>
+                    <tr>
+                      <td>  Sets</td>
+                      <td></td>
+                      <td></td>
+                    </tr>
+                    <tr>
+                      <td>  Relations, Topological Sorting, Functions, Order of Magnitude</td>
+                      <td></td>
+                      <td></td>
+                    </tr>
+                  <tr>
+                      <td>  Boolean Matrices</td>
+                      <td></td>
+                      <td></td>
+                    </tr>
+                  </tbody>
+                </table>
+                  </Card.Text>
+                </Card.Body>
+              </Card>
             </div>
           </div>
           <div className="four columns">
             <div className="center">
-              <p>
-                <b>Login below</b>
-              </p>
-              <p className="">
-                Don't have an account?
+              <Card>
+                <Card.Body>
+                  <Card.Title><h7>Login below</h7></Card.Title>
+                  <Card.Text>
+                  <h8>Don't have an account?</h8>
                 <Link
-                  to="/register"> Register Here
+                  to="/register"> <h9>Register Here</h9>
                 </Link>
-              </p>
-              <form noValidate onSubmit={this.onSubmit}>
-              <div className="">
-                <p className="">
-                  <b>Email</b>
-                </p>
+                  </Card.Text>
+                  <form noValidate onSubmit={this.onSubmit}>
+
+                <h8><b>Email</b></h8>
+                <br></br>
                 <input
                   onChange={this.onChange}
                   value={this.state.email}
@@ -91,11 +131,10 @@ class Login extends Component {
                   {errors.email}
                   {errors.emailnotfound}
                 </span>
-              </div>
-              <div className="">
-              <p className="">
-                  <b>Password</b>
-                </p>
+
+                
+                <h8><b>Password</b></h8>
+                <br></br>
                 <input
                   onChange={this.onChange}
                   value={this.state.password}
@@ -112,13 +151,14 @@ class Login extends Component {
                   {errors.password}
                   {errors.passwordincorrect}
                 </span>
-              </div>
                 <div className="">
                 <button type="submit">
                   Login
                 </button>
               </div>
             </form>
+                </Card.Body>
+              </Card>
             </div>
           </div>
         </div>
