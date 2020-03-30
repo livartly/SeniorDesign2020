@@ -11,7 +11,10 @@ import {
   testRelationProperties
 } from '../../../engine/MultiplicityClosure/multiplicityClosure';
 
-class MultiplicityClosureFinder extends React.Component {
+import { parseInputDataToGraphData } from '../../../engine/Relations/hasseDiagram';
+import HasseDiagram from './HasseDiagram';
+
+class HasseDiagramBuilder extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -24,6 +27,7 @@ class MultiplicityClosureFinder extends React.Component {
     this.updateSetInput = this.updateSetInput.bind(this);
     this.updateRelationInput = this.updateRelationInput.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
+    this.showGraph = this.showGraph.bind(this);
   }
 
   updateSetInput(event) {
@@ -79,6 +83,12 @@ class MultiplicityClosureFinder extends React.Component {
 
   }
 
+  showGraph() {
+    var formattedRelation = formatRelation(this.state.relation);
+    var graphData = parseInputDataToGraphData(formattedRelation, 800, 600);
+    this.setState({ graphData });
+  }
+
   render() {
     return (
       <div>
@@ -125,7 +135,9 @@ class MultiplicityClosureFinder extends React.Component {
             <Form.Group controlId="multiplicityClosureFinder.cardOutput">
               <Form.Label>Result</Form.Label>
               <Card body style={{ minHeight: "100px" }}>
+                <Button onClick={this.showGraph}>Hasse Diagram</Button>
                 {this.state.out}
+                <HasseDiagram data={this.state.graphData} />
               </Card>
             </Form.Group>
           </Form>
@@ -135,4 +147,4 @@ class MultiplicityClosureFinder extends React.Component {
   }
 }
 
-export default MultiplicityClosureFinder;
+export default HasseDiagramBuilder;
