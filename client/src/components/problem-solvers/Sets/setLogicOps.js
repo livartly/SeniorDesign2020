@@ -3,6 +3,8 @@ import {Link} from 'react-router-dom'
 import { Button } from 'react-bootstrap';
 import {LogicalSet} from "../../../engine/Sets/LogicalSet.js";
 import Legend from "./Legend.js";
+import { Card } from 'react-bootstrap';
+import { Form } from 'react-bootstrap';
 
 
 // Function to determine if a string is numeric
@@ -385,16 +387,18 @@ class SetLogicOps extends React.Component {
     return (
       <div>
         <div className="container" style={{ marginTop: "50px" }}>
-            <p><b>Set Logic Calculator</b></p>
-            <p><b>Instructions</b></p>
-            <p>Enter the contents of the sets, separated by commas. Click the "+" button to add another set. Up to 10 sets are supported.
-               Enter the formula in the Formula box, using the listed set letters and operations. Click "Submit" to evaluate.
-            </p>
+        <Card>
+            <Card.Body>
+              <Card.Text>
+              <p><b>Set Logic Calculator</b></p>
+              <p><b>Instructions</b></p>
+              Enter the contents of the sets, separated by commas. Click the "+" button to add another set. Up to 10 sets are supported.
+              Enter the formula in the Formula box, using the listed set letters and operations. Click "Submit" to evaluate.
+               <p><b>Formula Input</b></p>
+              </Card.Text>
+              {this.makeInputForm()}
+            <button onClick={this.addBox} disabled={this.state.maxInputs}>+</button>
 
-            {this.makeInputForm()}
-            <Button variant="primary" onClick={this.addBox} disabled={this.state.maxInputs}>+</Button>
-
-            <h3>Formula Input</h3>
             <Legend />
             <p>* Note that the unary " ' " operator (negation) can be represented as "S-A", where A is a subset of S.</p>
             <p>Enter Formula: </p>
@@ -419,9 +423,19 @@ class SetLogicOps extends React.Component {
               </div>
             </div>
 
-            <input value={this.state.formula} onChange={this.updateFormula()}></input> <Button variant="primary" onClick={this.handleFormulaSubmit}>Submit</Button>
+            <input value={this.state.formula} onChange={this.updateFormula()}></input> <button onClick={this.handleFormulaSubmit}>Submit</button>
 
-            {this.showOutput()}
+            <Form>
+              <Form.Group controlId="truthTableBuilder.cardOutput">
+                  <Form.Label>Result</Form.Label>
+                  <Card body style={{ minHeight: "100px" }}>
+                  {this.showOutput()}
+                  </Card>
+                </Form.Group>
+            </Form>
+            </Card.Body>
+          </Card>
+          <br></br>
     </div>
             {/* Footer */}
             <footer>

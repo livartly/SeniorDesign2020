@@ -11,9 +11,6 @@ import {
 } from '../../../engine/MultiplicityClosure/multiplicityClosure';
 //import { ListItem } from 'react-bootstrap/lib/Media';
 
-//import { parseInputDataToGraphData } from '../../../engine/Relations/hasseDiagram';
-//import HasseDiagram from './HasseDiagram';
-
 class MultiplicityClosureFinder extends React.Component {
   constructor(props) {
     super(props);

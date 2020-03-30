@@ -31,6 +31,7 @@ import MastersTheoremSolver from './components/problem-solvers/MastersTheoremSol
 import MagnitudeOrderSolver from './components/problem-solvers/MagnitudeOrderSolver';
 import EquivalenceRelationFinder from './components/problem-solvers/equivalance-relation-finder/EquivalenceRelationFinderContainer';
 import MultiplicityClosureFinder from "./components/problem-solvers/multiplicity-closure-finder/MultiplicityClosureFinder.js";
+import HasseDiagramBuilder from './components/problem-solvers/hasse-diagram-builder/HasseDiagramBuilderContainer';
 
 import './App.css';
 import PertChart from './components/problem-solvers/pert-chart/PertChart';
@@ -76,6 +77,7 @@ class App extends Component {
               <PrivateRoute path="/MagnitudeOrder" component={MagnitudeOrderSolver} />
               <PrivateRoute path="/equivalence-relation-finder" component={EquivalenceRelationFinder} />
               <PrivateRoute path="/multiplicity-closure-finder" component={MultiplicityClosureFinder} />
+              <PrivateRoute path="/hasse-diagram-builder" component={HasseDiagramBuilder} />
             </Switch>
           </div>
         </Router>

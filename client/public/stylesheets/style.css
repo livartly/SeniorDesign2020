@@ -97,6 +97,14 @@ h8 {
 	text-align: left;
 	color: #000000;
 }
+
+/*Card Body Font for Links*/
+h9 {
+	font-family: 'Ubuntu', sans-serif;
+	font-size: 1.2em;
+	text-align: left;
+	color: rgb(163, 203, 255);
+}
 .videos { 
 		margin: auto; 
 		text-align: center;

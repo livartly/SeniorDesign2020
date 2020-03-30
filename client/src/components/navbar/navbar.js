@@ -26,7 +26,7 @@ class TopNav extends Component {
         <Navbar.Toggle aria-controls="top-nav-links" />
         <Navbar.Collapse id="top-nav-links" className="justify-content-end">
           <Nav>
-            <Nav.Link href="/resources">Resource</Nav.Link>
+            <Nav.Link href="/resources">Resources</Nav.Link>
             <Nav.Link href="/about">About</Nav.Link>
             <Nav.Link href="/feedback">Contact</Nav.Link>
             <Nav.Link href="#" onClick={this.handleLogout.bind(this)}>Logout</Nav.Link>

@@ -28,22 +28,22 @@ class About extends Component {
           <div class="container">
             <div class="row">
               <div class="card-deck">
+              <Link to="/">
               <Card style={{ width: '20rem' }}>
               <Card.Img variant="top" src="images/question.png" />
               <Card.Body>
-                <Card.Title><h7>Get Answers!</h7></Card.Title>
+                <Card.Title><h7>Get</h7></Card.Title>
+                <Card.Title><h7>Answers!</h7></Card.Title>
                 <Card.Text>
                   <h8>Enter Discrete Mathematics problems and receive instant answers
                   </h8>
                 </Card.Text>
-                <Link to="/solver">
-                <Button variant="primary">TRUTH TABLES</Button>
-                </Link>
               </Card.Body>
             </Card>
-            <br>
-            </br>
-            <Card style={{ width: '20rem' }}>
+            </Link>
+
+            <Link to="/resources">
+              <Card style={{ width: '20rem' }}>
               <Card.Img variant="top" src="images/book.png" />
               <Card.Body>
                 <Card.Title><h7>Access Resources</h7></Card.Title>
@@ -51,30 +51,29 @@ class About extends Component {
                   <h8>Visit our list of additional resources hand picked for struggling students
                   </h8>
                 </Card.Text>
-                <Link to="propositional-logic">
-                <Button variant="primary">PREP LOGIC</Button>
-                </Link>
               </Card.Body>
             </Card>
-            <br>
-            </br>
-            <Card style={{ width: '20rem' }}>
-              <Card.Img variant="top" src="images/project-management.png" />
-              <Card.Body>
-                <Card.Title><h7>Admin Assistance</h7></Card.Title>
-                <Card.Text>
-                  <h8>Message us for administrative assistance with specific inquiries and issues.
-                  </h8>
-                </Card.Text>
-                <Link to="">
-                <Button variant="primary">RECURSIVE</Button>
-                </Link>
-              </Card.Body>
+            </Link>
+
+
+            <Link to="/feedback">
+              <Card style={{ width: '20rem' }}>
+                <Card.Img variant="top" src="images/project-management.png" />
+                  <Card.Body>
+                    <Card.Title><h7>Admin Assistance</h7></Card.Title>
+                    <Card.Text>
+                      <h8>Message us for administrative assistance with specific inquiries and issues.
+                      </h8>
+                    </Card.Text>
+                  </Card.Body>
             </Card>
+            </Link>
               </div>
             </div>
           </div>
           </div>
+          <br></br>
+          <br></br>
                 {/* Footer */}
                 <footer>
           <div class="row grey">

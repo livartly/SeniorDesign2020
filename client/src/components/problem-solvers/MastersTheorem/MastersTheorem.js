@@ -1,5 +1,6 @@
 import React from 'react'
 import {Link} from 'react-router-dom'
+import { Form, Row, Col, Card } from 'react-bootstrap';
 
 class MastersTheorem extends React.Component 
 {
@@ -181,17 +182,17 @@ class MastersTheorem extends React.Component
       {
          if(this.state.m_aValue < Math.pow(this.state.m_bValue, this.state.m_dValue)) // a < b^d == O(n^d)
          {
-            document.getElementById("Answer").innerHTML = "Answer: O(n" + this.state.m_dValue.toString().sup() + ")"; 
+            document.getElementById("Answer").innerHTML = "O(n" + this.state.m_dValue.toString().sup() + ")"; 
             document.getElementById("Answer").style.display = "block";
          }
          else if(this.state.m_aValue == Math.pow(this.state.m_bValue, this.state.m_dValue))
          {
-            document.getElementById("Answer").innerHTML = "Answer: O(n" + this.state.m_dValue.toString().sup() + "logn)"; 
+            document.getElementById("Answer").innerHTML = "O(n" + this.state.m_dValue.toString().sup() + "logn)"; 
             document.getElementById("Answer").style.display = "block";
          }
          else
          {
-            document.getElementById("Answer").innerHTML = "Answer: O(n" + ("log" + this.state.m_dValue.toString().sub() + " " + this.state.m_aValue).sup() + ")"; 
+            document.getElementById("Answer").innerHTML = "O(n" + ("log" + this.state.m_dValue.toString().sub() + " " + this.state.m_aValue).sup() + ")"; 
             document.getElementById("Answer").style.display = "block";
          }
             
@@ -206,29 +207,20 @@ class MastersTheorem extends React.Component
     {
         return (
           <div>
-          <div className="container main">
-          <h1>Master's Theorem</h1>
-          <h4>Enter a formula of standard propositional, predicate, or modal logic. </h4>
-          <p></p>
-          <div className="row">
-            <div className= "tweleve columns">
-              <div className="center">
-    
-                <p><b>Entering formulas: </b>
-
-                    <p>
-                      Enter a valid Recurrence Equation in order to solve it using Master's theorem.
-                     <br></br><br></br> <b>Example:</b>
-                     <br></br>
-                     <p>S(n) = 2S(n/4) + n^2</p>
-    
-                    </p>
+          <div className="container" style={{ marginTop: "50px" }}>
+            <Form>
+            <h1>Master's Theorem</h1>
+              <Form.Group controlId="truthTableBuilder.instructions">
+                <Form.Label>Instructions</Form.Label>
+                <p>
+                Enter a formula of standard propositional, predicate, or modal logic. Enter a valid Recurrence Equation in order to solve it using Master's theorem.
                 </p>
-            
-
+              </Form.Group>
+              <Form.Group controlId="truthTableBuilder.textInput">
+                <Form.Label>Example</Form.Label>
+                <Form.Label>S(n) = 2S(n/4) + n^2</Form.Label>
                 <form id = "RecurrenceEquationForm">
                     <label>
-                         Recurrence Equation:{' '}
                         <input id= "RecurrenceEquationInput"> 
                         
                         </input>
@@ -237,24 +229,25 @@ class MastersTheorem extends React.Component
                         <button id = "SubmitButton"  onClick = {this.HandleClick}>
                            Submit
                         </button>
-                      
                     </label>
                 </form>
-				
-			      	 <div id = "Output" style={{display: "block", color: "black"}}>
+              </Form.Group>
+
+              <Form.Group controlId="truthTableBuilder.cardOutput">
+                <Form.Label>Result</Form.Label>
+                <Card body style={{ minHeight: "100px" }}>
+                <div id = "Output">
 					         <label id = "ErrorMessage" style={{display: "none", color:"red"}}>
-						            
 					         </label>
                  
-                   <label id = "Answer" style={{display: "none", color: "black", fontsize: "15px"}}>
-                        Answer
+                   <label id = "Answer">
                    </label>
 				       </div>
-                
-          </div>
-          </div>
-          </div>
-          </div>
+                </Card>
+              </Form.Group>
+            </Form>
+         </div>
+
           {/* Footer */}
           <footer>
           <div class="row grey">
