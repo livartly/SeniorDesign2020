@@ -4,8 +4,6 @@ import { Form, Card, Button } from 'react-bootstrap';
 
 import { sendProblem } from '../../../utils/problemsAPIUtil';
 import {
-  validatePartition,
-  findEquivalenceRelations,
   formatSet,
   formatRelation,
   testRelationProperties
@@ -20,13 +18,11 @@ class HasseDiagramBuilder extends React.Component {
     this.state = {
       setInput: "",
       relation: "",
-      out: "",
       error: null,
       graphData: {}
     };
     this.updateSetInput = this.updateSetInput.bind(this);
     this.updateRelationInput = this.updateRelationInput.bind(this);
-    this.handleSubmit = this.handleSubmit.bind(this);
     this.showGraph = this.showGraph.bind(this);
   }
 
@@ -42,7 +38,7 @@ class HasseDiagramBuilder extends React.Component {
     });
   }
 
-  handleSubmit(event) {
+  showGraph(event) {
     event.preventDefault();
     try {
       var formattedSet = formatSet(this.state.setInput);
@@ -55,38 +51,33 @@ class HasseDiagramBuilder extends React.Component {
        * 3 - Antisymmetric
       */
       var properties = [false, false, false, false];
+      testRelationProperties(formattedSet, formattedRelation, properties);
 
-      /* Array to store relation closures for its properties. If null, the relation satisfies the property and is its own closure.
-       * Index 0 - Reflexive Closure
-       * 1 - Symmetric 
-       * 2 - Transitive
-      */
-      var closures = testRelationProperties(formattedSet, formattedRelation, properties);
-      console.log(properties);
+      // Validation
+      if (!properties[0] || !properties[2] || properties[3]) {
+        this.setState({ error: "Validation Error: relation must be transitive, antisymmetric, and reflexive" });
+        return;
+      }
 
       // This will occur asynchronously (not blocking)
       sendProblem({
         userID: this.props.user.id,
         username: this.props.user.username,
         email: this.props.user.email,
-        typeIndex: 2,
+        typeIndex: 3,
         input: {
-          setInput: this.state.setInput
+          setInput: this.state.setInput,
+          relation: this.state.relation
         }
       });
 
-      this.setState({ out: properties.toString(), error: null });
+      var graphData = parseInputDataToGraphData(formattedRelation, 800, 600);
+      this.setState({ graphData, error: null });
+
     }
     catch (err) {
       this.setState({ error: err.message });
     }
-
-  }
-
-  showGraph() {
-    var formattedRelation = formatRelation(this.state.relation);
-    var graphData = parseInputDataToGraphData(formattedRelation, 800, 600);
-    this.setState({ graphData });
   }
 
   render() {
@@ -94,14 +85,14 @@ class HasseDiagramBuilder extends React.Component {
       <div>
         <div className="container" style={{ marginTop: "50px" }}>
           <Form>
-            <h1>Multiplicity and Closure Finder</h1>
-            <Form.Group controlId="multiplicityClosureFinder.instructions">
+            <h1>Hasse Diagram Builder</h1>
+            <Form.Group controlId="hasseDiagramBuilder.instructions">
               <Form.Label>Instructions</Form.Label>
               <p>
                 Input sets and a relation, p.
               </p>
             </Form.Group>
-            <Form.Group controlId="multiplicityClosureFinder.setInput">
+            <Form.Group controlId="hasseDiagramBuilder.setInput">
               <Form.Label>Set Input</Form.Label>
               <Form.Control
                 type="text"
@@ -110,7 +101,7 @@ class HasseDiagramBuilder extends React.Component {
                 placeholder="eg. 1,2,3,4,5,6,7,8"
               />
             </Form.Group>
-            <Form.Group controlId="multiplicityClosureFinder.partitionInput">
+            <Form.Group controlId="hasseDiagramBuilder.relationInput">
               <Form.Label>Relation</Form.Label>
               <Form.Control
                 type="text"
@@ -118,25 +109,17 @@ class HasseDiagramBuilder extends React.Component {
                 onChange={this.updateRelationInput}
                 placeholder="eg. (1,1), (2,2), (3,3)"
               />
-              <Button
-                variant="secondary"
-                onClick={this.handleAddPartition}
-              >
-                Add Partition
-              </Button>
             </Form.Group>
-            <Button onClick={this.handleSubmit}>
+            <Button onClick={this.showGraph}>
               Submit
             </Button>
             <br />
             <span style={{ color: 'red' }}>
               {this.state.error ? this.state.error : ""}
             </span>
-            <Form.Group controlId="multiplicityClosureFinder.cardOutput">
+            <Form.Group controlId="hasseDiagramBuilder.cardOutput">
               <Form.Label>Result</Form.Label>
               <Card body style={{ minHeight: "100px" }}>
-                <Button onClick={this.showGraph}>Hasse Diagram</Button>
-                {this.state.out}
                 <HasseDiagram data={this.state.graphData} />
               </Card>
             </Form.Group>
