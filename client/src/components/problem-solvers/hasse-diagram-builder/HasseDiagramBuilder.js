@@ -4,8 +4,6 @@ import { Form, Card, Button } from 'react-bootstrap';
 
 import { sendProblem } from '../../../utils/problemsAPIUtil';
 import {
-  validatePartition,
-  findEquivalenceRelations,
   formatSet,
   formatRelation,
   testRelationProperties
@@ -20,7 +18,6 @@ class HasseDiagramBuilder extends React.Component {
     this.state = {
       setInput: "",
       relation: "",
-      out: "",
       error: null,
       graphData: {}
     };
@@ -94,14 +91,14 @@ class HasseDiagramBuilder extends React.Component {
       <div>
         <div className="container" style={{ marginTop: "50px" }}>
           <Form>
-            <h1>Multiplicity and Closure Finder</h1>
-            <Form.Group controlId="multiplicityClosureFinder.instructions">
+            <h1>Hasse Diagram Builder</h1>
+            <Form.Group controlId="hasseDiagramBuilder.instructions">
               <Form.Label>Instructions</Form.Label>
               <p>
                 Input sets and a relation, p.
               </p>
             </Form.Group>
-            <Form.Group controlId="multiplicityClosureFinder.setInput">
+            <Form.Group controlId="hasseDiagramBuilder.setInput">
               <Form.Label>Set Input</Form.Label>
               <Form.Control
                 type="text"
@@ -110,7 +107,7 @@ class HasseDiagramBuilder extends React.Component {
                 placeholder="eg. 1,2,3,4,5,6,7,8"
               />
             </Form.Group>
-            <Form.Group controlId="multiplicityClosureFinder.partitionInput">
+            <Form.Group controlId="hasseDiagramBuilder.relationInput">
               <Form.Label>Relation</Form.Label>
               <Form.Control
                 type="text"
@@ -118,25 +115,17 @@ class HasseDiagramBuilder extends React.Component {
                 onChange={this.updateRelationInput}
                 placeholder="eg. (1,1), (2,2), (3,3)"
               />
-              <Button
-                variant="secondary"
-                onClick={this.handleAddPartition}
-              >
-                Add Partition
-              </Button>
             </Form.Group>
-            <Button onClick={this.handleSubmit}>
+            <Button onClick={this.showGraph}>
               Submit
             </Button>
             <br />
             <span style={{ color: 'red' }}>
               {this.state.error ? this.state.error : ""}
             </span>
-            <Form.Group controlId="multiplicityClosureFinder.cardOutput">
+            <Form.Group controlId="hasseDiagramBuilder.cardOutput">
               <Form.Label>Result</Form.Label>
               <Card body style={{ minHeight: "100px" }}>
-                <Button onClick={this.showGraph}>Hasse Diagram</Button>
-                {this.state.out}
                 <HasseDiagram data={this.state.graphData} />
               </Card>
             </Form.Group>
