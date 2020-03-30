@@ -3,7 +3,6 @@ import { Link } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import classnames from 'classnames';
 import { Card } from 'react-bootstrap'
-import { Button } from 'react-bootstrap'
 
 class Login extends Component {
   constructor() {
@@ -69,27 +68,37 @@ class Login extends Component {
                   </thead>
                   <tbody>
                     <tr>
-                      <td>  Symbolic Representations, Tautologies, Propositional Logic</td>
+                      <td>  Statements, Symbolic Representations, + Tautologies</td>
                       <td></td>
                       <td></td>
                     </tr>
                     <tr>
-                      <td>  Recursive definitions</td>
+                      <td>  Propositional Logic</td>
                       <td></td>
                       <td></td>
                     </tr>
                     <tr>
-                      <td>  Sets</td>
+                      <td>  Recursive Definitions + Sequences</td>
                       <td></td>
                       <td></td>
                     </tr>
                     <tr>
-                      <td>  Relations, Topological Sorting, Functions, Order of Magnitude</td>
+                      <td>  Sets, Subsets, + Powersets</td>
                       <td></td>
                       <td></td>
                     </tr>
                   <tr>
-                      <td>  Boolean Matrices</td>
+                      <td>  Multiplicity Classifiers + Hasse Diagrams</td>
+                      <td></td>
+                      <td></td>
+                    </tr>
+                    <tr>
+                      <td>  Order of Magnitude Same Order + Master's Theorem</td>
+                      <td></td>
+                      <td></td>
+                    </tr>
+                    <tr>
+                      <td>  Boolean Matricies</td>
                       <td></td>
                       <td></td>
                     </tr>
