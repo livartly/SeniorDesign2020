@@ -152,23 +152,37 @@ class SetOps extends React.Component {
     return (
       <div>
         <div className="container" style={{ marginTop: "50px" }}>
-        <Form>
-          <h1>Sets</h1>
-          <Form.Group controlId="truthTableBuilder.instructions">  
-          <p><b>Subset Calculator</b></p>
-          <Form.Label>Instructions</Form.Label>
-            <p>
-            Enter sets using numbers seperated with commas for Subset and Set Logic calculators. Select the "𝓟" button to 
-            generate the powerset of the given set. Select one of the bottom two buttons to determine if A is a proper subset of B 
-            (A is a subset of B that is not equal to B), or if B is a proper subset of A.
-            </p>
-          </Form.Group>
-          </Form>
-            {
-              this.makeInputForm()
-            }
-            <button onClick={this.handleSubsetASubmit}>A ⊆ B?</button><button onClick={this.handleSubsetBSubmit}>B ⊆ A?</button>
-            {this.showOutput()}
+        <h1>Sets</h1>
+        <Card>
+          <Card.Body>
+            <Card.Text>
+              <Form>
+              <Form.Group controlId="truthTableBuilder.instructions">  
+              <p><b>Subset Calculator</b></p>
+              <Form.Label>Instructions</Form.Label>
+                <p>
+                Enter sets using numbers seperated with commas for Subset and Set Logic calculators. Select the "𝓟" button to 
+                generate the powerset of the given set. Select one of the bottom two buttons to determine if A is a proper subset of B 
+                (A is a subset of B that is not equal to B), or if B is a proper subset of A.
+                </p>
+              </Form.Group>
+              </Form>
+                {
+                  this.makeInputForm()
+                }
+                <button onClick={this.handleSubsetASubmit}>A ⊆ B?</button><button onClick={this.handleSubsetBSubmit}>B ⊆ A?</button>
+                
+            </Card.Text>
+            <Form>
+              <Form.Group controlId="truthTableBuilder.cardOutput">
+                  <Form.Label>Result</Form.Label>
+                  <Card body style={{ minHeight: "100px" }}>
+                  {this.showOutput()}
+                  </Card>
+                </Form.Group>
+            </Form>
+          </Card.Body>
+        </Card>
           </div>
         </div>
     );
