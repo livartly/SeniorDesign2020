@@ -41,7 +41,7 @@ class Home extends Component {
               
                 <Link to="propositional-logic">
                 <Card style={{ width: '20rem' }}>
-                  <Card.Img variant="top" src="icons/propositionalLogic.jpg" />
+                  <Card.Img variant="top" src="icons/propositionalLogic.png" />
                   <Card.Body>
                     <Card.Title><h7>1.2</h7></Card.Title>
                     <Card.Text>
@@ -183,7 +183,7 @@ class Home extends Component {
                   <Card.Body>
                     <Card.Title><h7>5.7</h7></Card.Title>
                     <Card.Text>
-                      <h8>Matrices, includes Boolean Matrices calculator. Allows two boolean matrices input.
+                      <h8>Boolean Matricies calculator. Allows boolean matrix inputs.
                   </h8>
                     </Card.Text>
                   </Card.Body>
@@ -193,7 +193,8 @@ class Home extends Component {
                 </br>
               </div>
         </div>
-
+<br></br>
+<br></br>
         {/* Footer */}
         <footer>
           <div class="row grey">
