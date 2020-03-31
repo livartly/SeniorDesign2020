@@ -61,8 +61,8 @@ class Feedback extends Component {
   }
 
   renderIssueTypeOptions() {
-    return issueTypes.map(issueString =>
-      <option value={issueString}>{issueString}</option>
+    return issueTypes.map((issueString, i) =>
+      <option value={issueString} key={i}>{issueString}</option>
     );
   }
 
@@ -71,7 +71,7 @@ class Feedback extends Component {
       <div>
         <div className="container main">
           <Card>
-          <Card.Header>Contact Us</Card.Header>
+            <Card.Header>Contact Us</Card.Header>
             <Card.Body>
               <Card.Text>
                 <h1>Submit feedback about Wolfram Beta</h1>
@@ -83,7 +83,7 @@ class Feedback extends Component {
               </Card.Text>
             </Card.Body>
           </Card>
-<br></br>
+          <br></br>
           <Card>
             <Card.Body>
               <Card.Text>
@@ -118,8 +118,8 @@ class Feedback extends Component {
           <br></br>
           <br></br>
         </div>
-                {/* Footer */}
-                <footer>
+        {/* Footer */}
+        <footer>
           <div class="row grey">
             <div class="container main">
 

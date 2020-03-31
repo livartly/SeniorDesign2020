@@ -7,7 +7,7 @@ import { Tab, Tabs } from 'react-bootstrap';
 class Catalog extends Component {
   render() {
     return (
-      <div>
+      <div className="container main">
         <Tabs defaultActiveKey="problems">
           <Tab eventKey="problems" title="Problems">
             <ProblemList />

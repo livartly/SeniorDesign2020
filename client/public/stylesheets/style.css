@@ -27,7 +27,7 @@ body {
 }
 a {
 	text-decoration: none;
-	color: rgb(163, 203, 255);
+	/* color: rgb(163, 203, 255); */
 }
 
 .button-primary {

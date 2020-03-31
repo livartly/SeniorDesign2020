@@ -35,7 +35,7 @@ class FeedbackList extends Component {
   makeTableBody() {
     return this.state.issues.map((issue, i) => (
       <tr onClick={this.openModal(issue)} key={i}>
-        <td>{i + 1}</td>
+        <td style={{ textAlign: "center" }}>{i + 1}</td>
         <td>{issue.issueType}</td>
         <td>{issue.username}</td>
         <td>{issue.subject}</td>
@@ -60,10 +60,10 @@ class FeedbackList extends Component {
     console.log(this.state);
     return (
       <div>
-        <Table>
+        <Table striped bordered>
           <thead>
             <tr>
-              <th>#</th>
+              <th style={{ textAlign: "center" }}>#</th>
               <th>Issue Type</th>
               <th>Username</th>
               <th>Subject</th>

@@ -59,7 +59,7 @@ class ProblemList extends Component {
   render() {
     return (
       <div>
-        <Table>
+        <Table striped bordered>
           <thead>
             <tr>
               <th>#</th>
