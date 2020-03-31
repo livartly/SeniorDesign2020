@@ -101,11 +101,11 @@ class TruthTableBuilder extends React.Component {
     str = str.replace('->', '→');
     str = str.replace('~', '¬');
     str = str.replace(' v ', ' ∨ '); // 'v' letter => or symbol
-    str = str.replace(/(\\neg|\\lnot)[\{ ]?\}?/g, '¬');
-    str = str.replace(/(\\vee|\\lor)[\{ ]?\}?/g, '∨');
-    str = str.replace(/(\\wedge|\\land)[\{ ]?\}?/g, '∧');
-    str = str.replace(/(\\to|\\rightarrow)[\{ ]?\}?/g, '→');
-    str = str.replace(/\\leftrightarrow[\{ ]?\}?/g, '↔');
+    str = str.replace(/(\\neg|\\lnot)[{ ]?\}?/g, '¬');
+    str = str.replace(/(\\vee|\\lor)[{ ]?\}?/g, '∨');
+    str = str.replace(/(\\wedge|\\land)[{ ]?\}?/g, '∧');
+    str = str.replace(/(\\to|\\rightarrow)[{ ]?\}?/g, '→');
+    str = str.replace(/\\leftrightarrow[{ ]?\}?/g, '↔');
     return str;
   }
 

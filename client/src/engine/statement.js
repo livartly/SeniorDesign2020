@@ -275,6 +275,8 @@ function evaluate(operator, operands) {
       return !operands[1] || operands[0];
     case '<->':
       return operands[0] === operands[1];
+    default:
+      throw new Error("Unexpected operand encountered: " + operator);
   }
 }
 

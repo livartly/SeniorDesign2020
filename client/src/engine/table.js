@@ -108,12 +108,8 @@ function tableToMarkdown(table) {
  */
 function makeTruthTable(s, type) {
   var table = statementToTable(s);
-  var format = type.toLowerCase();
+  return tableToMarkdown(table);
 
-  switch (format) {
-    case 'markdown':
-      return tableToMarkdown(table);
-  }
 }
 
 // module.exports.truthTable = makeTruthTable
