@@ -106,7 +106,30 @@ class HasseDiagramBuilder extends React.Component {
             <Form.Group controlId="hasseDiagramBuilder.instructions">
               <Form.Label>Instructions</Form.Label>
               <p>
-                Input sets and a relation, p.
+                The site will construct a Hasse Diagram from the input set, S,
+                and binary relation, ρ. The input for the set must be a series
+                of unique integers that are comma-delimited and represents all
+                the elements present in the Hasse Diagram. The input for the
+                relation must be a series of ordered pairs that are also
+                comma-delimited. For example, the ordered pair (1,2) signifies
+                that 1 is related to 2. In order to meet the requirements for
+                a Hasse Diagram, the input relation, ρ, must be a partially
+                ordered set and meet the following criteria:
+              </p>
+              <ul>
+                <li>Reflexive - each element is related to itself.</li>
+                <li>
+                  Antisymmetric - no two elements are related to each other.
+                </li>
+                <li>
+                  Transitive - if l1 relates to l2 and l2 relates to l3, then l1
+                  must be related to l3 as well.
+                </li>
+              </ul>
+              <p>
+                In addition, the minimal and maximal elements and the least and
+                greatest elements, if they are applicable, will be listed below
+                the Hasse Diagram.
               </p>
             </Form.Group>
             <Form.Group controlId="hasseDiagramBuilder.setInput">
@@ -115,7 +138,7 @@ class HasseDiagramBuilder extends React.Component {
                 type="text"
                 value={this.state.setInput}
                 onChange={this.updateSetInput}
-                placeholder="eg. 1,2,3,4,5,6,7,8"
+                placeholder="eg. 1,2,3"
               />
             </Form.Group>
             <Form.Group controlId="hasseDiagramBuilder.relationInput">
@@ -127,9 +150,9 @@ class HasseDiagramBuilder extends React.Component {
                 placeholder="eg. (1,1), (2,2), (3,3)"
               />
             </Form.Group>
-            <Button onClick={this.showGraph}>
+            <button onClick={this.showGraph}>
               Submit
-            </Button>
+            </button>
             <br />
             <span style={{ color: 'red' }}>
               {this.state.error ? this.state.error : ""}
