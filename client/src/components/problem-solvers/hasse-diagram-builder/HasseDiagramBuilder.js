@@ -54,7 +54,7 @@ class HasseDiagramBuilder extends React.Component {
       testRelationProperties(formattedSet, formattedRelation, properties);
 
       // Validation
-      if (!properties[0] || !properties[2] || properties[3]) {
+      if (!properties[0] || !properties[2] || !properties[3]) {
         this.setState({ error: "Validation Error: relation must be transitive, antisymmetric, and reflexive" });
         return;
       }
