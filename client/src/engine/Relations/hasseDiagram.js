@@ -72,11 +72,23 @@ const parseNodesFromLayers = (layers, width, height) => {
     for (var j = 0; j < layers[i].length; j++) {
       var node = { id: layers[i][j] };
       node.x = (j + 1) * unitX;
-      node.y = (i + 1) * unitY;
+      node.y = height - ((i + 1) * unitY);
       nodes.push(node);
     }
   }
   return nodes;
+};
+
+const findMaximalMinimalNodes = (fromToMap, toFromMap) => {
+  var maximalNodes = [];
+  var minimalNodes = [];
+  for (const fromKey of Object.keys(fromToMap))
+    if (fromToMap[fromKey].size === 0)
+      maximalNodes.push(fromKey);
+  for (const toKey of Object.keys(toFromMap))
+    if (toFromMap[toKey].size === 0)
+      minimalNodes.push(toKey);
+  return { maximalNodes, minimalNodes };
 };
 
 export const parseInputDataToGraphData = (inputRelation, width, height) => {
@@ -87,8 +99,12 @@ export const parseInputDataToGraphData = (inputRelation, width, height) => {
   }
 
   var { fromToMap, toFromMap } = parseRelationToMapping(inputRelation);
+  var { maximalNodes, minimalNodes } = findMaximalMinimalNodes(fromToMap, toFromMap);
   var layers = parseLayers(toFromMap);
   var nodes = parseNodesFromLayers(layers, width, height);
   var edges = getCriticalEdges(fromToMap, toFromMap);
-  return { nodes, edges };
+  return {
+    graphData: { nodes, edges },
+    extremes: { maximalNodes, minimalNodes }
+  };
 };

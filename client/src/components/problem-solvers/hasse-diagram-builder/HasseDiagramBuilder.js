@@ -6,7 +6,8 @@ import { sendProblem } from '../../../utils/problemsAPIUtil';
 import {
   formatSet,
   formatRelation,
-  testRelationProperties
+  testRelationProperties,
+  validateInput
 } from '../../../engine/MultiplicityClosure/multiplicityClosure';
 
 import { parseInputDataToGraphData } from '../../../engine/Relations/hasseDiagram';
@@ -19,11 +20,13 @@ class HasseDiagramBuilder extends React.Component {
       setInput: "",
       relation: "",
       error: null,
-      graphData: {}
+      graphData: {},
+      extremes: null
     };
     this.updateSetInput = this.updateSetInput.bind(this);
     this.updateRelationInput = this.updateRelationInput.bind(this);
     this.showGraph = this.showGraph.bind(this);
+    this.showExtremes = this.showExtremes.bind(this);
   }
 
   updateSetInput(event) {
@@ -41,6 +44,7 @@ class HasseDiagramBuilder extends React.Component {
   showGraph(event) {
     event.preventDefault();
     try {
+      validateInput(this.state.setInput, this.state.relation);
       var formattedSet = formatSet(this.state.setInput);
       var formattedRelation = formatRelation(this.state.relation);
 
@@ -71,13 +75,26 @@ class HasseDiagramBuilder extends React.Component {
         }
       });
 
-      var graphData = parseInputDataToGraphData(formattedRelation, 800, 600);
-      this.setState({ graphData, error: null });
+      var { graphData, extremes } = parseInputDataToGraphData(formattedRelation, 800, 600);
+      this.setState({ graphData, extremes, error: null });
 
     }
     catch (err) {
       this.setState({ error: err.message });
     }
+  }
+
+  showExtremes() {
+    if (!this.state.extremes) return null;
+    const { minimalNodes, maximalNodes } = this.state.extremes;
+    return (
+      <div>
+        <p>Minimal Elements: {minimalNodes.toString()}</p>
+        <p>Least Element: {minimalNodes.length === 1 ? minimalNodes[0] : "N/A"}</p>
+        <p>Maximal Elements: {maximalNodes.toString()}</p>
+        <p>Greatest Element: {maximalNodes.length === 1 ? maximalNodes[0] : "N/A"}</p>
+      </div>
+    );
   }
 
   render() {
@@ -121,6 +138,7 @@ class HasseDiagramBuilder extends React.Component {
               <Form.Label>Result</Form.Label>
               <Card body style={{ minHeight: "100px" }}>
                 <HasseDiagram data={this.state.graphData} />
+                {this.showExtremes()}
               </Card>
             </Form.Group>
           </Form>
