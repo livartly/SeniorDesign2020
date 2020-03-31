@@ -180,7 +180,7 @@ class TruthTableBuilder extends React.Component {
             </Form.Group>
             <Form.Group controlId="truthTableBuilder.cardOutput">
               <Form.Label>Result</Form.Label>
-              <Card body style={{ minHeight: "100px" }}>
+              <Card body style={{ minHeight: "300px" }}>
                 {this.makeTable(this.state.out)}
               </Card>
             </Form.Group>

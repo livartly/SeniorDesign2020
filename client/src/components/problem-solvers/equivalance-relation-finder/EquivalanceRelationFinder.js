@@ -108,7 +108,16 @@ class EquivalanceRelationFinder extends React.Component {
             <Form.Group controlId="equivalenceRelationFinder.instructions">
               <Form.Label>Instructions</Form.Label>
               <p>
-                This is a placeholder for now.
+                The site will find the equivalence relation from the provided
+                input set, S, and series of partitions (up to 10). The
+                partitions must divide the parent set such that each element
+                in the parent set must be present in exactly one of the
+                partition. The input for the set and the input for each
+                partition must be a series of elements that are
+                comma-delimited. Valid element names can be a combination of
+                alphanumeric characters. Click the "Add Partition" button to
+                create a new partition. The supported number of partitions is
+                limited to a maximum of 10.
               </p>
             </Form.Group>
             <Form.Group controlId="equivalenceRelationFinder.setInput">
@@ -123,24 +132,24 @@ class EquivalanceRelationFinder extends React.Component {
             <Form.Group controlId="equivalenceRelationFinder.partitionInput">
               <Form.Label>Partitions</Form.Label>
               {this.showPartitionInputs()}
-              <Button
-                disabled={this.state.maxPartitions}
-                variant="secondary"
-                onClick={this.handleAddPartition}
-              >
-                Add Partition
-              </Button>
             </Form.Group>
-            <Button onClick={this.handleSubmit}>
+            <button
+              disabled={this.state.maxPartitions}
+              onClick={this.handleAddPartition}
+            >
+              Add Partition
+            </button>
+            <span>&nbsp;&nbsp;&nbsp;&nbsp;</span>
+            <button onClick={this.handleSubmit}>
               Submit
-            </Button>
+            </button>
             <br />
             <span style={{ color: 'red' }}>
               {this.state.error ? this.state.error : ""}
             </span>
             <Form.Group controlId="equivalenceRelationFinder.cardOutput">
               <Form.Label>Result</Form.Label>
-              <Card body style={{ minHeight: "100px" }}>
+              <Card body style={{ minHeight: "300px" }}>
                 {this.state.out}
               </Card>
             </Form.Group>
