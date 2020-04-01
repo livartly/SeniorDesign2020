@@ -1,76 +1,88 @@
 import React from 'react';
 
-import { Form, Card, Button } from 'react-bootstrap';
+import { Form, Card, Col } from 'react-bootstrap';
 
 import { sendProblem } from '../../../utils/problemsAPIUtil';
-// import {
-//   validatePartition,
-//   findEquivalenceRelations
-// } from '../../../engine/Relations/equivalenceClass';
-
-
 
 class RecursiveSequenceBuilder extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      setInput: "",
-      partitionList: [""],
+      recurrenceRelation: "",
+      baseCases: [""],
       out: "",
+      depth: 3,
       error: null,
-      maxPartitions: false
     };
     this.handleSubmit = this.handleSubmit.bind(this);
-    this.handleAddPartition = this.handleAddPartition.bind(this);
-    this.updateSetInput = this.updateSetInput.bind(this);
+    this.handleAddBaseCase = this.handleAddBaseCase.bind(this);
+    this.handleRemoveBaseCase = this.handleRemoveBaseCase.bind(this);
+    this.updateRecurrenceRelation = this.updateRecurrenceRelation.bind(this);
+    this.showBaseCasesInput = this.showBaseCasesInput.bind(this);
+    this.updateDepth = this.updateDepth.bind(this);
   }
 
-  updateSetInput(event) {
+  updateRecurrenceRelation(event) {
     this.setState({
-      setInput: event.currentTarget.value
+      recurrenceRelation: event.currentTarget.value
     });
   }
 
-  updatePartition(index) {
+  updateBaseCase(index) {
     return (e) => {
-      var nextPartition = e.currentTarget.value;
+      var nextBaseCase = e.currentTarget.value;
       this.setState(prevState => {
-        var partitionListCopy = Array.from(prevState.partitionList);
-        partitionListCopy[index] = nextPartition;
+        var baseCasesCopy = Array.from(prevState.baseCases);
+        baseCasesCopy[index] = nextBaseCase;
         return {
-          partitionList: partitionListCopy
+          baseCases: baseCasesCopy
         };
       });
     };
   }
 
-  showPartitionInputs() {
-    return this.state.partitionList.map((val, i) => {
+  updateDepth(event) {
+    this.setState({ depth: event.currentTarget.value });
+  }
+
+  showBaseCasesInput() {
+    return this.state.baseCases.map((val, i) => {
       return (
         <Form.Control
           type="text"
           value={val}
           key={i}
-          onChange={this.updatePartition(i)}
-          placeholder={"Partition " + (i + 1)}
+          onChange={this.updateBaseCase(i)}
+          placeholder={"S(" + (i + 1) + ")"}
         />
       );
     });
   }
 
-  handleAddPartition(event) {
+  showDepthOptions() {
+    return [3, 4, 5, 6, 7, 8, 9, 10].map(value => (
+      <option val={value}>{value}</option>
+    ));
+  }
+
+  handleAddBaseCase(event) {
     event.preventDefault();
     this.setState(prevState => {
-      var partitionListCopy = Array.from(prevState.partitionList);
-      partitionListCopy.push("");
-      if (partitionListCopy.length >= 10) {
-        return {
-          partitionList: partitionListCopy,
-          maxPartitions: true
-        };
-      }
+      var baseCasesCopy = Array.from(prevState.baseCases);
+      baseCasesCopy.push("");
       return {
-        partitionList: partitionListCopy
+        baseCases: baseCasesCopy
+      };
+    });
+  }
+
+  handleRemoveBaseCase(event) {
+    event.preventDefault();
+    this.setState(prevState => {
+      var baseCasesCopy = Array.from(prevState.baseCases);
+      baseCasesCopy.pop();
+      return {
+        baseCases: baseCasesCopy
       };
     });
   }
@@ -85,7 +97,7 @@ class RecursiveSequenceBuilder extends React.Component {
         email: this.props.user.email,
         typeIndex: 2,
         input: {
-          setInput: this.state.setInput,
+          recurrenceRelation: this.state.recurrenceRelation,
           partitionList: this.state.partitionList
         }
       });
@@ -94,7 +106,6 @@ class RecursiveSequenceBuilder extends React.Component {
     catch (err) {
       this.setState({ error: err.message });
     }
-
   }
 
   render() {
@@ -102,8 +113,8 @@ class RecursiveSequenceBuilder extends React.Component {
       <div>
         <div className="container" style={{ marginTop: "50px" }}>
           <Form>
-            <h1>Equivalance Relation Finder</h1>
-            <Form.Group controlId="equivalenceRelationFinder.instructions">
+            <h1>Recursive Sequence Builder</h1>
+            <Form.Group controlId="recursiveSequenceBuilder.instructions">
               <Form.Label>Instructions</Form.Label>
               <p>
                 The site will find the equivalence relation from the provided
@@ -118,34 +129,53 @@ class RecursiveSequenceBuilder extends React.Component {
                 limited to a maximum of 10.
               </p>
             </Form.Group>
-            <Form.Group controlId="equivalenceRelationFinder.setInput">
-              <Form.Label>Set Input</Form.Label>
+            <Form.Row>
+              <Form.Group as={Col} md={4} controlId="recursiveSequenceBuilder.baseCasesInput">
+                <Form.Label>Base Cases (up to 5)</Form.Label>
+                {this.showBaseCasesInput()}
+                <button
+                  disabled={this.state.baseCases.length >= 5}
+                  onClick={this.handleAddBaseCase}
+                >
+                  Add
+                </button>
+                <span>&nbsp;&nbsp;</span>
+                <button
+                  disabled={this.state.baseCases.length <= 1}
+                  onClick={this.handleRemoveBaseCase}
+                >
+                  Remove
+                </button>
+              </Form.Group>
+              <Col md={1} />
+              <Form.Group as={Col} md={4} controlId="recursiveSequenceBuilder.depthDropdown" >
+                <Form.Label>Depth (3-10)</Form.Label>
+                <Form.Control
+                  as="select"
+                  value={this.state.depth}
+                  onChange={this.updateDepth}
+                  style={{ height: "38px" }}
+                >
+                  {this.showDepthOptions()}
+                </Form.Control>
+              </Form.Group>
+            </Form.Row>
+            <Form.Group controlId="recursiveSequenceBuilder.recurrenceRelationInput">
+              <Form.Label>Recurrence Relation - S(n) =</Form.Label>
               <Form.Control
                 type="text"
-                value={this.state.setInput}
-                onChange={this.updateSetInput}
-                placeholder="eg. 1,2,3,4,5,6,7,8"
+                value={this.state.recurrenceRelation}
+                onChange={this.updateRecurrenceRelation}
+                placeholder="S(n - 1) + 10"
               />
             </Form.Group>
-            <Form.Group controlId="equivalenceRelationFinder.partitionInput">
-              <Form.Label>Partitions</Form.Label>
-              {this.showPartitionInputs()}
-            </Form.Group>
-            <button
-              disabled={this.state.maxPartitions}
-              onClick={this.handleAddPartition}
-            >
-              Add Partition
-            </button>
-            <span>&nbsp;&nbsp;&nbsp;&nbsp;</span>
             <button onClick={this.handleSubmit}>
               Submit
             </button>
-            <br />
             <span style={{ color: 'red' }}>
               {this.state.error ? this.state.error : ""}
             </span>
-            <Form.Group controlId="equivalenceRelationFinder.cardOutput">
+            <Form.Group controlId="recursiveSequenceBuilder.cardOutput">
               <Form.Label>Result</Form.Label>
               <Card body style={{ minHeight: "300px" }}>
                 {this.state.out}
