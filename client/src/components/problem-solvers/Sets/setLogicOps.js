@@ -44,7 +44,8 @@ class SetLogicOps extends React.Component {
       currletter: 'B',
       formula:"",
       out:"",
-      maxInputs:false
+      maxInputs:false,
+      error: null
     };
     this.handleClick = this.handleClick.bind(this);
     this.handleInput = this.handleInput.bind(this);
@@ -189,6 +190,7 @@ class SetLogicOps extends React.Component {
     let badToken = false;
     for (var i = 0; i < f.length; i++) {
         if (!supportedOperations.has(f[i]) && !m.get(f[i])) {
+            this.setState({error:"Bad or Unknown Input: " + f[i]});
             throw "Bad or Unknown Input: " + f[i];
             badToken = true;
         }
@@ -198,10 +200,14 @@ class SetLogicOps extends React.Component {
           closedParenthsesCount++;
     }
 
-    if (closedParenthsesCount < openParenthsesCount)
+    if (closedParenthsesCount < openParenthsesCount) {
+      this.setState({error:"Missing ')'"});
       throw "Missing ')'";
-    else if (openParenthsesCount < closedParenthsesCount)
+    }
+    else if (openParenthsesCount < closedParenthsesCount) {
+      this.setState({error:"Missing '('"});
       throw "Missing '('";
+    }
 
     if (!badToken && closedParenthsesCount === openParenthsesCount)
       evalFlag = true;
@@ -210,7 +216,15 @@ class SetLogicOps extends React.Component {
       // Valid syntax, evaluate input
       if (this.checkSyntax(f)) {
         let rpnArray = this.infixToPostfix(f);
-        this.setState({out:Array.from(this.solveRPN(rpnArray, m)).toString()});
+
+        if (this.solveRPN(rpnArray, m) != null && this.solveRPN(rpnArray, m) != undefined) {
+          this.setState({out:Array.from(this.solveRPN(rpnArray, m)).toString()});
+          this.setState({error: ""});
+        }
+        else {
+          this.setState({error:"Inputs must not be empty."});
+          throw "Error: Inputs must not be empty.";
+        }
       }
     }
   }
@@ -224,23 +238,27 @@ class SetLogicOps extends React.Component {
     for (var i = 0; i < f.length; i++) {
       // Can't have 2 sets next to eachother without an operation
       if (isAlpha(f[i]) && isAlpha(f[i + 1])) {
+        this.setState({error:"Invalid Syntax: \"" + f[i] + f[i + 1] + "\""});
         throw "Invalid Syntax: \"" + f[i] + f[i + 1] + "\"";
         return false;
         break;
       }
       // Check for parentheses syntax
       else if (f[i] === '(' && (f[i + 1] != '(' && !isAlpha(f[i + 1]))) {
+        this.setState({error:"Invalid Syntax: \"" + f[i] + f[i + 1] + "\""});
         throw "Invalid Syntax: \"" + f[i] + f[i + 1] + "\"";
         return false;
         break;
       }
       else if (f[i] === ')' && (f[i + 1] != ')' && isAlpha(f[i + 1]))) {
+        this.setState({error:"Invalid Syntax: \"" + f[i] + f[i + 1] + "\""});
         throw "Invalid Syntax: \"" + f[i] + f[i + 1] + "\"";
         return false;
         break;
       }
       // Check operator syntax
       else if (!parenthses.has(f[i]) && !isAlpha(f[i]) && !parenthses.has(f[i + 1]) && !isAlpha(f[i + 1])) {
+        this.setState({error:"Invalid Syntax: \"" + f[i] + f[i + 1] + "\""});
         throw "Invalid Syntax: \"" + f[i] + f[i + 1] + "\"";
         return false;
         break;
@@ -317,6 +335,7 @@ class SetLogicOps extends React.Component {
     for (var token of tokens) {
       if (['-', '✕', '∪', '∩'].includes(token)) {
         if (tokenStack.length < 2) {
+          this.setState({error:"Invalid RPN encountered: " + tokens});
           throw "Invalid RPN encountered: " + tokens;
         }
         var firstOperand = tokenStack.pop();
@@ -347,6 +366,7 @@ class SetLogicOps extends React.Component {
       if (typeof(tokenStack[0]) === "string") return setMap[tokenStack[0]];
       return tokenStack[0];
     }
+    this.setState({error:"Invalid RPN encountered: " + tokens});
     throw "Invalid RPN encountered: " + tokens;
   }
     
@@ -423,6 +443,11 @@ class SetLogicOps extends React.Component {
               </div>
             </div>
 
+            <div>
+              <span style={{ color: 'red' }}>
+                {this.state.error ? this.state.error : ""}
+              </span>
+            </div>
             <input value={this.state.formula} onChange={this.updateFormula()}></input> <button onClick={this.handleFormulaSubmit}>Submit</button>
 
             <Form>

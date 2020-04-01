@@ -61,7 +61,15 @@ class MultiplicityClosureFinder extends React.Component {
         * 2 - Transitive
         */
         var relationClosures = testRelationProperties(formattedSet, formattedRelation, properties);
-        this.setState({ closures: relationClosures });
+
+        let pStar = relationClosures;
+        for (var i = 0; i < pStar.length; i++) {
+            for (var j = 0; j < formattedRelation.length; j++) {
+                pStar[i].push(formattedRelation[j]);
+            }
+        }
+
+        this.setState({ closures: pStar });
 
         // This will occur asynchronously (not blocking)
         /*sendProblem({
@@ -75,6 +83,7 @@ class MultiplicityClosureFinder extends React.Component {
         });*/
 
         this.setState({ relationProperties: properties });
+        this.setState({ error: ""});
       }
     }
     catch (err) {
