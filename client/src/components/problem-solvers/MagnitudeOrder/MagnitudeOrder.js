@@ -1,20 +1,22 @@
 import React from 'react'
 import {Link} from 'react-router-dom'
-
+import {simplify} from 'mathjs'
+import {parse} from 'mathjs'
 class MagnitudeOrder extends React.Component 
 {
     constructor(props)
     {
         super(props);
         this.state = {
-             m_FunctionF: "null",
-             m_FunctionG: "null",
+             m_FunctionF: null,
+             m_FunctionG: null,
              m_C1: 0,
              m_C2: 0,
              m_N : 0,
         };
         this.HandleClick = this.HandleClick.bind(this);
         this.SolveProblem = this.SolveProblem.bind(this);
+        this.VerifySolution = this.VerifySolution.bind(this);
         this.ParseEquation = this.ParseEquation.bind(this);
     }
 
@@ -22,6 +24,8 @@ class MagnitudeOrder extends React.Component
     {
         document.getElementById("ErrorMessage").style.display = "none";
         document.getElementById("ErrorMessage").innerHTML = "";
+        document.getElementById("Answer").style.display = "none";
+        document.getElementById("Answer").innerHTML = "";
         e.preventDefault();
       
         this.state.m_FunctionF = document.getElementById("FunctionF").value;
@@ -32,257 +36,180 @@ class MagnitudeOrder extends React.Component
             document.getElementById("ErrorMessage").innerHTML = "Error: Must fill out both f(x) and g(x) forms before submitting!";
             document.getElementById("ErrorMessage").style.display = "block";
         }
+        else if(this.state.m_FunctionF.includes("sin") || this.state.m_FunctionF.includes("cos") || this.state.m_FunctionF.includes("tan") || this.state.m_FunctionG.includes("tan") || this.state.m_FunctionG.includes("sin" || this.state.m_FunctionG.includes("cos")))
+        {
+          document.getElementById("ErrorMessage").innerHTML = "Error: Solver currently does not support trig operations";
+          document.getElementById("ErrorMessage").style.display = "block";
+        }
         else 
         {
           this.state.m_FunctionF = this.state.m_FunctionF.trim();
           this.state.m_FunctionG = this.state.m_FunctionG.trim();
-          
-          this.ParseEquation()
+          var FxTerms = this.state.m_FunctionF //.matchAll("(\\+|\\-)?[a-z0-9.^]+|\\(([^()]+)\\)|[/*+-]")
+          var GxTerms = this.state.m_FunctionG //.matchAll("(\\+|\\-)?[a-z0-9.^]+|\\(([^()]+)\\)|[/*+-]")
+ 
+          if(this.SolveProblem(FxTerms, GxTerms) == true)
+          {
+            document.getElementById("Answer").innerHTML = "x >= " + this.state.m_N + ",  " + this.state.m_C1 + "(" + this.state.m_FunctionG
+            + ") <= " + this.state.m_FunctionF + " <= " + this.state.m_C2 + "{" + this.state.m_FunctionG + "}";
+            document.getElementById("Answer").style.display = "block";
+          }
         }
     }
 
-    ParseEquation()
+    ParseEquation(Terms, n)
     {
-      var tempEquationFx = this.state.m_FunctionF
-      var tempEquationGx = this.state.m_FunctionG
-      var WordSegmentsFx = []
-      var WordSegmentsGx = []
-     
-      if(tempEquationFx.includes('='))
-       {
-          tempEquationFx = tempEquationFx.slice(tempEquationFx.indexOf('=') + 1, tempEquationFx.length).trim()
+      try
+      {   
+       while(Terms.includes("log(") && n >= 1)
+       { 
+          //alert("enter")
+         // alert(Terms + " " + Terms.indexOf(")") + " " + Terms.indexOf("log("))
+          var Lslice = Terms.slice(Terms.indexOf("log("), Terms.indexOf(")", Terms.indexOf("log(")) + 1)
+         // alert("Lslice: " + Lslice)
+          var value = Lslice.slice(Lslice.indexOf("log(") + 4, Lslice.indexOf(")", Terms.indexOf("log(")))
+          //alert("value: " + value)
+          const g = parse(value)
+         // alert("g: " + g)
+          const simpl = simplify(g)
+         // alert("simpl: " + simpl)
+          var logNumber = simpl.evaluate({x:n})
+          
+          Terms = Terms.replace(Lslice, Math.log10(logNumber))
+    
        }
-       if(tempEquationGx.includes('='))
-       {
-          tempEquationGx = tempEquationGx.slice(tempEquationGx.indexOf('=') + 1, tempEquationGx.length).trim()
-       }
-      
-      while(tempEquationFx.includes('+') || tempEquationFx.includes('-'))
-       {
-          var StartIndex = 0
-          var EndIndex = -1
-              
-          EndIndex = tempEquationFx.indexOf('+')
-          if(EndIndex != -1)
-          {
-            WordSegmentsFx.push(tempEquationFx.slice(StartIndex, EndIndex - 1))
-            WordSegmentsFx.push("+")
-            tempEquationFx = tempEquationFx.slice(EndIndex + 1, tempEquationFx.length)
-          }
-        
-            EndIndex = tempEquationFx.indexOf('-')
-            
-          if(EndIndex != -1)
-           {
-              WordSegmentsFx.push(tempEquationFx.slice(StartIndex, EndIndex - 1))
-              WordSegmentsFx.push("-")
-              tempEquationFx = tempEquationFx.slice(EndIndex + 1, tempEquationFx.length)
-           }
-          
-          EndIndex = -1;
-        }
-          
-      WordSegmentsFx.push(tempEquationFx.trim());
-      
-      while(tempEquationGx.includes('+') || tempEquationGx.includes('-'))
-       {
-          var StartIndex = 0
-          var EndIndex = -1
-              
-          EndIndex = tempEquationGx.indexOf('+')
-          if(EndIndex != -1)
-          {
-            WordSegmentsGx.push(tempEquationGx.slice(StartIndex, EndIndex - 1))
-            WordSegmentsGx.push("+")
-            tempEquationGx = tempEquationGx.slice(EndIndex + 1, tempEquationGx.length)
-          }
-         
-            EndIndex = tempEquationGx.indexOf('-')
-            
-          if(EndIndex != -1)
-           {
-              WordSegmentsGx.push(tempEquationGx.slice(StartIndex, EndIndex - 1))
-              WordSegmentsGx.push("-")
-              tempEquationGx = tempEquationGx.slice(EndIndex + 1, tempEquationGx.length)
-           }
-          
-          EndIndex = -1;
-        }
-          
-      WordSegmentsGx.push(tempEquationGx.trim());
-      
-      this.SolveProblem(WordSegmentsFx, WordSegmentsGx);
-      
+       //alert("exit")
+       const f = parse(Terms)
+       const simp = simplify(f) 
+       return simp.evaluate({x:n})
+      }
+
+      catch(e)
+      {
+        alert(e.message)
+        return -1
+      }
     }
 
-    SolveProblem(FxArray, GxArray)  //Will attempt to solve so X > N, 
+    SolveProblem(FxTerms, GxTerms)  //Will attempt to solve so X > N, 
     {
-      var c1 = 0
-      var c2 = 0
-      var N = 2
+      var n = 0
+      var const1 = 1
+      var const2 = 1
+      var FxTermsCopy = FxTerms
+      var GxTermsCopy = GxTerms
+
+      if(FxTerms.includes("log") || GxTerms.includes("log"))
+      {
+        n = n + 1
+        const2 = const2 + 1
+      }
+
+      var FxResult = this.ParseEquation(FxTerms, n)
+      var GxResult = this.ParseEquation(GxTerms, n)
+      var const2Start = const1
+      var const1Start = const2
       
-     // alert("TRYING TO SOLVE PROBLEM")
-      
-      //alert(FxArray)
-     // alert(GxArray)
-      
-      for(var i = 0; i < FxArray.length; i++)
+      while(n <= 100 && FxResult >= 0 && GxResult >= 0)
+      {
+        if(FxResult < (GxResult * (1/const1)))
         {
-          FxArray[i] = FxArray[i].trim()
-          if(FxArray[i].includes("x"))
-           {
-             if(FxArray[i].indexOf('x') > 0 && FxArray[i].indexOf('x') + 1 == FxArray[i].length && !FxArray[i].includes("log")) //17x => 17 * N
-              {
-                FxArray[i] = FxArray[i].replace("x", " * " + N)
-              }
-             else if(FxArray[i].indexOf('x') >= 0 && FxArray[i].indexOf('x') + 1 < FxArray[i].length && FxArray[i].includes('^') == true) //x^2 => N^2 || logx^2 => logN^2
-               {
-                 var exponent = FxArray[i].slice(FxArray[i].indexOf('^') + 1, FxArray[i].length) //Grabs and assumes anything after ^ is an exponent statement
-                 FxArray[i].slice(0, FxArray[i].indexOf(exponent))
-                 
-                 if(FxArray[i].indexOf('x') != 0 && !FxArray[i].includes("log"))
-                   {
-                     FxArray[i].replace('x', "* x");
-                   }
-                 
-                 if(exponent.includes('(') && exponent.includes(')'))
-                   {
-                    exponent = exponent.slice(1, exponent.length);
-                   }
-                 
-                 if(exponent.includes('/'))
-                   {
-                     var dividend = exponent.slice(0, exponent.indexOf('/'))
-                     var divisor = exponent.slice(exponent.indexOf('/') + 1, exponent.length)
-                     
-                     dividend = parseFloat(dividend)
-                     divisor = parseFloat(divisor)
-                     exponent = dividend / divisor
-                     
-                     FxArray[i] = FxArray[i].replace("x", Math.pow(N, exponent).toString())
-                   }
-                 else
-                   {
-                     //alert(FxArray[i])
-                     exponent = FxArray[i].slice(FxArray[i].indexOf('^') + 1, FxArray[i].length)
-                     FxArray[i] = FxArray[i].replace("x", Math.pow(N, exponent).toString()) 
-                    // alert(FxArray[i])
-                   }
-                 
-                  FxArray[i] = FxArray[i].slice(0, FxArray[i].indexOf('^'))
-               }
-             else if(FxArray[i].indexOf('x') == 0 && FxArray[i].indexOf('x') + 1 == FxArray[i].length || FxArray[i].includes("log")) //x => N || logx => logN
-              {
-                FxArray[i] = FxArray[i].replace("x", N)
-              }
-             else
-               {
-                  document.getElementById("ErrorMessage").innerHTML = "Error: Incorrect Formatting Detected. Try to format the problem like the example provided";
-                  document.getElementById("ErrorMessage").style.display = "block";
-                  return false;
-               }
-           }
-           else if(FxArray[i].match(/^[0-9*/+-]+$/) == null)
-           {
-              document.getElementById("ErrorMessage").innerHTML = "Error: Incorrect Formatting Detected in g(x). Are you using only digits or polynomials consisting of the var x?";
-              document.getElementById("ErrorMessage").style.display = "block";
-              return false;
-           }
+            const1 = const1 + 1;
         }
-      
-      //alert(GxArray.length)
-      for(var i = 0; i < GxArray.length; i++)
+
+        if(FxResult > (GxResult * const2))
         {
-          GxArray[i] = GxArray[i].trim()
-          if(GxArray[i].includes("x"))
-           {
-             if(GxArray[i].indexOf('x') > 0 && GxArray[i].indexOf('x') + 1 == GxArray[i].length && !GxArray[i].includes("log")) //17x => 17 * N
-              {
-                GxArray[i] = GxArray[i].replace("x", " * " + N)
-              }
+          const2 = const2 + 1;
+        }
+
+        if(FxResult >= (GxResult * (1/const1)) && FxResult <= (GxResult * const2))
+        {
+          var flag = this.VerifySolution(FxTerms, GxTerms, const1, const2)
+          if(flag == 0)
+          {
+             //alert("Success: " + "1/"+ const1 + "(" + this.state.m_FunctionG + ") <= " + 
+             //    this.state.m_FunctionF + " <= " + const2 + "(" + this.state.m_FunctionG +
+             //    ")" + "\nWhere X >= " + n)
              
-             else if(GxArray[i].indexOf('x') >= 0 && GxArray[i].indexOf('x') + 1 < GxArray[i].length && GxArray[i].includes('^') == true) //x^2 => N^2 || logx^2 => logN^2
-               {
-                 var exponent = GxArray[i].slice(GxArray[i].indexOf('^') + 1, GxArray[i].length) //Grabs and assumes anything after ^ is an exponent statement
-                 GxArray[i].slice(0, GxArray[i].indexOf(exponent))
-                 
-                 if(GxArray[i].indexOf('x') != 0 && !GxArray[i].includes("log"))
-                   {
-                     GxArray[i].replace('x', "* x");
-                   }
-                 if(exponent.includes('(') && exponent.includes(')'))
-                   {
-                    exponent = exponent.slice(1, exponent.length);
-                   }
-                 
-                 if(exponent.includes('/'))
-                   {
-                     var dividend = exponent.slice(0, exponent.indexOf('/'))
-                     var divisor = exponent.slice(exponent.indexOf('/') + 1, exponent.length)
-                     
-                     dividend = parseFloat(dividend)
-                     divisor = parseFloat(divisor)
-                     exponent = dividend / divisor
-                     
-                     GxArray[i] = GxArray[i].replace("x", Math.pow(N, exponent).toString())
-                   }
-                 else
-                   {
-                     //alert(GxArray[i])
-                     exponent = GxArray[i].slice(GxArray[i].indexOf('^') + 1, GxArray[i].length)
-                     GxArray[i] = GxArray[i].replace("x", Math.pow(N, exponent).toString()) 
-                     //alert(GxArray[i])
-                   }
-                  
-                  GxArray[i] = GxArray[i].slice(0, GxArray[i].indexOf('^'))
-                 
-               }
-             else if(GxArray[i].indexOf('x') == 0 && GxArray[i].indexOf('x') + 1 == GxArray[i].length || GxArray[i].includes("log")) //x => N || logx => logN
-              {
-                    GxArray[i] = GxArray[i].replace("x", N)
-              }
-             else
-               {
-                  document.getElementById("ErrorMessage").innerHTML = "Error: Incorrect Formatting Detected. Try to format the problem like the example provided";
-                  document.getElementById("ErrorMessage").style.display = "block";
-                  return false;
-               }
-           }
-           else if(GxArray[i].match(/^[0-9*/+-]+$/) == null)
-           {
-              document.getElementById("ErrorMessage").innerHTML = "Error: Incorrect Formatting Detected in g(x). Are you using only digits or polynomials consisting of the var x?";
-              document.getElementById("ErrorMessage").style.display = "block";
-              return false;
-           }
+             if(const1 == 1)
+             {
+               this.state.m_C1 = "1"
+             }
+             else this.state.m_C1 = "1/" + const1
+
+             this.state.m_C2 = const2
+             this.state.m_N = n
+
+             return true;
+          }
+          else if(flag == 1)
+          {
+            const1 = const1 + 1
+          }
+          else if(flag == 2)
+          {
+            const2 = const2 + 1
+          }
+          else
+          {
+            const1 = const1 + 1
+            const2 = const2 + 1
+          }
+
         }
-      
-      
-      for(var i; i < FxArray.length; i++)
+        
+        if(const1 >= 1002 || const2 >= 1002)
         {
-               if(FxArray[i].includes("log"))
-                {
-                   var tempString = FxArray[i].toString().split(FxArray[i].indexOf("log"), FxArray[i].length)
-                   var number = parseFloat(FxArray[i].split(FxArray[i].indexOf("log") + 3, FxArray[i].length).toString().trim())
-                   
-                   FxArray[i].replace(FxArray[i].split(FxArray[i].indexof("log"), FxArray[i].length), Math.log(number))
-                }
+          n = n + 1
+          if(const1 >= 1002 )
+          {
+            const1 = const1Start
+          }
+          if(const2 >= 1002)
+          {
+            const2 = const2Start
+          }
         }
-      
-      for(var i; i < GxArray.length; i++)
+       // alert("n = " + n + "     const1 = " + const1 + "     const2 = " + const2)
+        FxResult = this.ParseEquation(FxTerms, n)
+        GxResult = this.ParseEquation(GxTerms, n)
+
+        if(n >= 100)
         {
-               if(GxArray[i].includes("log"))
-                {
-                   var tempString = GxArray[i].toString().split(GxArray[i].indexOf("log"), GxArray[i].length)
-                   var number = parseFloat(GxArray[i].split(GxArray[i].indexOf("log") + 3, GxArray[i].length).toString().trim())
-                   
-                   GxArray[i].replace(GxArray[i].split(GxArray[i].indexof("log"), GxArray[i].length), Math.log(number))
-                }
+        document.getElementById("ErrorMessage").innerHTML = "Error: X has not reached an answer below: X <= 100";
+        document.getElementById("ErrorMessage").style.display = "block";
+        return false
         }
+      }
+
+      alert(FxResult)
+      alert(GxResult)
+      document.getElementById("ErrorMessage").innerHTML = "Error: Solver has determined that these functions are not growing within scope";
+      document.getElementById("ErrorMessage").style.display = "block";
       
-      
-     // alert(FxArray)
-     // alert(GxArray)
-      
+    }
+
+    VerifySolution(FxTerms, GxTerms, const1, const2)
+    {
+      var VerResultFx = this.ParseEquation(FxTerms, 50)
+      var VerResultGx = this.ParseEquation(GxTerms, 50)
+
+      if(VerResultFx >= (VerResultGx * (1/const1)) && VerResultFx <= (VerResultGx * const2))
+      {
+        return 0 //Success
+      }
+      else if(VerResultFx < (VerResultGx * (1/const1)) && VerResultFx <= (VerResultGx * const2))
+      {
+        return 1 // Failure due to const1 being too low
+      }
+      else if(VerResultFx >= (VerResultGx * (1/const1)) && VerResultFx > (VerResultGx * const2))
+      {
+        return 2 // Failure due to const2 being too low
+      }
+      else 
+      {
+        return 3 // Failure due to both
+      }
     }
 
     render()
@@ -294,13 +221,13 @@ class MagnitudeOrder extends React.Component
           <div className="row">
             <div className= "tweleve columns">
               <div className="center">
-    
                 <p><b>Entering formulas: </b>
 
                     <p>
                       Enter in two functions f(x) and g(x). If these functions have the same Order of Magnitude
                       <br></br> then the solver will provide the n, constant1, and constant2 values such that
-                      <br></br> (x > n, constant1 * g(x) {'<'} f(x) {'<'} constant2 * g(x)) <br></br><br></br> <b>Example:</b><br></br> f(x) = x^2 + 5 <br></br> g(x) = x^2 + x^1 + logx
+                      <br></br> (x >= n, constant1 * g(x) {'<='} f(x) {'<='} constant2 * g(x)) <br></br><br></br> 
+                      <b>Example:</b><br></br> f(x) = x^2 + 5 <br></br> g(x) = x^2 + sqrt(x^1) + log(x)
                       <br></br>
                       <br></br> Please limit variable usage to only use x
                       
@@ -331,7 +258,10 @@ class MagnitudeOrder extends React.Component
                     </label>
                   
                 </form>
-				
+               <div> 
+                Answer: 
+                
+               </div>
 			      	 <div id = "Output" style={{display: "block", color: "black"}}>
 					         <label id = "ErrorMessage" style={{display: "none", color:"red"}}>
 						            
@@ -386,5 +316,4 @@ class MagnitudeOrder extends React.Component
         )
     }
 }
-
 export default MagnitudeOrder;
