@@ -2,6 +2,8 @@ import React from 'react'
 import {Link} from 'react-router-dom'
 import {simplify} from 'mathjs'
 import {parse} from 'mathjs'
+import { Form, Row, Col, Card } from 'react-bootstrap';
+
 class MagnitudeOrder extends React.Component 
 {
     constructor(props)
@@ -81,6 +83,7 @@ class MagnitudeOrder extends React.Component
        //alert("exit")
        const f = parse(Terms)
        const simp = simplify(f) 
+
        return simp.evaluate({x:n})
       }
 
@@ -216,24 +219,20 @@ class MagnitudeOrder extends React.Component
     {
         return (
           <div>
-          <div className="container main">
-          <h1>Order Verification</h1>
-          <div className="row">
-            <div className= "tweleve columns">
-              <div className="center">
-                <p><b>Entering formulas: </b>
-
-                    <p>
-                      Enter in two functions f(x) and g(x). If these functions have the same Order of Magnitude
-                      <br></br> then the solver will provide the n, constant1, and constant2 values such that
-                      <br></br> (x >= n, constant1 * g(x) {'<='} f(x) {'<='} constant2 * g(x)) <br></br><br></br> 
-                      <b>Example:</b><br></br> f(x) = x^2 + 5 <br></br> g(x) = x^2 + sqrt(x^1) + log(x)
-                      <br></br>
-                      <br></br> Please limit variable usage to only use x
-                      
-                    </p>
+          <div className="container" style={{ marginTop: "50px" }}>
+            <Form>
+            <h1>Order Verification</h1>
+              <Form.Group controlId="truthTableBuilder.instructions">
+                <Form.Label><b>Instructions</b></Form.Label>
+                <p>
+                Enter in two functions f(x) and g(x). If these functions have the same Order of Magnitude then the solver will provide the n, constant1, and constant2 values such that
+                (x >= n, constant1 * g(x) {'<='} f(x) {'<='} constant2 * g(x)). Please limit variable usage to only use x.
                 </p>
-
+              </Form.Group>
+              <Form.Group controlId="truthTableBuilder.textInput">
+                <Form.Label><b>Example</b> </Form.Label>
+                <p>f(x) = x^2 + 5</p>
+                <p>g(x) = x^2 + sqrt(x^1) + log(x)</p>
                 <form id = "FunctionInputForm">
                     <label>
                          f(x): {' '}
@@ -242,7 +241,7 @@ class MagnitudeOrder extends React.Component
                         </input>
                         {' '}
                     </label>
-                  
+                  <br></br>
                     <label>
                          g(x):
                         <input id= "FunctionG">
@@ -250,7 +249,7 @@ class MagnitudeOrder extends React.Component
                         </input>
                         {' '}
                     </label>
-                  
+                  <br></br>
                     <label>
                          <button id = "SubmitButton"   onClick = {this.HandleClick}>
                            Submit
@@ -258,24 +257,24 @@ class MagnitudeOrder extends React.Component
                     </label>
                   
                 </form>
-               <div> 
-                Answer: 
-                
-               </div>
-			      	 <div id = "Output" style={{display: "block", color: "black"}}>
+              </Form.Group>
+
+              <Form.Group controlId="truthTableBuilder.cardOutput">
+                <Form.Label>Result</Form.Label>
+                <Card body style={{ minHeight: "100px" }}>
+                <div id = "Output" style={{display: "block", color: "black"}}>
 					         <label id = "ErrorMessage" style={{display: "none", color:"red"}}>
 						            
 					         </label>
                  
                    <label id = "Answer" style={{display: "none", color: "black", fontsize: "15px"}}>
-                        Answer
                    </label>
 				       </div>
-                
-          </div>
-          </div>
-          </div>
-          </div>
+                </Card>
+              </Form.Group>
+            </Form>
+         </div>
+
                     {/* Footer */}
                     <footer>
           <div class="row grey">
