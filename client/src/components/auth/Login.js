@@ -122,14 +122,13 @@ class Login extends Component {
                   </Card.Text>
                   <form noValidate onSubmit={this.onSubmit}>
 
-                <h8><b>Email</b></h8>
-                <br></br>
                 <input
                   onChange={this.onChange}
                   value={this.state.email}
                   errors={errors.email}
                   id="email"
                   type="email"
+                  placeholder= "Username"
                   className={classnames("", {
                     invalid: errors.email || 
                       errors.emailnotfound
@@ -140,16 +139,15 @@ class Login extends Component {
                   {errors.email}
                   {errors.emailnotfound}
                 </span>
-
-                
-                <h8><b>Password</b></h8>
                 <br></br>
+
                 <input
                   onChange={this.onChange}
                   value={this.state.password}
                   errors={errors.password}
                   id="password"
                   type="password"
+                  placeholder= "Password"
                   className={classnames("", {
                     invalid: errors.password || 
                       errors.passwordincorrect
@@ -160,6 +158,7 @@ class Login extends Component {
                   {errors.password}
                   {errors.passwordincorrect}
                 </span>
+                <br></br>
                 <div className="">
                 <button type="submit">
                   Login

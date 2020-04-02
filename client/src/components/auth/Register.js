@@ -125,14 +125,13 @@ class Register extends Component {
                   </Card.Text>
                     <form noValidate onSubmit={this.onSubmit}>
  
-                  <h8><b>Username</b></h8>
-                  <br></br>
                   <input
                     onChange={this.onChange}
                     value={this.state.username}
                     error={errors.username}
                     id="username"
                     type="text"
+                    placeholder= "Username"
                     className={classnames("", { 
                       invalid: errors.username
                     })}
@@ -141,15 +140,14 @@ class Register extends Component {
                   <span className="">
                     {errors.username}
                   </span>
- 
-                  <h8><b>Email</b></h8>
-                  <br></br>
+                  
                   <input
                     onChange={this.onChange}
                     value={this.state.email}
                     error={errors.email}
                     id="email"
                     type="email"
+                    placeholder= "Email"
                     className={classnames("", {
                       invalid: errors.email
                     })}
@@ -159,15 +157,13 @@ class Register extends Component {
                     {errors.email}
                   </span>
 
-
-                  <h8><b>Password</b></h8>
-                  <br></br>
                   <input
                     onChange={this.onChange}
                     value={this.state.password1}
                     error={errors.password1}
                     id="password1"
                     type="password"
+                    placeholder= "Password"
                     className={classnames("", {
                       invalid: errors.password1
                     })}
@@ -177,15 +173,13 @@ class Register extends Component {
                     {errors.password1}
                   </span>
 
-
-                  <h8><b>Confirm Password</b></h8>
-                  <br></br>
                   <input
                     onChange={this.onChange}
                     value={this.state.password2}
                     error={errors.password2}
                     id="password2"
                     type="password"
+                    placeholder= "Confirm Password"
                     className={classnames("", {
                       invalid: errors.password2
                     })}
