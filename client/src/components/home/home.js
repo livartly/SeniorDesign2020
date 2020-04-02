@@ -25,176 +25,176 @@ class Home extends Component {
 
           <br></br>
 
-              <div class="card-deck">
-              <Link to="/truth-table-builder">
-                <Card style={{ width: '20rem' }}>
-                  <Card.Img variant="top" src="icons/truthTable-01.png" />
-                  <Card.Body>
-                    <Card.Title><h7>1.1</h7></Card.Title>
-                    <Card.Text>
-                      <h8>Statements, Symbolic Representations, and Tautologies.
+          <div class="card-deck">
+            <Link to="/truth-table-builder">
+              <Card style={{ width: '20rem' }}>
+                <Card.Img variant="top" src="icons/truthTable-01.png" />
+                <Card.Body>
+                  <Card.Title><h7>1.1</h7></Card.Title>
+                  <Card.Text>
+                    <h8>Statements, Symbolic Representations, and Tautologies.
                   </h8>
-                    </Card.Text>
-                  </Card.Body>
-                </Card>
-                </Link>
-              
-                <Link to="propositional-logic">
-                <Card style={{ width: '20rem' }}>
-                  <Card.Img variant="top" src="icons/propositionalLogic.png" />
-                  <Card.Body>
-                    <Card.Title><h7>1.2</h7></Card.Title>
-                    <Card.Text>
-                      <h8>Propositional Logic, also includes Predicate and Modal Logic.
-                  </h8>
-                    </Card.Text>
-                  </Card.Body>
-                </Card>
-                </Link>
+                  </Card.Text>
+                </Card.Body>
+              </Card>
+            </Link>
 
-                <Link to="">
-                <Card style={{ width: '20rem' }}>
-                  <Card.Img variant="top" src="icons/recursion.png" />
-                  <Card.Body>
-                    <Card.Title><h7>3.1</h7></Card.Title>
-                    <Card.Text>
-                      <h8>Recursive Definitions, also includes Recursive Sequences.
+            <Link to="/propositional-logic">
+              <Card style={{ width: '20rem' }}>
+                <Card.Img variant="top" src="icons/propositionalLogic.png" />
+                <Card.Body>
+                  <Card.Title><h7>1.2</h7></Card.Title>
+                  <Card.Text>
+                    <h8>Propositional Logic, also includes Predicate and Modal Logic.
                   </h8>
-                    </Card.Text>
-                  </Card.Body>
-                </Card>
-                </Link>
+                  </Card.Text>
+                </Card.Body>
+              </Card>
+            </Link>
 
-                <Link to="/set-ops">
-                <Card style={{ width: '20rem' }}>
-                  <Card.Img variant="top" src="icons/set.png" />
-                  <Card.Body>
-                    <Card.Title><h7>4.1</h7></Card.Title>
-                    <Card.Text>
-                      <h8>Sets, also includes Subset Determination and Powersets.
+            <Link to="/recursive-sequence-builder">
+              <Card style={{ width: '20rem' }}>
+                <Card.Img variant="top" src="icons/recursion.png" />
+                <Card.Body>
+                  <Card.Title><h7>3.1</h7></Card.Title>
+                  <Card.Text>
+                    <h8>Recursive Definitions, also includes Recursive Sequences.
                   </h8>
-                    </Card.Text>
-                  </Card.Body>
-                </Card>
-                </Link>
-              </div>
+                  </Card.Text>
+                </Card.Body>
+              </Card>
+            </Link>
 
-              <br></br>
+            <Link to="/set-ops">
+              <Card style={{ width: '20rem' }}>
+                <Card.Img variant="top" src="icons/set.png" />
+                <Card.Body>
+                  <Card.Title><h7>4.1</h7></Card.Title>
+                  <Card.Text>
+                    <h8>Sets, also includes Subset Determination and Powersets.
+                  </h8>
+                  </Card.Text>
+                </Card.Body>
+              </Card>
+            </Link>
+          </div>
 
-              <div class="card-deck">
-              <Link to="/">
-                <Card style={{ width: '20rem' }}>
-                  <Card.Img variant="top" src="icons/hasseDiagram.png" />
-                  <Card.Body>
-                    <Card.Title><h7>5.1a</h7></Card.Title>
-                    <Card.Text>
-                      <h8>Multiplicity Classifier, also includes Hasse Diagrams.
-                  </h8>
-                    </Card.Text>
-                  </Card.Body>
-                </Card>
-                </Link>
-                
-                <Link to="">
-                <Card style={{ width: '20rem' }}>
-                  <Card.Img variant="top" src="icons/closure.png" />
-                  <Card.Body>
-                    <Card.Title><h7>5.1b</h7></Card.Title>
-                    <Card.Text>
-                      <h8>Equivalence Class, also includes Reflexive and other Closures.
-                  </h8>
-                    </Card.Text>
-                  </Card.Body>
-                </Card>
-                </Link>
+          <br></br>
 
-                <Link to="">
-                <Card style={{ width: '20rem' }}>
-                  <Card.Img variant="top" src="icons/pertChart.png" />
-                  <Card.Body>
-                    <Card.Title><h7>5.2a</h7></Card.Title>
-                    <Card.Text>
-                      <h8>PERT Charts, includes table input and graphical output.
+          <div class="card-deck">
+            <Link to="/">
+              <Card style={{ width: '20rem' }}>
+                <Card.Img variant="top" src="icons/hasseDiagram.png" />
+                <Card.Body>
+                  <Card.Title><h7>5.1a</h7></Card.Title>
+                  <Card.Text>
+                    <h8>Multiplicity Classifier, also includes Hasse Diagrams.
                   </h8>
-                    </Card.Text>
-                  </Card.Body>
-                </Card>
-                </Link>
-                
-                <Link to="/topological-sort">
-                <Card style={{ width: '20rem' }}>
-                  <Card.Img variant="top" src="icons/topSort.png" />
-                  <Card.Body>
-                    <Card.Title><h7>5.2b</h7></Card.Title>
-                    <Card.Text>
-                      <h8>Topological Sort- input nodes and dependencies and receive a sorted list.
-                  </h8>
-                    </Card.Text>
-                  </Card.Body>
-                </Card>
-                </Link>
-              </div>
+                  </Card.Text>
+                </Card.Body>
+              </Card>
+            </Link>
 
-              <br></br>
+            <Link to="">
+              <Card style={{ width: '20rem' }}>
+                <Card.Img variant="top" src="icons/closure.png" />
+                <Card.Body>
+                  <Card.Title><h7>5.1b</h7></Card.Title>
+                  <Card.Text>
+                    <h8>Equivalence Class, also includes Reflexive and other Closures.
+                  </h8>
+                  </Card.Text>
+                </Card.Body>
+              </Card>
+            </Link>
 
-              <div class="card-deck">
-              <Link to="/">
-                <Card style={{ width: '20rem' }}>
-                  <Card.Img variant="top" src="icons/function.jpg" />
-                  <Card.Body>
-                    <Card.Title><h7>5.4</h7></Card.Title>
-                    <Card.Text>
-                      <h8>Functions, Form Conversion, and Composition of cycles functionality.
+            <Link to="">
+              <Card style={{ width: '20rem' }}>
+                <Card.Img variant="top" src="icons/pertChart.png" />
+                <Card.Body>
+                  <Card.Title><h7>5.2a</h7></Card.Title>
+                  <Card.Text>
+                    <h8>PERT Charts, includes table input and graphical output.
                   </h8>
-                    </Card.Text>
-                  </Card.Body>
-                </Card>
-                </Link>
+                  </Card.Text>
+                </Card.Body>
+              </Card>
+            </Link>
 
-                <Link to="/MagnitudeOrder">
-                <Card style={{ width: '20rem' }}>
-                  <Card.Img variant="top" src="icons/orderverification.png" />
-                  <Card.Body>
-                    <Card.Title><h7>5.5a</h7></Card.Title>
-                    <Card.Text>
-                      <h8>Order of Magnitude includes Same Order Verification problem input.
+            <Link to="/topological-sort">
+              <Card style={{ width: '20rem' }}>
+                <Card.Img variant="top" src="icons/topSort.png" />
+                <Card.Body>
+                  <Card.Title><h7>5.2b</h7></Card.Title>
+                  <Card.Text>
+                    <h8>Topological Sort- input nodes and dependencies and receive a sorted list.
                   </h8>
-                    </Card.Text>
-                  </Card.Body>
-                </Card>
-                </Link>
-                
-                <Link to="Master-Theorem">
-                <Card style={{ width: '20rem' }}>
-                  <Card.Img variant="top" src="icons/masters.png" />
-                  <Card.Body>
-                    <Card.Title><h7>5.5b</h7></Card.Title>
-                    <Card.Text>
-                      <h8>Order of Magnitude Master's Theorem with recurrence relation input.
+                  </Card.Text>
+                </Card.Body>
+              </Card>
+            </Link>
+          </div>
+
+          <br></br>
+
+          <div class="card-deck">
+            <Link to="/">
+              <Card style={{ width: '20rem' }}>
+                <Card.Img variant="top" src="icons/function.jpg" />
+                <Card.Body>
+                  <Card.Title><h7>5.4</h7></Card.Title>
+                  <Card.Text>
+                    <h8>Functions, Form Conversion, and Composition of cycles functionality.
                   </h8>
-                    </Card.Text>
-                  </Card.Body>
-                </Card>
-                </Link>
-                
-                <Link to="/">
-                <Card style={{ width: '20rem' }}>
-                  <Card.Img variant="top" src="icons/matrix.png" />
-                  <Card.Body>
-                    <Card.Title><h7>5.7</h7></Card.Title>
-                    <Card.Text>
-                      <h8>Boolean Matricies calculator. Allows boolean matrix inputs.
+                  </Card.Text>
+                </Card.Body>
+              </Card>
+            </Link>
+
+            <Link to="/MagnitudeOrder">
+              <Card style={{ width: '20rem' }}>
+                <Card.Img variant="top" src="icons/orderverification.png" />
+                <Card.Body>
+                  <Card.Title><h7>5.5a</h7></Card.Title>
+                  <Card.Text>
+                    <h8>Order of Magnitude includes Same Order Verification problem input.
                   </h8>
-                    </Card.Text>
-                  </Card.Body>
-                </Card>
-                </Link>
-                <br>
-                </br>
-              </div>
+                  </Card.Text>
+                </Card.Body>
+              </Card>
+            </Link>
+
+            <Link to="Master-Theorem">
+              <Card style={{ width: '20rem' }}>
+                <Card.Img variant="top" src="icons/masters.png" />
+                <Card.Body>
+                  <Card.Title><h7>5.5b</h7></Card.Title>
+                  <Card.Text>
+                    <h8>Order of Magnitude Master's Theorem with recurrence relation input.
+                  </h8>
+                  </Card.Text>
+                </Card.Body>
+              </Card>
+            </Link>
+
+            <Link to="/">
+              <Card style={{ width: '20rem' }}>
+                <Card.Img variant="top" src="icons/matrix.png" />
+                <Card.Body>
+                  <Card.Title><h7>5.7</h7></Card.Title>
+                  <Card.Text>
+                    <h8>Boolean Matricies calculator. Allows boolean matrix inputs.
+                  </h8>
+                  </Card.Text>
+                </Card.Body>
+              </Card>
+            </Link>
+            <br>
+            </br>
+          </div>
         </div>
-<br></br>
-<br></br>
+        <br></br>
+        <br></br>
         {/* Footer */}
         <footer>
           <div class="row grey">
