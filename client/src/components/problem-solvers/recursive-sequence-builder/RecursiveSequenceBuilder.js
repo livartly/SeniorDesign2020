@@ -12,7 +12,7 @@ class RecursiveSequenceBuilder extends React.Component {
     this.state = {
       recurrenceRelation: "",
       baseCases: [""],
-      out: "",
+      out: null,
       depth: 3,
       error: null,
     };
@@ -67,6 +67,13 @@ class RecursiveSequenceBuilder extends React.Component {
     ));
   }
 
+  showResult() {
+    if (!this.state.out) return null;
+    return this.state.out.map((val, i) => (
+      <div key={i}>S({i + 1}) = {val}</div>
+    ));
+  }
+
   handleAddBaseCase(event) {
     event.preventDefault();
     this.setState(prevState => {
@@ -91,21 +98,24 @@ class RecursiveSequenceBuilder extends React.Component {
 
   handleSubmit(event) {
     event.preventDefault();
-    var { baseCases, recurrenceRelation, depth } = this.state;
-    console.log(solveSequence(baseCases, recurrenceRelation, depth));
     try {
-      // This will occur asynchronously (not blocking)
-      // sendProblem({
-      //   userID: this.props.user.id,
-      //   username: this.props.user.username,
-      //   email: this.props.user.email,
-      //   typeIndex: 2,
-      //   input: {
-      //     recurrenceRelation: this.state.recurrenceRelation,
-      //     partitionList: this.state.partitionList
-      //   }
-      // });
+      var { baseCases, recurrenceRelation, depth } = this.state;
+      var outScope = solveSequence(baseCases, recurrenceRelation, depth);
 
+      // This will occur asynchronously (not blocking)
+      sendProblem({
+        userID: this.props.user.id,
+        username: this.props.user.username,
+        email: this.props.user.email,
+        typeIndex: 4,
+        input: {
+          recurrenceRelation: this.state.recurrenceRelation,
+          baseCases: this.state.baseCases
+        }
+      });
+
+      var outDataArr = Object.values(outScope);
+      this.setState({ out: outDataArr, error: null });
     }
     catch (err) {
       this.setState({ error: err.message });
@@ -182,7 +192,7 @@ class RecursiveSequenceBuilder extends React.Component {
             <Form.Group controlId="recursiveSequenceBuilder.cardOutput">
               <Form.Label>Result</Form.Label>
               <Card body style={{ minHeight: "300px" }}>
-                {this.state.out}
+                {this.showResult()}
               </Card>
             </Form.Group>
           </Form>
