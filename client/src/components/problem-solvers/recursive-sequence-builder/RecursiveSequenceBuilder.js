@@ -4,6 +4,8 @@ import { Form, Card, Col } from 'react-bootstrap';
 
 import { sendProblem } from '../../../utils/problemsAPIUtil';
 
+import { solveSequence } from '../../../engine/RecursiveSequence/recursiveSequence';
+
 class RecursiveSequenceBuilder extends React.Component {
   constructor(props) {
     super(props);
@@ -42,7 +44,7 @@ class RecursiveSequenceBuilder extends React.Component {
   }
 
   updateDepth(event) {
-    this.setState({ depth: event.currentTarget.value });
+    this.setState({ depth: parseInt(event.currentTarget.value) });
   }
 
   showBaseCasesInput() {
@@ -61,7 +63,7 @@ class RecursiveSequenceBuilder extends React.Component {
 
   showDepthOptions() {
     return [3, 4, 5, 6, 7, 8, 9, 10].map(value => (
-      <option val={value}>{value}</option>
+      <option val={value} key={value}>{value}</option>
     ));
   }
 
@@ -89,18 +91,20 @@ class RecursiveSequenceBuilder extends React.Component {
 
   handleSubmit(event) {
     event.preventDefault();
+    var { baseCases, recurrenceRelation, depth } = this.state;
+    console.log(solveSequence(baseCases, recurrenceRelation, depth));
     try {
       // This will occur asynchronously (not blocking)
-      sendProblem({
-        userID: this.props.user.id,
-        username: this.props.user.username,
-        email: this.props.user.email,
-        typeIndex: 2,
-        input: {
-          recurrenceRelation: this.state.recurrenceRelation,
-          partitionList: this.state.partitionList
-        }
-      });
+      // sendProblem({
+      //   userID: this.props.user.id,
+      //   username: this.props.user.username,
+      //   email: this.props.user.email,
+      //   typeIndex: 2,
+      //   input: {
+      //     recurrenceRelation: this.state.recurrenceRelation,
+      //     partitionList: this.state.partitionList
+      //   }
+      // });
 
     }
     catch (err) {
