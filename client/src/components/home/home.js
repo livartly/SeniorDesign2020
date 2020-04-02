@@ -82,26 +82,39 @@ class Home extends Component {
           <br></br>
 
           <div class="card-deck">
-            <Link to="/">
+            <Link to="/multiplicity-closure-finder">
               <Card style={{ width: '20rem' }}>
-                <Card.Img variant="top" src="icons/hasseDiagram.png" />
+                <Card.Img variant="top" src="icons/closure.png" />
                 <Card.Body>
                   <Card.Title><h7>5.1a</h7></Card.Title>
                   <Card.Text>
-                    <h8>Multiplicity Classifier, also includes Hasse Diagrams.
+                    <h8>Relation Properties and Closures: Reflexive, Transative, and Symmetric.
                   </h8>
                   </Card.Text>
                 </Card.Body>
               </Card>
             </Link>
 
-            <Link to="">
+            <Link to="/hasse-diagram-builder">
               <Card style={{ width: '20rem' }}>
-                <Card.Img variant="top" src="icons/closure.png" />
+                <Card.Img variant="top" src="icons/hasseDiagram.png" />
                 <Card.Body>
                   <Card.Title><h7>5.1b</h7></Card.Title>
                   <Card.Text>
-                    <h8>Equivalence Class, also includes Reflexive and other Closures.
+                    <h8>Hasse Diagram with set input and graphical diagram output.
+                  </h8>
+                  </Card.Text>
+                </Card.Body>
+              </Card>
+            </Link>
+
+            <Link to="/equivalence-relation-finder">
+              <Card style={{ width: '20rem' }}>
+                <Card.Img variant="top" src="icons/equivalenceClass.png" />
+                <Card.Body>
+                  <Card.Title><h7>5.1c</h7></Card.Title>
+                  <Card.Text>
+                    <h8>Equivalence Class with set input, Equivalence Relation output.
                   </h8>
                   </Card.Text>
                 </Card.Body>
@@ -120,7 +133,11 @@ class Home extends Component {
                 </Card.Body>
               </Card>
             </Link>
+            </div>
 
+            <br></br>
+
+            <div class="card-deck">
             <Link to="/topological-sort">
               <Card style={{ width: '20rem' }}>
                 <Card.Img variant="top" src="icons/topSort.png" />
@@ -133,14 +150,11 @@ class Home extends Component {
                 </Card.Body>
               </Card>
             </Link>
-          </div>
-
-          <br></br>
-
-          <div class="card-deck">
+          
             <Link to="/">
               <Card style={{ width: '20rem' }}>
-                <Card.Img variant="top" src="icons/function.jpg" />
+                <br></br>
+                <Card.Img variant="top" src="icons/function.png" />
                 <Card.Body>
                   <Card.Title><h7>5.4</h7></Card.Title>
                   <Card.Text>
