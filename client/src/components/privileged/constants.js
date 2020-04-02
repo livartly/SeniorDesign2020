@@ -2,5 +2,6 @@ export const PROBLEM_TYPE_LIST = [
   "undefined",
   "Truth Table Builder",
   "Equivalence Relation Finder",
-  "Hasse Diagram Builder"
+  "Hasse Diagram Builder",
+  "Recursive Sequence Builder"
 ];

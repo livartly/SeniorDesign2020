@@ -9,13 +9,7 @@ class MagnitudeOrder extends React.Component
     constructor(props)
     {
         super(props);
-        this.state = {
-             m_FunctionF: null,
-             m_FunctionG: null,
-             m_C1: 0,
-             m_C2: 0,
-             m_N : 0,
-        };
+        
         this.HandleClick = this.HandleClick.bind(this);
         this.SolveProblem = this.SolveProblem.bind(this);
         this.VerifySolution = this.VerifySolution.bind(this);
@@ -30,31 +24,30 @@ class MagnitudeOrder extends React.Component
         document.getElementById("Answer").innerHTML = "";
         e.preventDefault();
       
-        this.state.m_FunctionF = document.getElementById("FunctionF").value;
-        this.state.m_FunctionG = document.getElementById("FunctionG").value;
 
-        if((this.state.m_FunctionF == "" || this.state.m_FunctionF == null) || this.state.m_FunctionG == "" || this.state.m_FunctionG == null)
+        var FunctionF = document.getElementById("FunctionF").value;
+        var FunctionG = document.getElementById("FunctionG").value;
+
+        if((FunctionF == "" || FunctionF == null) || FunctionG == "" || FunctionG == null)
         {
             document.getElementById("ErrorMessage").innerHTML = "Error: Must fill out both f(x) and g(x) forms before submitting!";
             document.getElementById("ErrorMessage").style.display = "block";
         }
-        else if(this.state.m_FunctionF.includes("sin") || this.state.m_FunctionF.includes("cos") || this.state.m_FunctionF.includes("tan") || this.state.m_FunctionG.includes("tan") || this.state.m_FunctionG.includes("sin" || this.state.m_FunctionG.includes("cos")))
+        else if(FunctionF.includes("sin") || FunctionF.includes("cos") || FunctionF.includes("tan") || FunctionG.includes("tan") || FunctionG.includes("sin" || FunctionG.includes("cos")))
         {
           document.getElementById("ErrorMessage").innerHTML = "Error: Solver currently does not support trig operations";
           document.getElementById("ErrorMessage").style.display = "block";
         }
         else 
         {
-          this.state.m_FunctionF = this.state.m_FunctionF.trim();
-          this.state.m_FunctionG = this.state.m_FunctionG.trim();
-          var FxTerms = this.state.m_FunctionF //.matchAll("(\\+|\\-)?[a-z0-9.^]+|\\(([^()]+)\\)|[/*+-]")
-          var GxTerms = this.state.m_FunctionG //.matchAll("(\\+|\\-)?[a-z0-9.^]+|\\(([^()]+)\\)|[/*+-]")
+          FunctionF = FunctionF.trim();
+          FunctionG = FunctionG.trim();
+          var FxTerms = FunctionF //.matchAll("(\\+|\\-)?[a-z0-9.^]+|\\(([^()]+)\\)|[/*+-]")
+          var GxTerms = FunctionG //.matchAll("(\\+|\\-)?[a-z0-9.^]+|\\(([^()]+)\\)|[/*+-]")
  
-          if(this.SolveProblem(FxTerms, GxTerms) == true)
+          if(this.SolveProblem(FxTerms, GxTerms) != false)
           {
-            document.getElementById("Answer").innerHTML = "x >= " + this.state.m_N + ",  " + this.state.m_C1 + "(" + this.state.m_FunctionG
-            + ") <= " + this.state.m_FunctionF + " <= " + this.state.m_C2 + "{" + this.state.m_FunctionG + "}";
-            document.getElementById("Answer").style.display = "block";
+            //does nothing
           }
         }
     }
@@ -113,7 +106,7 @@ class MagnitudeOrder extends React.Component
       var const2Start = const1
       var const1Start = const2
       
-      while(n <= 100 && FxResult >= 0 && GxResult >= 0)
+      while(n <= 50 && FxResult >= 0 && GxResult >= 0)
       {
         if(FxResult < (GxResult * (1/const1)))
         {
@@ -136,39 +129,59 @@ class MagnitudeOrder extends React.Component
              
              if(const1 == 1)
              {
-               this.state.m_C1 = "1"
+               const1 = "1"
              }
-             else this.state.m_C1 = "1/" + const1
+             else const1 = "1/" + const1
 
-             this.state.m_C2 = const2
-             this.state.m_N = n
+            
+
+             document.getElementById("Answer").innerHTML = "x >= " + n + ",  " + const1 + "(" + GxTerms
+             + ") <= " + FxTerms + " <= " + const2 + "{" + GxTerms + "}";
+             document.getElementById("Answer").style.display = "block";
+
 
              return true;
           }
           else if(flag == 1)
           {
-            const1 = const1 + 1
+            if(n < 10)
+            {
+              const1 = const1 + 1
+            }
+            else const1 = const1 + 20
           }
           else if(flag == 2)
           {
-            const2 = const2 + 1
+            if(n < 10)
+            {
+              const2 = const2 + 1
+            }
+            else const2 = const2 + 20
           }
           else
           {
-            const1 = const1 + 1
-            const2 = const2 + 1
+            if(n < 10)
+            {
+              const1 = const1 + 1
+              const2 = const2 + 1
+            }
+            else
+            {
+              const1 = const1 + 20
+              const2 = const2 + 20
+            }
           }
 
         }
         
-        if(const1 >= 1002 || const2 >= 1002)
+        if(const1 >= 100 || const2 >= 100)
         {
           n = n + 1
-          if(const1 >= 1002 )
+          if(const1 >= 100 )
           {
             const1 = const1Start
           }
-          if(const2 >= 1002)
+          if(const2 >= 100)
           {
             const2 = const2Start
           }
@@ -177,9 +190,9 @@ class MagnitudeOrder extends React.Component
         FxResult = this.ParseEquation(FxTerms, n)
         GxResult = this.ParseEquation(GxTerms, n)
 
-        if(n >= 100)
+        if(n >= 50)
         {
-        document.getElementById("ErrorMessage").innerHTML = "Error: X has not reached an answer below: X <= 100";
+        document.getElementById("ErrorMessage").innerHTML = "Error: f(x) growth rate does not fall within g(x)";
         document.getElementById("ErrorMessage").style.display = "block";
         return false
         }
@@ -194,8 +207,8 @@ class MagnitudeOrder extends React.Component
 
     VerifySolution(FxTerms, GxTerms, const1, const2)
     {
-      var VerResultFx = this.ParseEquation(FxTerms, 50)
-      var VerResultGx = this.ParseEquation(GxTerms, 50)
+      var VerResultFx = this.ParseEquation(FxTerms, 500)
+      var VerResultGx = this.ParseEquation(GxTerms, 500)
 
       if(VerResultFx >= (VerResultGx * (1/const1)) && VerResultFx <= (VerResultGx * const2))
       {

@@ -57,7 +57,6 @@ class FeedbackList extends Component {
   }
 
   render() {
-    console.log(this.state);
     return (
       <div>
         <Table striped bordered>
