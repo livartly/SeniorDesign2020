@@ -8,15 +8,9 @@ class BooleanMatrices extends React.Component
     {
         super(props);
         this.state = {
-            MatrixSize : "2",
-            InputButtonsA:
-            [{
-                Val: "0"
-            }],
-            InputButtonsB: 
-            [{
-                Val: "0"
-            }]
+            MatrixSize : 2,
+            InputButtonsA: [[0,0],[0,0]],
+            InputButtonsB: [[0,0],[0,0]]
         };
 
         this.HandleClick = this.HandleClick.bind(this);
@@ -31,21 +25,23 @@ class BooleanMatrices extends React.Component
         this.setState({
             MatrixSize: parseInt(event.currentTarget.value)
         });
-        
-       this.CreateInputButtons()
     }
 
     CreateInputButtons()
     {
         var InputButtonsMatrixA = [];
-           
-        for(var i = 0; i < this.state.MatrixSize * this.state.MatrixSize; i++)
-        {
-            InputButtonsMatrixA.push({
-                Val: 0
-            });
+        
+
+        for(var i = 0; i < this.state.MatrixSize; i++)
+        {  
+            InputButtonsMatrixA.push([])
+            for(var j = 0; j < this.state.MatrixSize; j++)
+            {
+                InputButtonsMatrixA[i].push(0); //defines row    row[i] = col[0,0,->n]
+            }
         }
 
+       // alert(this.state.InputButtonsA + "   " + InputButtonsMatrixA)
         this.setState(prevState => {
             return{
                 InputButtonsA : InputButtonsMatrixA 
@@ -53,29 +49,29 @@ class BooleanMatrices extends React.Component
         });
     }
 
-    UpdateButtonValues(idx){
+    UpdateButtonValues(rowIndex, colIndex){
         return e => {
             var nextVal = e.currentTarget.value;
+            var newInputButton;
+
             if(nextVal == 0)
             {
-                nextVal = 1
+                newInputButton = 1
             }
-            else nextVal = 0
+            else newInputButton = 0
 
             this.setState(prevState => {
-                var newInputButton = {
-                    Val : nextVal
-                };
+
                 var InputButtonsMatrixA = [];
                 
-                for(var i = 0; i < prevState.InputButtonsA.length; i++)
-                {
-                    InputButtonsMatrixA.push(prevState.InputButtonsA[i]);
-                }
-                InputButtonsMatrixA[idx] = newInputButton;
-
+                
+                InputButtonsMatrixA = prevState.InputButtonsA;
+                
+               // alert(InputButtonsMatrixA[rowIndex][colIndex])
+                InputButtonsMatrixA[rowIndex][colIndex] = newInputButton;
+               // alert(InputButtonsMatrixA)
                 return{
-                    nodes: InputButtonsMatrixA
+                    InputButtonsA: InputButtonsMatrixA
                 };
             });
         };
@@ -83,63 +79,61 @@ class BooleanMatrices extends React.Component
 
     DropDownListing()
     {
-        return ["2 X 2", "3 X 3", "4 X 4", "5 X 5", "6 X 6", "7 X 7"].map(value => (
+        return ["2 X 2", "3 X 3", "4 X 4", "5 X 5", "6 X 6"].map(value => (
           <option val={value} key={value}> {value} </option>
         ));
     }
 
     createMatrixAForm()
     {
-        return this.state.InputButtonsA.map((Button, idx) => {
+        return this.state.InputButtonsA.map((dataArrayRow, rowIndex) => {
            return(
-
-               <div key={idx}>
-                    <button
-                     value={this.state.InputButtonsA[idx].Val}
-                     onClick={this.UpdateButtonValues(idx)}
-                     > 
-                     {this.state.InputButtonsA[idx].Val}
-                     
-                    </button>
+               <div >
+                    <div key={rowIndex}>
+                            {this.renderRow(rowIndex)}
+                    </div>
                 </div>
            );
+        });
+
+        
+    }
+
+    renderRow(rowIndex)
+    {
+        return this.state.InputButtonsA[rowIndex].map((booleanNumber, colIndex) => {
+            return(
+                <div style={{display:"inline-block", marginBottom: -10}} >
+                   
+                    <div  key={colIndex}>
+                        <Button
+                        variant = "white"
+                        style = {{fontSize: "15px", width: 45, height: 45, borderColor: "lightgrey" , color: "black"}}
+                        value={this.state.InputButtonsA[rowIndex][colIndex]}
+                        onClick={this.UpdateButtonValues(rowIndex, colIndex)}
+                        > 
+                        {this.state.InputButtonsA[rowIndex][colIndex]}
+                        </Button>
+                        
+                    </div>
+                    
+                </div>
+                
+            );
+
         });
     }
    
     HandleClick(e) 
     {
         e.preventDefault();
-        var ArrayA = new Array(3);
-        var ArrayB = new Array(3);
+        var ArrayA = this.state.InputButtonsA;
+        var ArrayB = this.state.InputButtonsB;
 
+        alert(ArrayA)
+        alert(ArrayB)
         //handle and set before here
 
-        for(var i = 0; i < this.state.MatrixSize; i++)
-        {
-            ArrayA[i] = new Array(this.state.MatrixSize);
-            ArrayB[i] = new Array(this.state.MatrixSize);
-        }
-
-        ArrayA[0][0] = "0"
-        ArrayA[0][1] = "1"
-        ArrayA[0][2] = "0"
-        ArrayA[1][0] = "1"
-        ArrayA[1][1] = "0"
-        ArrayA[1][2] = "1"
-        ArrayA[2][0] = "0"
-        ArrayA[2][1] = "0"
-        ArrayA[2][2] = "1"
-
-        ArrayB[0][0] = "0"
-        ArrayB[0][1] = "1"
-        ArrayB[0][2] = "1"
-        ArrayB[1][0] = "0"
-        ArrayB[1][1] = "0"
-        ArrayB[1][2] = "1"
-        ArrayB[2][0] = "1"
-        ArrayB[2][1] = "0"
-        ArrayB[2][2] = "0"
-        
         this.BooleanAnd(ArrayA, ArrayB)
         this.BooleanOr(ArrayA, ArrayB)
         this.BooleanProduct(ArrayA, ArrayB)
@@ -227,7 +221,7 @@ class BooleanMatrices extends React.Component
             ArrayC.push(aRow)
         }
         
-        alert("ArrayA = " + Array1 + "    ArrayB = " + Array2 +  ",    ArrayC = " + ArrayC);
+        alert("Array1 = " + Array1 + "    Array2 = " + Array2 +  ",    ArrayC = " + ArrayC);
         return ArrayC;
     }
 
@@ -254,6 +248,7 @@ class BooleanMatrices extends React.Component
                         <Form.Control
                         as="select"
                         onChange={this.updateMatrixSize}
+                        onClick={this.CreateInputButtons}
                         style={{  height: "30px", width: "120px", fontSize: "15px"}}>
                         {this.DropDownListing()}
 
@@ -266,18 +261,34 @@ class BooleanMatrices extends React.Component
                             In the provided input boxes, please provide the data for MatrixA and MatrixB 
                         </p> <br></br>
 
-                        <div style={{float: "left", marginLeft: "50px"}} class ="right-element">
-                        <div style = {{fontSize: "25px"}}>Matrix A</div>
-                            {this.createMatrixAForm()}
+
+
+                        <div style={{display: "inline-block", marginLeft: "145px"}} class ="left-element">
+                            <div style = {{fontSize: "25px"}}>Matrix A</div>
+                                <Card style={{ borderColor: "black"}}>
+                                    {this.createMatrixAForm()}
+                                </Card>
+                                
                         </div>
 
-                        <div style={{float: "right", marginRight: "50px"}} class ="right-element">
+                        <div style={{display: "inline-block", float:"right", position:'absolute', marginLeft:"100px", marginRight: "10px"}} class ="right-element">
                             <div style = {{fontSize: "25px"}}>Matrix B</div>
 
-                            {this.createMatrixAForm()}
+                            <Card style={{ borderColor: "black"}}>
+                                {this.createMatrixAForm()}
+                            </Card>
+
                         </div>
 
                      </Form.Group>
+                        <div> 
+                                <button
+                                type="button" 
+                                style={{marginLeft: 412, marginRight: 410, marginTop: 15}}
+                                onClick={this.HandleClick}>
+                                button
+                                </button>
+                        </div>
                 </Form>
             </Card.Body>
           </Card>
