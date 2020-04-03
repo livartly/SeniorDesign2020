@@ -35,6 +35,8 @@ import HasseDiagramBuilder from './components/problem-solvers/hasse-diagram-buil
 import PertChart from './components/problem-solvers/pert-chart/PertChart';
 import TruthTableBuilder from './components/problem-solvers/truth-table-builder/TruthTableBuilderContainer';
 import RecursiveSequenceBuilder from './components/problem-solvers/recursive-sequence-builder/RecursiveSequenceBuilderContainer';
+import BooleanMatrices from './components/problem-solvers/BooleanMatrices/BooleanMatrices.js';
+
 //import 'bootstrap/dist/css/bootstrap.min.css';
 
 import './App.css';
@@ -80,6 +82,7 @@ class App extends Component {
               <PrivateRoute path="/multiplicity-closure-finder" component={MultiplicityClosureFinder} />
               <PrivateRoute path="/hasse-diagram-builder" component={HasseDiagramBuilder} />
               <PrivateRoute path="/recursive-sequence-builder" component={RecursiveSequenceBuilder} />
+              <PrivateRoute path="/BooleanMatrices" component={BooleanMatrices} />
             </Switch>
           </div>
         </Router>

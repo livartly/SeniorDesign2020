@@ -191,7 +191,7 @@ class Home extends Component {
               </Card>
             </Link>
 
-            <Link to="/">
+            <Link to="/BooleanMatrices">
               <Card style={{ width: '20rem' }}>
                 <Card.Img variant="top" src="icons/matrix.png" />
                 <Card.Body>
