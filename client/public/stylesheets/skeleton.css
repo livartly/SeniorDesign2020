@@ -267,6 +267,8 @@ textarea:focus,
 select:focus {
   border: 1px solid #66a4ff;
   outline: 0; }
+label {
+  font-weight: 600; }
 legend {
   display: block;
   margin-bottom: .5rem;

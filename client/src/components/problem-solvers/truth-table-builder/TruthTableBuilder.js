@@ -125,7 +125,7 @@ class TruthTableBuilder extends React.Component {
           <Form>
             <h1>Truth Table Builder</h1>
             <Form.Group controlId="truthTableBuilder.instructions">
-              <Form.Label>Instructions</Form.Label>
+              <Form.Label><b>Instructions</b></Form.Label>
               <p>
                 This site will take a well formed formula as input and construct
                 a truth table describing the input. Valid variables must be one
