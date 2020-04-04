@@ -75,7 +75,7 @@ class TreeProof extends React.Component {
         // Tree is open. Display a countermodel if one is known:
         // if (!this.counterModel) this.counterModel = sentree.getCounterModel();
         if (this.counterModel) {
-          document.getElementById("model").style.display = "block";
+          document.getElementById("model").style.display = "inline";
           document.getElementById("model").innerHTML = "<b>Countermodel:</b><br>" +
             this.counterModel.toHTML();
         }
@@ -85,7 +85,7 @@ class TreeProof extends React.Component {
         sentree.modalize();
       }
       // Start painting the tree:
-      document.getElementById("rootAnchor").style.display = "block";
+      document.getElementById("rootAnchor").style.display = "inline";
       window.self.painter = new TreePainter(sentree, document.getElementById("rootAnchor"));
       window.self.painter.paintTree();
     }
@@ -176,10 +176,43 @@ class TreeProof extends React.Component {
             </Form.Group>
             <Form.Group controlId="truthTableBuilder.cardOutput">
               <Form.Label>Result</Form.Label>
+
+{/* Output containment attempts: */}
+{/* Input formula to test: A∧(B→C)→(B→(A∧C)) */}
+{/* Placing between Card tags does help a bit */}
+{/* Card.Body adds an extra small card*/}
+{/* Model and rootAnchor use 'block' for style- when changed to none does not display */}
+{/* Style is currently changed to 'inline' */}
+
               <Card body style={{ minHeight: "300px" }}>
+
+              {/* <div class="container"> */}
+              {/* <script>
+                alert(
+                
                 <div id="model"> </div>
                 <div id="rootAnchor"> </div>
+              
+                )
+              </script> */}
+              {/* </div> */}
+
               </Card>
+              
+              {/* <Card>
+                <div id="model"> </div>
+                <div id="rootAnchor"> </div>
+              </Card> */}
+
+              {/* <div class="containCenter">
+              <span id="model"> </span>
+                <span id="rootAnchor"> </span>
+              </div> */}
+
+{/* For the output: */}
+                <div id="model"> </div>
+                <div id="rootAnchor"> </div>
+
             </Form.Group>
           </Form>
         </div>
