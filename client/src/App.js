@@ -17,6 +17,7 @@ import PrivateRoute from './components/private-route/PrivateRoute';
 import Register from './components/auth/RegisterContainer';
 import Login from './components/auth/LoginContainer';
 import Navbar from './components/navbar/NavbarContainer';
+import FooterPage from './components/footer/FooterContainer';
 import Home from './components/home/home.js';
 import About from './components/about/about.js';
 import Resources from './components/resources/resources.js';
@@ -62,6 +63,7 @@ class App extends Component {
         <Router>
           <div className="App">
             <Navbar />
+            <FooterPage />
             <Route path="/register" component={Register} />
             <Route path="/login" component={Login} />
             <Switch>
