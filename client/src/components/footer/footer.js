@@ -9,6 +9,12 @@ class FooterPage extends Component {
   }
 
   render() {
+    if (!this.props.user || !this.props.user.id) return (
+        <div>
+            
+        </div>
+    );
+
     if (this.props.user || this.props.user.id) return (
 
     <Navbar bg="light" expand="lg" fixed="bottom">
