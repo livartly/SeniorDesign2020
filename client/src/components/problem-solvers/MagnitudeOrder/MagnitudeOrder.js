@@ -247,21 +247,21 @@ class MagnitudeOrder extends React.Component
                 <p>f(x) = x^2 + 5</p>
                 <p>g(x) = x^2 + sqrt(x^1) + log(x)</p>
                 <form id = "FunctionInputForm">
-                    <label>
+                    <div>
                          f(x): {' '}
                         <input id= "FunctionF">
                           
                         </input>
                         {' '}
-                    </label>
+                    </div>
                   <br></br>
-                    <label>
+                    <div>
                          g(x):
                         <input id= "FunctionG">
                           
                         </input>
                         {' '}
-                    </label>
+                    </div>
                   <br></br>
                     <label>
                          <button id = "SubmitButton"   onClick = {this.HandleClick}>
@@ -276,12 +276,12 @@ class MagnitudeOrder extends React.Component
                 <Form.Label>Result</Form.Label>
                 <Card body style={{ minHeight: "100px" }}>
                 <div id = "Output" style={{display: "block", color: "black"}}>
-					         <label id = "ErrorMessage" style={{display: "none", color:"red"}}>
+					         <div id = "ErrorMessage" style={{display: "none", color:"red"}}>
 						            
-					         </label>
+					         </div>
                  
-                   <label id = "Answer" style={{display: "none", color: "black", fontsize: "15px"}}>
-                   </label>
+                   <div id = "Answer" style={{display: "none", color: "black", fontsize: "15px"}}>
+                   </div>
 				       </div>
                 </Card>
               </Form.Group>
