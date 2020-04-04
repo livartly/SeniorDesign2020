@@ -218,9 +218,9 @@ class MastersTheorem extends React.Component
               </Form.Group>
               <Form.Group controlId="truthTableBuilder.textInput">
                 <Form.Label>Example</Form.Label>
-                <Form.Label>S(n) = 2S(n/4) + n^2</Form.Label>
+                <p>S(n) = 2S(n/4) + n^2</p>
                 <form id = "RecurrenceEquationForm">
-                    <label>
+                    <div>
                         <input id= "RecurrenceEquationInput"> 
                         
                         </input>
@@ -229,7 +229,7 @@ class MastersTheorem extends React.Component
                         <button id = "SubmitButton"  onClick = {this.HandleClick}>
                            Submit
                         </button>
-                    </label>
+                    </div>
                 </form>
               </Form.Group>
 
@@ -237,11 +237,11 @@ class MastersTheorem extends React.Component
                 <Form.Label>Result</Form.Label>
                 <Card body style={{ minHeight: "100px" }}>
                 <div id = "Output">
-					         <label id = "ErrorMessage" style={{display: "none", color:"red"}}>
-					         </label>
+					         <div id = "ErrorMessage" style={{display: "none", color:"red"}}>
+					         </div>
                  
-                   <label id = "Answer">
-                   </label>
+                   <div id = "Answer">
+                   </div>
 				       </div>
                 </Card>
               </Form.Group>
