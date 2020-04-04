@@ -196,6 +196,9 @@ class RecursiveSequenceBuilder extends React.Component {
               </Card>
             </Form.Group>
           </Form>
+
+          <br></br>
+          <br></br>
         </div>
       </div>
     );

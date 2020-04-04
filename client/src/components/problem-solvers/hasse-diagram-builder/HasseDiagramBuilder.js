@@ -166,6 +166,8 @@ class HasseDiagramBuilder extends React.Component {
             </Form.Group>
           </Form>
         </div>
+        <br></br>
+        <br></br>
       </div>
     );
   }
