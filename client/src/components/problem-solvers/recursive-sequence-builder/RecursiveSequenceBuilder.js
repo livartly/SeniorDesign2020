@@ -131,17 +131,37 @@ class RecursiveSequenceBuilder extends React.Component {
             <Form.Group controlId="recursiveSequenceBuilder.instructions">
               <Form.Label>Instructions</Form.Label>
               <p>
-                The site will find the equivalence relation from the provided
-                input set, S, and series of partitions (up to 10). The
-                partitions must divide the parent set such that each element
-                in the parent set must be present in exactly one of the
-                partition. The input for the set and the input for each
-                partition must be a series of elements that are
-                comma-delimited. Valid element names can be a combination of
-                alphanumeric characters. Click the "Add Partition" button to
-                create a new partition. The supported number of partitions is
-                limited to a maximum of 10.
+                The site will take a recurrence relation and a series of base
+                cases as input and find the following elements in the recursive
+                sequence.
               </p>
+            </Form.Group>
+            <Form.Group controlId="recursiveSequenceBuilder.usage">
+              <Form.Label>Usage</Form.Label>
+              <ul>
+                <li>
+                  Base Cases - must be numbers. Click add/remove to adjust the
+                  desired number of base cases.
+                </li>
+                <li>
+                  Depth - how many additional elements of the recursive
+                  sequence to be found.
+                </li>
+                <li>
+                  Recurrence Relation - the relation defining how sequential
+                  elements should be found. Note: the function must adhere to
+                  the format, S(n), where S is the recurrence relation and n
+                  is the sequence index.
+                </li>
+                <li>
+                  The site uses <a href="https://mathjs.org/">mathjs</a> to
+                  parse the formula used in the recurrence relation. You can
+                  find information on supported syntax for valid expressions
+                  &nbsp;<a href="https://mathjs.org/docs/expressions/syntax.html">
+                    here.
+                  </a>
+                </li>
+              </ul>
             </Form.Group>
             <Form.Row>
               <Form.Group as={Col} md={4} controlId="recursiveSequenceBuilder.baseCasesInput">
@@ -175,7 +195,7 @@ class RecursiveSequenceBuilder extends React.Component {
               </Form.Group>
             </Form.Row>
             <Form.Group controlId="recursiveSequenceBuilder.recurrenceRelationInput">
-              <Form.Label>Recurrence Relation - S(n) =</Form.Label>
+              <Form.Label>Recurrence Relation: S(n) =</Form.Label>
               <Form.Control
                 type="text"
                 value={this.state.recurrenceRelation}
