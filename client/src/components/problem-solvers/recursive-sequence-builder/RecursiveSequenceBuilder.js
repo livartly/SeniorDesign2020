@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { Form, Card, Col } from 'react-bootstrap';
+import { Form, Card, Col, Table } from 'react-bootstrap';
 
 import { sendProblem } from '../../../utils/problemsAPIUtil';
 
@@ -69,9 +69,24 @@ class RecursiveSequenceBuilder extends React.Component {
 
   showResult() {
     if (!this.state.out) return null;
-    return this.state.out.map((val, i) => (
-      <div key={i}>S({i + 1}) = {val}</div>
-    ));
+    return (
+      <Table striped bordered>
+        <thead>
+          <th>n</th>
+          <th>S(n)</th>
+        </thead>
+        <tbody>
+          {
+            this.state.out.map((val, i) => (
+              <tr key={i}>
+                <td>{i + 1}</td>
+                <td>{val}</td>
+              </tr>
+            ))
+          }
+        </tbody>
+      </Table>
+    );
   }
 
   handleAddBaseCase(event) {
@@ -130,97 +145,100 @@ class RecursiveSequenceBuilder extends React.Component {
     return (
       <div>
         <div className="container" style={{ marginTop: "50px" }}>
-          <Form>
-            <h1>Recursive Sequence Builder</h1>
-            <Form.Group controlId="recursiveSequenceBuilder.instructions">
-              <Form.Label>Instructions</Form.Label>
-              <p>
-                The site will take a recurrence relation and a series of base
-                cases as input and find the following elements in the recursive
-                sequence.
+          <Card>
+            <Card.Body>
+              <Form>
+                <h1>Recursive Sequence Builder</h1>
+                <Form.Group controlId="recursiveSequenceBuilder.instructions">
+                  <Form.Label>Instructions</Form.Label>
+                  <p>
+                    The site will take a recurrence relation and a series of base
+                    cases as input and find the following elements in the recursive
+                    sequence.
               </p>
-            </Form.Group>
-            <Form.Group controlId="recursiveSequenceBuilder.usage">
-              <Form.Label>Usage</Form.Label>
-              <ul>
-                <li>
-                  Base Cases - must be numbers. Click add/remove to adjust the
-                  desired number of base cases.
+                </Form.Group>
+                <Form.Group controlId="recursiveSequenceBuilder.usage">
+                  <Form.Label>Usage</Form.Label>
+                  <ul>
+                    <li>
+                      Base Cases - must be numbers. Click add/remove to adjust the
+                      desired number of base cases.
                 </li>
-                <li>
-                  Depth - how many additional elements of the recursive
-                  sequence to be found.
+                    <li>
+                      Depth - how many additional elements of the recursive
+                      sequence to be found.
                 </li>
-                <li>
-                  Recurrence Relation - the relation defining how sequential
-                  elements should be found. Note: the function must adhere to
-                  the format, S(n), where S is the recurrence relation and n
-                  is the sequence index.
+                    <li>
+                      Recurrence Relation - the relation defining how sequential
+                      elements should be found. Note: the function must adhere to
+                      the format, S(n), where S is the recurrence relation and n
+                      is the sequence index.
                 </li>
-                <li>
-                  The site uses <a href="https://mathjs.org/">mathjs</a> to
-                  parse the formula used in the recurrence relation. You can
-                  find information on supported syntax for valid expressions
+                    <li>
+                      The site uses <a href="https://mathjs.org/">mathjs</a> to
+                      parse the formula used in the recurrence relation. You can
+                      find information on supported syntax for valid expressions
                   &nbsp;<a href="https://mathjs.org/docs/expressions/syntax.html">
-                    here.
+                        here.
                   </a>
-                </li>
-              </ul>
-            </Form.Group>
-            <Form.Row>
-              <Form.Group as={Col} md={4} controlId="recursiveSequenceBuilder.baseCasesInput">
-                <Form.Label>Base Cases (up to 5)</Form.Label>
-                {this.showBaseCasesInput()}
-                <button
-                  disabled={this.state.baseCases.length >= 5}
-                  onClick={this.handleAddBaseCase}
-                >
-                  Add
+                    </li>
+                  </ul>
+                </Form.Group>
+                <Form.Row>
+                  <Form.Group as={Col} md={4} controlId="recursiveSequenceBuilder.baseCasesInput">
+                    <Form.Label>Base Cases (up to 5)</Form.Label>
+                    {this.showBaseCasesInput()}
+                    <button
+                      disabled={this.state.baseCases.length >= 5}
+                      onClick={this.handleAddBaseCase}
+                    >
+                      Add
                 </button>
-                <span>&nbsp;&nbsp;</span>
-                <button
-                  disabled={this.state.baseCases.length <= 1}
-                  onClick={this.handleRemoveBaseCase}
-                >
-                  Remove
+                    <span>&nbsp;&nbsp;</span>
+                    <button
+                      disabled={this.state.baseCases.length <= 1}
+                      onClick={this.handleRemoveBaseCase}
+                    >
+                      Remove
                 </button>
-              </Form.Group>
-              <Col md={1} />
-              <Form.Group as={Col} md={4} controlId="recursiveSequenceBuilder.depthDropdown" >
-                <Form.Label>Depth (3-10)</Form.Label>
-                <Form.Control
-                  as="select"
-                  value={this.state.depth}
-                  onChange={this.updateDepth}
-                  style={{ height: "38px" }}
-                >
-                  {this.showDepthOptions()}
-                </Form.Control>
-              </Form.Group>
-            </Form.Row>
-            <Form.Group controlId="recursiveSequenceBuilder.recurrenceRelationInput">
-              <Form.Label>Recurrence Relation: S(n) =</Form.Label>
-              <Form.Control
-                type="text"
-                value={this.state.recurrenceRelation}
-                onChange={this.updateRecurrenceRelation}
-                placeholder="S(n - 1) + 10"
-              />
-            </Form.Group>
-            <button onClick={this.handleSubmit}>
-              Submit
-            </button>
-            <span style={{ color: 'red' }}>
-              {this.state.error ? this.state.error : ""}
-            </span>
-            <Form.Group controlId="recursiveSequenceBuilder.cardOutput">
-              <Form.Label>Result</Form.Label>
-              <Card body style={{ minHeight: "300px" }}>
-                {this.showResult()}
-              </Card>
-            </Form.Group>
-          </Form>
-
+                  </Form.Group>
+                  <Col md={1} />
+                  <Form.Group as={Col} md={4} controlId="recursiveSequenceBuilder.depthDropdown" >
+                    <Form.Label>Depth (3-10)</Form.Label>
+                    <Form.Control
+                      as="select"
+                      value={this.state.depth}
+                      onChange={this.updateDepth}
+                      style={{ height: "38px" }}
+                    >
+                      {this.showDepthOptions()}
+                    </Form.Control>
+                  </Form.Group>
+                </Form.Row>
+                <Form.Group controlId="recursiveSequenceBuilder.recurrenceRelationInput">
+                  <Form.Label>Recurrence Relation: S(n) =</Form.Label>
+                  <Form.Control
+                    type="text"
+                    value={this.state.recurrenceRelation}
+                    onChange={this.updateRecurrenceRelation}
+                    placeholder="S(n - 1) + 10"
+                  />
+                </Form.Group>
+                <span style={{ color: 'red', display: 'block' }}>
+                  {this.state.error ? this.state.error : null}
+                </span>
+                <button onClick={this.handleSubmit}>
+                  Submit
+                </button>
+                <Form.Group controlId="recursiveSequenceBuilder.cardOutput">
+                  <Form.Label>Result</Form.Label>
+                  <Card body style={{ minHeight: "300px" }}>
+                    {this.showResult()}
+                  </Card>
+                </Form.Group>
+              </Form>
+            </Card.Body>
+          </Card>
           <br></br>
           <br></br>
         </div>
