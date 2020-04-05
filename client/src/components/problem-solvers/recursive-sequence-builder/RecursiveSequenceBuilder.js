@@ -6,6 +6,21 @@ import { sendProblem } from '../../../utils/problemsAPIUtil';
 
 import { solveSequence } from '../../../engine/RecursiveSequence/recursiveSequence';
 
+const EXAMPLE_INPUTS = [
+  {
+    baseCases: ["10"],
+    recurrenceRelation: "S(n - 1) + 10"
+  },
+  {
+    baseCases: ["1"],
+    recurrenceRelation: "nS(n - 1)"
+  },
+  {
+    baseCases: ["2", "3"],
+    recurrenceRelation: "S(n - 1)S(n - 2)"
+  }
+];
+
 class RecursiveSequenceBuilder extends React.Component {
   constructor(props) {
     super(props);
@@ -141,6 +156,12 @@ class RecursiveSequenceBuilder extends React.Component {
     }
   }
 
+  applyExample(idx) {
+    return () => {
+      this.setState(EXAMPLE_INPUTS[idx])
+    };
+  }
+
   render() {
     return (
       <div>
@@ -180,6 +201,26 @@ class RecursiveSequenceBuilder extends React.Component {
                       find information on supported syntax for valid expressions&nbsp;
                       <a href="https://mathjs.org/docs/expressions/syntax.html">
                         here.
+                      </a>
+                    </li>
+                  </ul>
+                </Form.Group>
+                <Form.Group controlId="recursiveSequenceBuilder.examples">
+                  <Form.Label>Examples</Form.Label>
+                  <ul>
+                    <li>
+                      <a href="javascript:;" onClick={this.applyExample(0)}>
+                        S(n) = S(n - 1) + 10; S(1) = 10
+                      </a>
+                    </li>
+                    <li>
+                      <a href="javascript:;" onClick={this.applyExample(1)}>
+                        S(n) = nS(n - 1); S(1) = 1
+                      </a>
+                    </li>
+                    <li>
+                      <a href="javascript:;" onClick={this.applyExample(2)}>
+                        S(n) = S(n - 1)S(n - 2); S(1) = 2; S(2) = 3
                       </a>
                     </li>
                   </ul>
