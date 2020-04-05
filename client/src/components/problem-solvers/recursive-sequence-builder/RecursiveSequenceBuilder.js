@@ -155,7 +155,7 @@ class RecursiveSequenceBuilder extends React.Component {
                     The site will take a recurrence relation and a series of base
                     cases as input and find the following elements in the recursive
                     sequence.
-              </p>
+                  </p>
                 </Form.Group>
                 <Form.Group controlId="recursiveSequenceBuilder.usage">
                   <Form.Label>Usage</Form.Label>
@@ -163,24 +163,24 @@ class RecursiveSequenceBuilder extends React.Component {
                     <li>
                       Base Cases - must be numbers. Click add/remove to adjust the
                       desired number of base cases.
-                </li>
+                    </li>
                     <li>
                       Depth - how many additional elements of the recursive
                       sequence to be found.
-                </li>
+                    </li>
                     <li>
                       Recurrence Relation - the relation defining how sequential
                       elements should be found. Note: the function must adhere to
                       the format, S(n), where S is the recurrence relation and n
                       is the sequence index.
-                </li>
+                    </li>
                     <li>
                       The site uses <a href="https://mathjs.org/">mathjs</a> to
                       parse the formula used in the recurrence relation. You can
-                      find information on supported syntax for valid expressions
-                  &nbsp;<a href="https://mathjs.org/docs/expressions/syntax.html">
+                      find information on supported syntax for valid expressions&nbsp;
+                      <a href="https://mathjs.org/docs/expressions/syntax.html">
                         here.
-                  </a>
+                      </a>
                     </li>
                   </ul>
                 </Form.Group>
@@ -193,14 +193,14 @@ class RecursiveSequenceBuilder extends React.Component {
                       onClick={this.handleAddBaseCase}
                     >
                       Add
-                </button>
+                    </button>
                     <span>&nbsp;&nbsp;</span>
                     <button
                       disabled={this.state.baseCases.length <= 1}
                       onClick={this.handleRemoveBaseCase}
                     >
                       Remove
-                </button>
+                    </button>
                   </Form.Group>
                   <Col md={1} />
                   <Form.Group as={Col} md={4} controlId="recursiveSequenceBuilder.depthDropdown" >

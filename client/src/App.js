@@ -63,7 +63,6 @@ class App extends Component {
         <Router>
           <div className="App">
             <Navbar />
-            <FooterPage />
             <Route path="/register" component={Register} />
             <Route path="/login" component={Login} />
             <Switch>
@@ -86,6 +85,7 @@ class App extends Component {
               <PrivateRoute path="/recursive-sequence-builder" component={RecursiveSequenceBuilder} />
               <PrivateRoute path="/BooleanMatrices" component={BooleanMatrices} />
             </Switch>
+            <FooterPage />
           </div>
         </Router>
       </Provider>
