@@ -1,5 +1,4 @@
 import React from 'react';
-import { Link } from 'react-router-dom';
 import { Form, Row, Col, Card } from 'react-bootstrap';
 import PertChartBuilder from './PertChartBuilder';
 import { sendProblem } from '../../../utils/problemsAPIUtil';
@@ -21,7 +20,6 @@ class PertChart extends React.Component {
       ]
     };
     // Bindings for this 
-    // this.componentDidMount = this.componentDidMount.bind(this);
     this.handleClick2 = this.handleClick2.bind(this);
     this.setChartData = this.setChartData.bind(this);
     this.updateId = this.updateId.bind(this);
@@ -340,7 +338,6 @@ class PertChart extends React.Component {
             <Form.Label>Result</Form.Label>
             <Card body style={{ minHeight: "400px" }}>
             <PertChartBuilder data={this.state.chartData} />
-            {/* <div id="chart" style={{height: '400px'}}/> */}
             </Card>
           </Form.Group>
         </Form>
