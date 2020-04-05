@@ -3,5 +3,7 @@ export const PROBLEM_TYPE_LIST = [
   "Truth Table Builder",
   "Equivalence Relation Finder",
   "Hasse Diagram Builder",
-  "Recursive Sequence Builder"
+  "Recursive Sequence Builder",
+  "Topological Sort",
+  "Pert-Chart"
 ];
