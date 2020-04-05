@@ -118,7 +118,11 @@ class RecursiveSequenceBuilder extends React.Component {
       this.setState({ out: outDataArr, error: null });
     }
     catch (err) {
-      this.setState({ error: err.message });
+      if (err.message === "(intermediate value)(intermediate value)(intermediate value) is not a function") {
+        this.setState({ error: "Invalid function name encountered. Please use S for the recurrence relation" });
+      } else {
+        this.setState({ error: err.message });
+      }
     }
   }
 

@@ -11,7 +11,12 @@ const REQUIRES_MULTIPLY_SYMBOL = [
  *
  */
 const validateBaseCases = (baseCases) => {
-
+  for (const baseCase of baseCases) {
+    if (baseCase === "")
+      throw new Error("Base Cases should not be empty");
+    if (isNaN(parseInt(baseCase)))
+      throw new Error("Base Cases must be numbers");
+  }
 };
 
 /**
