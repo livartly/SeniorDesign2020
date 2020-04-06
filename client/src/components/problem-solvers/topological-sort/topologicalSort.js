@@ -1,9 +1,7 @@
 import React from 'react';
-import Table from 'react-bootstrap/Table';
-// Include toposort 
 import toposort from 'toposort';
 import { Form, Row, Col, Card } from 'react-bootstrap';
-import {Link} from 'react-router-dom'
+import { sendProblem } from '../../../utils/problemsAPIUtil';
 
 class TopologicalSort extends React.Component {
   constructor(props) {
@@ -62,6 +60,18 @@ class TopologicalSort extends React.Component {
       }
 
       document.getElementById("output").innerHTML = tempOutput;
+
+      // This will occur asynchronously (not blocking)
+      sendProblem({
+      userID: this.props.user.id,
+      username: this.props.user.username,
+      email: this.props.user.email,
+      typeIndex: 5,
+      input: {
+        nodes: this.state.nodes,
+        output: tempOutput
+      }
+      });
 
       }
       catch(e)

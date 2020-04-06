@@ -1,4 +1,4 @@
-import PertChart from './PertChart.js';
+import PertChart from './PertChart';
 import { connect } from 'react-redux';
 import { withRouter } from 'react-router-dom';
 
@@ -11,3 +11,4 @@ export default connect(
   mapStateToProps,
   {}
 )(withRouter(PertChart));
+
