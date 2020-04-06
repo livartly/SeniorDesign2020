@@ -424,9 +424,14 @@ class BooleanMatrices extends React.Component
                     <h1>Boolean Matrix Solver</h1>
                     <Form.Group >
                         <p style = {{marginLeft: "20px"}}>
-                            Select the size of your two matrices from the dropdown below. This value will be used to determine
-                            the size of Matrix A and Matrix B.
+                            <b>Instructions</b> <br></br>Select the size of your two matrices from the dropdown below. This value will be used to determine
+                            the size of Matrix A and Matrix B. In the provided input boxes, please then provide the data for Matrix A and Matrix B. These Matrices follow the standard format for a Matrix.
+                            Rows are along the vertical axis and Columns are along the horizontal. Once you have entered all available values for Matrix A and
+                            Matrix B, click the submit button to get your answers in the result area below.
                         </p>   
+                        <p style = {{marginLeft: "20px", marginTop: "25px"}}>
+                            
+                        </p> <br></br>
                     </Form.Group>
                 
 
@@ -441,11 +446,7 @@ class BooleanMatrices extends React.Component
                     </Form.Group>
                 
                      <Form.Group>
-                        <p style = {{marginLeft: "20px", marginTop: "50px"}}>
-                            In the provided input boxes, please provide the data for MatrixA and MatrixB. These Matrices follow the standard format for a Matrix.<br></br>
-                            Rows are along the vertical axis and Columns are along the horizontal. Once you have entered all available values for Matrix A and <br></br>
-                            Matrix B, click the submit button to get your answers below.
-                        </p> <br></br>
+                        
 
                         <div style={{display: "inline-block", marginLeft: "145px"}} class ="left-element">
                             <div style = {{fontSize: "25px"}}>Matrix A</div>
