@@ -14,7 +14,9 @@ class BooleanMatrices extends React.Component
             AnswerAnd: undefined,
             AnswerOr: undefined,
             AnswerProduct: undefined,
-            AnswerReverseProduct: undefined
+            AnswerReverseProduct: undefined,
+            AnswerRegProduct: undefined,
+            AnswerRegReverseProduct: undefined
         };
 
         this.HandleClick = this.HandleClick.bind(this);
@@ -29,7 +31,7 @@ class BooleanMatrices extends React.Component
     {
         this.setState({
             MatrixSize: parseInt(event.currentTarget.value)
-        });
+        }, () => {this.CreateInputButtons()} );
     }
 
     CreateInputButtons()
@@ -73,8 +75,7 @@ class BooleanMatrices extends React.Component
 
                     var InputButtonsMatrixA = [];
                     
-                    InputButtonsMatrixA = prevState.InputButtonsA;
-                    
+                    InputButtonsMatrixA = Array.from(prevState.InputButtonsA);
                     InputButtonsMatrixA[rowIndex][colIndex] = newInputButton;
                     return{
                         InputButtonsA: InputButtonsMatrixA
@@ -87,7 +88,7 @@ class BooleanMatrices extends React.Component
 
                     var InputButtonsMatrixB = [];
                     
-                    InputButtonsMatrixB = prevState.InputButtonsB;
+                    InputButtonsMatrixB = Array.from(prevState.InputButtonsB);
                     
                     InputButtonsMatrixB[rowIndex][colIndex] = newInputButton;
                     return{
@@ -111,8 +112,8 @@ class BooleanMatrices extends React.Component
         {
             return this.state.InputButtonsA.map((dataArrayRow, rowIndex) => {
             return(
-                <div >
-                    <div key={rowIndex}>
+                <div key={rowIndex}>
+                    <div >
                         {this.renderRow(rowIndex, MatrixFlag)}
                     </div>
                 </div>
@@ -123,8 +124,8 @@ class BooleanMatrices extends React.Component
         {
             return this.state.InputButtonsB.map((dataArrayRow, rowIndex) => {
                 return(
-                    <div >
-                        <div key={rowIndex}>
+                    <div key={rowIndex}>
+                        <div >
                             {this.renderRow(rowIndex, MatrixFlag)}
                         </div>
                     </div>
@@ -139,9 +140,9 @@ class BooleanMatrices extends React.Component
         {
             return this.state.InputButtonsA[rowIndex].map((booleanNumber, colIndex) => {
                 return(
-                    <div style={{display:"inline-block", marginBottom: -10}} >
+                    <div key={colIndex} style={{display:"inline-block", marginBottom: -10}} >
                     
-                        <div  key={colIndex}>
+                        <div  >
                             <Button
                             variant = "white"
                             style = {{fontSize: "15px", width: 45, height: 45, borderColor: "lightgrey" , color: "black"}}
@@ -159,9 +160,9 @@ class BooleanMatrices extends React.Component
         {
             return this.state.InputButtonsB[rowIndex].map((booleanNumber, colIndex) => {
                 return(
-                    <div style={{display:"inline-block", marginBottom: -10}} >
+                    <div key={colIndex} style={{display:"inline-block", marginBottom: -10}} >
                     
-                        <div  key={colIndex}>
+                        <div  >
                             <Button
                             variant = "white"
                             style = {{fontSize: "15px", width: 45, height: 45, borderColor: "lightgrey" , color: "black"}}
@@ -189,7 +190,9 @@ class BooleanMatrices extends React.Component
                 AnswerAnd: this.BooleanAnd(ArrayA, ArrayB),
                 AnswerOr: this.BooleanOr(ArrayA, ArrayB),
                 AnswerProduct: this.BooleanProduct(ArrayA, ArrayB),
-                AnswerReverseProduct: this.BooleanProduct(ArrayB, ArrayA)
+                AnswerReverseProduct: this.BooleanProduct(ArrayB, ArrayA),
+                AnswerRegProduct: this.dotProduct(ArrayA, ArrayB),
+                AnswerRegReverseProduct: this.dotProduct(ArrayB, ArrayA)
             };
         });
 
@@ -278,6 +281,30 @@ class BooleanMatrices extends React.Component
         return ArrayC;
     }
 
+    dotProduct(Array1, Array2) //Will be used to verify if (A X B === A dot B)
+    {
+        var ArrayC = [];
+
+        var i, j = 0;
+        var OrValue = 0;
+
+        for(var i = 0; i < Array1.length; i++)      //2 is the m value
+        {   var aRow = []
+            for(j = 0; j < Array1.length; j++)
+            { var sum = 0;
+                for(var k = 0; k < Array1.length; k ++)
+                {
+                    sum = sum + Array1[i][k] * Array2[k][j]
+                }
+                aRow.push(sum);
+            }
+            ArrayC.push(aRow);
+        }
+        
+        //alert("Array1 = " + Array1 + "    Array2 = " + Array2 +  ",    ArrayC = " + ArrayC);
+        return ArrayC;
+    }
+
     displayAnswer()
     {
         if(this.state.AnswerAnd != undefined && this.state.AnswerOr != undefined && this.state.AnswerProduct != undefined && this.state.AnswerReverseProduct != undefined)
@@ -285,7 +312,7 @@ class BooleanMatrices extends React.Component
             return(
                 <div style={{marginLeft: 30, width: "100%"}}>
                     
-                    <div style={{float: "left", marginRight: "50px"}}>
+                    <div style={{float: "left", marginRight: "50px", marginTop: "5px", marginBottom: "5px"}}>
                    <b>A &and; B </b> 
                         <Card style={{borderColor:"gray"}}> 
                             {this.state.AnswerAnd.map((row, i) =>
@@ -299,7 +326,7 @@ class BooleanMatrices extends React.Component
                             )}
                         </Card>
                     </div>
-                    <div style={{float: "left", marginRight: "50px", marginBottom: "-15px"}}>
+                    <div style={{float: "left", marginRight: "50px", marginTop: "5px", marginBottom: "5px"}}>
                   <b> A &or; B </b> 
                         <Card style={{borderColor:"gray"}}> 
                             {this.state.AnswerOr.map((row, i) =>
@@ -314,7 +341,7 @@ class BooleanMatrices extends React.Component
                         </Card>
                     </div>
                     
-                    <div style={{float: "left", marginRight: "50px"}}>
+                    <div style={{float: "left", marginRight: "50px", marginTop: "5px", marginBottom: "5px"}}>
 
                    <b> A X B </b> 
                         <Card style={{borderColor:"gray"}}> 
@@ -329,7 +356,7 @@ class BooleanMatrices extends React.Component
                             )}
                         </Card>
                     </div>
-                    <div style={{float: "left", marginRight: "50px"}}>
+                    <div style={{float: "left", marginRight: "50px", marginTop: "5px", marginBottom: "5px"}}>
                     <b> B X A </b>
                         <Card style={{borderColor:"gray"}}> 
                               {this.state.AnswerReverseProduct.map((row, i) =>
@@ -342,8 +369,40 @@ class BooleanMatrices extends React.Component
                                 </div>
                             )}
                         </Card>
+                    </div>
+                   
+                    <div style={{float:"left", marginRight: "50px", marginTop: "5px", marginBottom: "5px"}}>
+                    <b> A · B </b>
+                        <Card style={{borderColor:"gray"}}> 
+                              {this.state.AnswerRegProduct.map((row, i) =>
+                                <div style={{padding: "0px",marginBottom: -5}} key={i}>
+                                    {this.state.AnswerRegProduct[i].map((col, j) => 
+                                        <div style={{display:"inline-block", marginLeft: 5, marginRight: 5, padding: "5px"}}>
+                                            {this.state.AnswerRegProduct[i][j]}
+                                        </div>
+                                    )}
+                                </div>
+                            )}
+                        </Card>
+                    </div>
+
+                    <div style={{float:"left", marginRight: "50px", marginTop: "5px", marginBottom: "5px"}}>
+                    <b> B · A </b>
+                        <Card style={{borderColor:"gray"}}> 
+                              {this.state.AnswerRegReverseProduct.map((row, i) =>
+                                <div style={{padding: "0px",marginBottom: -5}} key={i}>
+                                    {this.state.AnswerRegReverseProduct[i].map((col, j) => 
+                                        <div style={{display:"inline-block", marginLeft: 5, marginRight: 5, padding: "5px"}}>
+                                            {this.state.AnswerRegReverseProduct[i][j]}
+                                        </div>
+                                    )}
+                                </div>
+                            )}
+                        </Card>
+                    </div>
+                    
                 </div>
-                </div>
+                
             )
         }
         return (
@@ -376,13 +435,10 @@ class BooleanMatrices extends React.Component
                         <Form.Control
                         as="select"
                         onChange={this.updateMatrixSize}
-                        onClick={this.CreateInputButtons}
                         style={{  height: "30px", width: "120px", fontSize: "15px"}}>
                         {this.DropDownListing()}
-
                         </Form.Control>
                     </Form.Group>
-
                 
                      <Form.Group>
                         <p style = {{marginLeft: "20px", marginTop: "50px"}}>
