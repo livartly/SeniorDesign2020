@@ -9,7 +9,7 @@ class PertChart extends React.Component {
     super(props);
     this.state = {
       error: null,
-      chartData: [],
+      //chartData: [],
       nodes: [
         {
           id: "",
@@ -33,59 +33,45 @@ class PertChart extends React.Component {
     event.preventDefault();
     try {
 
-      var dataToSend = [];
       for (var node of this.state.nodes) {
-
-          // Check if required input duration is empty- replace with 0
-          if(node.duration == "")
-          {
-            node.duration = "0";
-          }
 
           // Check if id input is empty- throw error
           if(node.id == "")
           {
-            this.setState({error: " Error: All nodes must have an id value."})
+            throw new Error(" Error: All nodes must have an id value.");
           }
 
-          // Check if dependsOn is empty- remove element
-          if(node.dependsOn == "")
-          {
-            delete node.dependsOn;
+          // Deep copy of nodes 
+          var nodesCopy = [];
+          for (const node of this.state.nodes) {
+            var nodeCopy = {};
+            
+            for(const nodeProp in node){
+              nodeCopy[nodeProp] = node[nodeProp];
+            }
+
+            // Check if dependsOn is empty- remove element
+            if(nodeCopy.dependsOn == "")
+            {
+              delete nodeCopy.dependsOn;
+            }
+            else
+            {
+              // Put each node's dependencies into an array
+              var dependsOnArray = nodeCopy.dependsOn.split(',');
+              nodeCopy.dependsOn = dependsOnArray;
+            }
+
+            // Check if required input duration is empty- replace with 0
+            if(nodeCopy.duration == "")
+            {
+              nodeCopy.duration = "0";
+            }
+            nodesCopy.push(nodeCopy);
           }
-          else
-          {
-            // Put each node's dependencies into an array
-            var dependsOnArray = node.dependsOn.split(',');
-            node.dependsOn = dependsOnArray;
-          }
 
-          console.log("Before setting: ");
-          console.log(this.state.chartData);
-
-          this.setState( state => ({
-            chartData: this.state.chartData.concat([node])
-          }));
-
-          console.log("After setting: ");
-          console.log(this.state.chartData);
-
-/*           this.setState({
-            chartData: this.state.chartData.concat([node])
-          }) */
-
-/*           this.setState(prevState => ({
-            chartData: [...prevState.chartData, node]
-          })) */
-
-          // Update data with new node
-          dataToSend.push([node]);
+          this.setState( { chartData: nodesCopy } );
       }
-
-      // Set chart data
-      //this.state.chartData = dataToSend;
-      //console.log("Data to chart: ")
-      //console.log(this.state.chartData);
 
        // This will occur asynchronously (not blocking)
         sendProblem({
@@ -98,29 +84,7 @@ class PertChart extends React.Component {
         }
         });
 
-        // this.setState({ chartData:  dataToSend});
-
-/*         this.setState(function(state, props) { 
-          return {
-            chartData:  state.dataToSend
-          };
-        }); */
-        
-/*         console.log("Whats in data to send: ");
-        console.log(dataToSend);
-
-        this.setState({
-          chartData: { ...this.state.chartData, ...dataToSend } 
-        });
-
-        console.log("Whats in chart data: ");
-        console.log(this.state.chartData);
- */
-      return {
-        dataToSend
-      };
-      
-        }
+    }
         catch (err) {
           this.setState({ error: err.message });
         }
