@@ -158,7 +158,7 @@ class RecursiveSequenceBuilder extends React.Component {
 
   applyExample(idx) {
     return () => {
-      this.setState(EXAMPLE_INPUTS[idx])
+      this.setState(EXAMPLE_INPUTS[idx]);
     };
   }
 
