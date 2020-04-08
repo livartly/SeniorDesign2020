@@ -135,21 +135,34 @@ class Resources extends Component {
             <tbody>
               <tr>
                 <th scope="row">1</th>
+                <td><a href="https://www.amazon.com/Mathematical-Structures-Computer-Science-Gersting/dp/1429215100">Mathematical Structures for Computer Science, A Modern Treatment of Discrete Mathematics (7th edition) by Judith L. Gersting</a></td>
+                <td>Discrete Structures Textbook</td>
+                <td>Discrete Structures Topics and Problems</td>
+              </tr>
+              <tr>
+                <th scope="row">2</th>
                 <td><a href="https://github.com/jdkato/Tombstone.js" >Joseph Kato- Tombstone.js</a></td>
                 <td>Truth Table Builder Github Repository</td>
                 <td>Truth Tables</td>
               </tr>
               <tr>
-                <th scope="row">2</th>
-                <td><a href="https://github.com/jdkato/Tombstone.js" >Joseph Kato- Tombstone.js</a></td>
+                <th scope="row">3</th>
+                <td><a href="https://github.com/wo/tpg" >Wolfgang Schwarz- Tree Proof Generator</a></td>
                 <td>Tree Proof Generator Github Repository</td>
                 <td>Propositional Logic</td>
               </tr>
               <tr>
-                <th scope="row">3</th>
+                <th scope="row">4</th>
                 <td><a href="https://www.anychart.com/technical-integrations/samples/react-charts/?ref=madewithreactjs.com" >Anychart</a></td>
                 <td>Graph Visualization</td>
                 <td>Pert Charts + Hasse Diagrams</td>
+              </tr>
+              <tr>
+                <th scope="row">5</th>
+                <td><a href="https://www.flaticon.com/authors/mavadee" >Flaticon.com</a></td>
+                <td>Temporary Icons</td>
+                <td>About Page</td>
+                
               </tr>
             </tbody>
           </table>
