@@ -136,22 +136,21 @@ class HasseDiagramBuilder extends React.Component {
                   <Form.Label>Usage</Form.Label>
                   <ul>
                     <li>
-                      Set Input - set representing all the elements present in
-                      the Hasse Diagram. Input must be a comma-delimited series
-                      of unique integers.
+                      Set Input - set, S, representing all the elements present
+                      in the Hasse Diagram. Input must be a comma-delimited
+                      series of unique integers.
                     </li>
                     <li>
-                      Relation - series of ordered pairs representing the
-                      relation to be represented by the Hasse Diagram. The
-                      input must be a series of ordered pairs that are also
-                      comma-delimited. For example, the ordered pair (1,2)
-                      indicates that 1 is related to 2.
+                      Relation - binary relation, ρ, to be represented by the
+                      Hasse Diagram. The input must be a series of ordered
+                      pairs that are also comma-delimited. For example, the
+                      ordered pair (1,2) indicates that 1 is related to 2.
                     </li>
                   </ul>
                   <p>
-                    In order to meet the requirements for
-                    a Hasse Diagram, the input relation, ρ, must be a partially
-                    ordered set and meet the following criteria:
+                    In order to meet the requirements for a Hasse Diagram, the
+                    binary relation, ρ, must be a partially ordered set and
+                    meet the following criteria:
                   </p>
                   <ul>
                     <li>Reflexive - each element is related to itself.</li>
