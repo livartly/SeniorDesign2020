@@ -5,5 +5,6 @@ export const PROBLEM_TYPE_LIST = [
   "Hasse Diagram Builder",
   "Recursive Sequence Builder",
   "Topological Sort",
-  "Pert-Chart"
+  "Pert-Chart",
+  "Master-Theorem"
 ];
