@@ -1,6 +1,6 @@
 import React from 'react'
-import {Link} from 'react-router-dom'
-import { Form, Row, Col, Card } from 'react-bootstrap';
+import { Form, Card } from 'react-bootstrap';
+import { sendProblem } from '../../../utils/problemsAPIUtil';
 
 class MastersTheorem extends React.Component 
 {
@@ -8,14 +8,16 @@ class MastersTheorem extends React.Component
     {
         super(props);
         this.state = {
-             m_RecurrenceEquation: null,
-             m_aValue: null,
-             m_bValue: null,
-             m_dValue: null
+             m_RecurrenceEquation: " " //Needed state obtained from the user
+
+             //Removed m_aValue, m_bValue, m_dValue due to them not needing to be states.
+             //these values are obtained through parsing m_RecurrenceEquation, and they
+             //get used internal to the javascript.
         };
         this.HandleClick = this.HandleClick.bind(this);
         this.SolveProblem = this.SolveProblem.bind(this);
         this.ParseEquation = this.ParseEquation.bind(this);
+        this.setRecurrenceEquation = this.setRecurrenceEquation.bind(this);
     }
 
     HandleClick(e)
@@ -26,11 +28,10 @@ class MastersTheorem extends React.Component
         document.getElementById("ErrorMessage").innerHTML = "";
       
         e.preventDefault();
-        this.state.m_RecurrenceEquation = document.getElementById("RecurrenceEquationInput").value + " eol";
 
         if(this.ParseEquation() == true)
         {   
-            this.SolveProblem();
+
         }
         else 
         {
@@ -39,28 +40,38 @@ class MastersTheorem extends React.Component
         }
     }
 
+    setRecurrenceEquation(event)
+    {
+      this.setState({
+        m_RecurrenceEquation: event.currentTarget.value.trim()
+        });
+    }
+
     ParseEquation()
     {
+      var aValue = null;
+      var bValue = null;
+      var dValue = null;
         if(this.state.m_RecurrenceEquation != null && this.state.m_RecurrenceEquation != "")
         {
-            var StartIndex = this.state.m_RecurrenceEquation.indexOf("=");
+            var StartIndex = 0;
             var EndIndex = this.state.m_RecurrenceEquation.indexOf("(", StartIndex);
-            var TempString = this.state.m_RecurrenceEquation;
+            var TempString = this.state.m_RecurrenceEquation + " eol";
           
             if((StartIndex != -1 && EndIndex != -1) && (StartIndex + 1) <= (EndIndex -1))  //Used to grab and set the a value
             {
-                this.state.m_aValue = this.state.m_RecurrenceEquation.slice(StartIndex + 1, EndIndex -1);
+              aValue = this.state.m_RecurrenceEquation.slice(StartIndex + 1, EndIndex -1);
                 
-                this.state.m_aValue.trim();
-                if(this.state.m_aValue == "" || this.state.m_aValue == " ")
+              aValue.trim();
+                if(aValue == "" || aValue == " ")
                 {
-                    this.state.m_aValue = "1";
+                  aValue = "1";
                 }
-                if(this.state.m_aValue.includes("-") || this.state.m_aValue.includes("/") || this.state.m_aValue.includes("\\"))
+                if(aValue.includes("-") || aValue.includes("/") || aValue.includes("\\"))
                 {
-                    this.state.m_aValue = "-1";
+                  aValue = "-1";
                 }
-                this.state.m_aValue = parseInt(this.state.m_aValue);
+                aValue = parseInt(aValue);
                 TempString = TempString.slice(EndIndex, TempString.length);
                 
             }
@@ -69,26 +80,25 @@ class MastersTheorem extends React.Component
 				      return false;
 			      }
               
-           
+            //alert("TempString: " + TempString)
             StartIndex = TempString.indexOf("/");
             EndIndex = TempString.indexOf(")");
           
             if((StartIndex != -1 && EndIndex != -1) && ((StartIndex + 1) <= (EndIndex -1)))
             {
-                this.state.m_bValue = TempString.slice(StartIndex + 1 , EndIndex);
-                this.state.m_bValue.trim();
-                this.state.m_bValue = parseInt(this.state.m_bValue);
+                bValue = TempString.slice(StartIndex + 1 , EndIndex);
+                bValue.trim();
+                bValue = parseInt(bValue);
                 TempString = TempString.slice(EndIndex + 1, TempString.length);
                 TempString = TempString.trim();
             }
             else
             {
-              this.state.m_bValue = 0;
+              bValue = 0;
             }
           
             StartIndex = TempString.indexOf(" ");
             EndIndex = TempString.indexOf("eol");
-          
           
             if((StartIndex != -1 && EndIndex != -1) && ((StartIndex + 1) <= (EndIndex -1)))
             {
@@ -103,104 +113,134 @@ class MastersTheorem extends React.Component
               {
                   TempString = TempString.slice(0, TempString.indexOf("logn"));
                   TempString.trim();
-                  //alert(TempString);
               }
               
               StartIndex = TempString.indexOf("^");
               
+
               if(TempString == "n" || TempString == "n^")
               {
-                   this.state.m_dValue = 1;   
+                dValue = 1;   
               }
               else if((TempString.includes("n^") == true || TempString.includes("n ^")) && (TempString.includes("/n") == false|| !TempString.includes("\n") == false))
               {
-                this.state.m_dValue = TempString.slice(StartIndex + 1 , TempString.length);
-                this.state.m_dValue.trim();
                 
-                if(this.state.m_dValue.includes("/"))
+                dValue = TempString.slice(StartIndex + 1 , TempString.length);
+                dValue.trim();
+
+                TempString = TempString.slice(StartIndex + 1);
+                
+                if(TempString.includes("^")) //Weird formatting discovered
                 {
-                  var TempNumber1 = this.state.m_dValue.slice(0, this.state.m_dValue.indexOf("/"));
-                  var TempNumber2 = this.state.m_dValue.slice(this.state.m_dValue.indexOf("/") + 1, this.state.m_dValue.length);
+                  return false;
+                }
+
+                //alert(dValue)
+
+                if(dValue.includes("(") && dValue.includes(")"))
+                {
+                  dValue = dValue.slice(dValue.indexOf("(") + 1, dValue.indexOf(")"));
+                }
+                //alert(dValue)
+                if(dValue.includes("/"))
+                {
+                  var TempNumber1 = dValue.slice(0, dValue.indexOf("/"));
+                  var TempNumber2 = dValue.slice(dValue.indexOf("/") + 1, dValue.length);
                   //alert(TempNumber1 + "   " + TempNumber2);
                   
                   if(isNaN(parseFloat(TempNumber1)) == false && isNaN(parseFloat(TempNumber2)) == false && TempNumber1 != 0 && TempNumber2 != 0)
                   {
-                    this.state.m_dValue = parseFloat(parseFloat(TempNumber1) / parseFloat(TempNumber2)).toFixed(2);
+                    dValue = parseFloat(parseFloat(TempNumber1) / parseFloat(TempNumber2)).toFixed(2);
                   }
-                  else this.state.m_dValue = "-1";
+                  else dValue = "-1";
                 }
                 
-                if(this.state.m_dValue.includes("."))
+                if(dValue.includes("."))
                 {
-                    this.state.m_dValue = parseFloat(this.state.m_dValue).toFixed(2);
+
+                  dValue = parseFloat(dValue).toFixed(2);
                 }
                 else
                 {
-                  this.state.m_dValue = parseInt(this.state.m_dValue);
+                  dValue = parseInt(dValue);
                 }
                 
                 TempString = TempString.slice(EndIndex, TempString.length);
               }
-              else this.state.m_dValue = -1;
+              else dValue = -1;
               
             }
             else
             {
               return false;
             }
-          
             
-            return true;
+              if(this.SolveProblem(aValue, bValue, dValue) == true)
+              {
+                return true; //Successfully parsed and solved
+              }
+              else return false;
+
         }
         return false;
     }
 
-    SolveProblem()
+    SolveProblem(aValue, bValue, dValue)
     {
       var IncorrectData = false;
       
-       if(this.state.m_aValue < 1)
+       if(aValue < 1 || isNaN(aValue))
         {
           IncorrectData = true;
-          document.getElementById("ErrorMessage").innerHTML =  "Error: Invalid Format of Recurrence Equation has been detected. {The coefficient in front of your recursive function cannot be less than 1}";
+          document.getElementById("ErrorMessage").innerHTML =  "Error: Invalid Format of Recurrence Equation has been detected.";
        }
       
-       if(this.state.m_bValue <= 1)
+       if(bValue <= 1 || isNaN(bValue))
        {
           IncorrectData = true;
-          document.getElementById("ErrorMessage").innerHTML = document.getElementById("ErrorMessage").innerHTML + " <br></br> Error: Invalid Format of Recurrence Equation has been detected. {The number dividing the inside of your recursive function must be greater that 1}";
+          document.getElementById("ErrorMessage").innerHTML = document.getElementById("ErrorMessage").innerHTML + " <br></br> Error: Invalid Format of Recurrence Equation has been detected.";
         }
           
-       if(this.state.m_dValue < 0)
+       if(dValue < 0 || isNaN(dValue))
        {
           IncorrectData = true;
-          document.getElementById("ErrorMessage").innerHTML = document.getElementById("ErrorMessage").innerHTML + " <br></br> Error: Invalid Format of Recurrence Equation has been detected. {The f(n) part of your equation is not considered to be monotonic}";
-        
+          document.getElementById("ErrorMessage").innerHTML = document.getElementById("ErrorMessage").innerHTML + " <br></br> Error: Invalid Format of Recurrence Equation has been detected.";
        }
       
       if(IncorrectData != true)
       {
-         if(this.state.m_aValue < Math.pow(this.state.m_bValue, this.state.m_dValue)) // a < b^d == O(n^d)
+         if(aValue < Math.pow(bValue, dValue)) // a < b^d == O(n^d)
          {
-            document.getElementById("Answer").innerHTML = "O(n" + this.state.m_dValue.toString().sup() + ")"; 
+            document.getElementById("Answer").innerHTML = "O(n" + dValue.toString().sup() + ")"; 
             document.getElementById("Answer").style.display = "block";
          }
-         else if(this.state.m_aValue == Math.pow(this.state.m_bValue, this.state.m_dValue))
+         else if(aValue == Math.pow(bValue, dValue))
          {
-            document.getElementById("Answer").innerHTML = "O(n" + this.state.m_dValue.toString().sup() + "logn)"; 
+            document.getElementById("Answer").innerHTML = "O(n" + dValue.toString().sup() + "logn)"; 
             document.getElementById("Answer").style.display = "block";
          }
          else
          {
-            document.getElementById("Answer").innerHTML = "O(n" + ("log" + this.state.m_dValue.toString().sub() + " " + this.state.m_aValue).sup() + ")"; 
+            document.getElementById("Answer").innerHTML = "O(n" + ("log" + dValue.toString().sub() + " " + aValue).sup() + ")"; 
             document.getElementById("Answer").style.display = "block";
          }
-            
-        return;
+         
+         //sendProblem({});
+         sendProblem({
+          userID: this.props.user.id,
+          username: this.props.user.username,
+          email: this.props.user.email,
+          typeIndex: 7,
+          input: {
+            m_RecurrenceEquation: this.state.m_RecurrenceEquation
+          }
+          });
+         //send data to data base
+        return true;
       }
       document.getElementById("ErrorMessage").style.display = "block";
       
-      return;
+      return false;
     }
 
     render()
@@ -221,15 +261,16 @@ class MastersTheorem extends React.Component
                 <p>S(n) = 2S(n/4) + n^2</p>
                 <form id = "RecurrenceEquationForm">
                     <div>
-                        <input id= "RecurrenceEquationInput"> 
-                        
+                       S(n) = <input
+                        as="select"
+                        onChange = {this.setRecurrenceEquation}> 
                         </input>
-                         {'  '}
                         
-                        <button id = "SubmitButton"  onClick = {this.HandleClick}>
+                        
+                    </div>
+                    <button id = "SubmitButton"  onClick = {this.HandleClick} >
                            Submit
                         </button>
-                    </div>
                 </form>
               </Form.Group>
 
