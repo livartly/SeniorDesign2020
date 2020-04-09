@@ -2,6 +2,7 @@ import React from 'react';
 import {Link} from 'react-router-dom'
 import {Table, Form, Row, Col, Card, Button} from 'react-bootstrap';
 import {LogicalSet} from "../../../engine/Sets/LogicalSet.js";
+import { sendProblem } from '../../../utils/problemsAPIUtil';
 
 //********************************************//
 //
@@ -17,7 +18,8 @@ class SetOps extends React.Component {
         'B':""
       },
       currletter: 'B',
-      out:""
+      out:"",
+      powersetSize:-1
     };
     this.handleClick = this.handleClick.bind(this);
     this.handleInput = this.handleInput.bind(this);
@@ -113,6 +115,17 @@ class SetOps extends React.Component {
 
     let output = (m.get('A').properSubset(m.get('B')));
     this.setState({out:output.toString()});
+
+    /*// This will occur asynchronously (not blocking)
+    sendProblem({
+      userID: this.props.user.id,
+      username: this.props.user.username,
+      email: this.props.user.email,
+      typeIndex: 9,
+      input: {
+        setInput: this.state.setStrings
+      }
+  });*/
   }
 
   handleSubsetBSubmit() {
@@ -127,24 +140,67 @@ class SetOps extends React.Component {
 
     let output = (m.get('B').properSubset(m.get('A')));
     this.setState({out:output.toString()});
+
+    /*// This will occur asynchronously (not blocking)
+    sendProblem({
+      userID: this.props.user.id,
+      username: this.props.user.username,
+      email: this.props.user.email,
+      typeIndex: 9,
+      input: {
+        setInput: this.state.setStrings
+      }
+  });*/
   }
 
   handlePowersetSubmit(idx) {
     if (this.state.setStrings[idx] != "") {
       return () => {
         let s = this.convertStringToSet(this.state.setStrings[idx]);
-        this.setState({out:"Number of elements in Powerset: " + s.powerset().length + "\n" + s.powerset().toString()})
+        let p = s.powerset();
+        p.sort(function (a, b) {
+          return a.length - b.length;
+        });
+
+        for (var i = 0; i < p.length; i++) {
+          p[i] = p[i].reverse();
+        }
+
+        let pString = "{" + p.toString().substring(1, p.toString().length - 1) + "}";
+        pString = pString.replace(/\[/g, "{");
+        pString = pString.replace(/\]/g, "}");
+        this.setState({ powersetSize: p.length });
+        this.setState({ out: pString });
+
+        /*// This will occur asynchronously (not blocking)
+        sendProblem({
+          userID: this.props.user.id,
+          username: this.props.user.username,
+          email: this.props.user.email,
+          typeIndex: 9,
+          input: {
+            setInput: this.state.setStrings
+          }
+      });*/
       }
     }
   }
 
   showOutput() {
     if (this.state.out === "") return;
-    return (
-      <div>
-        <p>{this.state.out}</p>
-      </div>
-    );
+    else if (this.state.out === "false" || this.state.out === "true") {
+      return (
+        <Card.Text>{this.state.out.toString().toUpperCase()}</Card.Text>
+      );
+    }
+    else {
+      return (
+        <Card.Body>
+          <Card.Text>Number of elements in Powerset: {this.state.powersetSize}</Card.Text>
+          <Card.Text>{this.state.out}</Card.Text>
+        </Card.Body>
+      );
+    }
   }
 
   // Draw page

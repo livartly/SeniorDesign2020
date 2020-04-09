@@ -26,7 +26,7 @@ import TreeProof from './components/problem-solvers/TreeProof/TreeProof.js';
 import Catalog from './components/privileged/catalog';
 import Feedback from './components/feedback/FeedbackContainer';
 import sortSolver from './components/problem-solvers/sortSolver.js';
-import SetOpsPage from './components/problem-solvers/Sets/setOpsPage.js';
+import SetOpsPage from './components/problem-solvers/Sets/SetContainer.js';
 import PertChartSolver from './components/problem-solvers/PertChartSolver';
 import MastersTheoremSolver from './components/problem-solvers/MastersTheoremSolver';
 import MagnitudeOrderSolver from './components/problem-solvers/MagnitudeOrderSolver';

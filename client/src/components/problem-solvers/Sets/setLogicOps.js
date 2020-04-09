@@ -5,6 +5,7 @@ import {LogicalSet} from "../../../engine/Sets/LogicalSet.js";
 import Legend from "./Legend.js";
 import { Card } from 'react-bootstrap';
 import { Form } from 'react-bootstrap';
+import { sendProblem } from '../../../utils/problemsAPIUtil';
 
 
 // Function to determine if a string is numeric
@@ -226,6 +227,18 @@ class SetLogicOps extends React.Component {
           throw "Error: Inputs must not be empty.";
         }
       }
+
+      /*// This will occur asynchronously (not blocking)
+      sendProblem({
+        userID: this.props.user.id,
+        username: this.props.user.username,
+        email: this.props.user.email,
+        typeIndex: 10,
+        input: {
+          setInput: this.state.setStrings,
+          formula:this.state.formula
+        }
+    });*/
     }
   }
   

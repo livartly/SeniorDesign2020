@@ -7,5 +7,7 @@ export const PROBLEM_TYPE_LIST = [
   "Topological Sort",
   "Pert-Chart",
   "Master-Theorem",
-  "Multiplicity-Closure Finder"
+  "Multiplicity-Closure Finder",
+  "Subset Calculator",
+  "Set Logic Calculator"
 ];
