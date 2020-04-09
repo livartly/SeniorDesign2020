@@ -68,7 +68,7 @@ class MultiplicityClosureFinder extends React.Component {
             userID: this.props.user.id,
             username: this.props.user.username,
             email: this.props.user.email,
-            typeIndex: 7,
+            typeIndex: 8,
             input: {
               setInput: this.state.setInput,
               relation: this.state.relation
