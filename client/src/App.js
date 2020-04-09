@@ -31,12 +31,13 @@ import PertChartSolver from './components/problem-solvers/PertChartSolver';
 import MastersTheoremSolver from './components/problem-solvers/MastersTheoremSolver';
 import MagnitudeOrderSolver from './components/problem-solvers/MagnitudeOrderSolver';
 import EquivalenceRelationFinder from './components/problem-solvers/equivalance-relation-finder/EquivalenceRelationFinderContainer';
-import MultiplicityClosureFinder from "./components/problem-solvers/multiplicity-closure-finder/MultiplicityClosureFinder.js";
+import MultiplicityClosureFinder from "./components/problem-solvers/multiplicity-closure-finder/MultiplicityClosureContainer.js";
 import HasseDiagramBuilder from './components/problem-solvers/hasse-diagram-builder/HasseDiagramBuilderContainer';
 import PertChart from './components/problem-solvers/pert-chart/PertChart';
 import TruthTableBuilder from './components/problem-solvers/truth-table-builder/TruthTableBuilderContainer';
 import RecursiveSequenceBuilder from './components/problem-solvers/recursive-sequence-builder/RecursiveSequenceBuilderContainer';
 import BooleanMatrices from './components/problem-solvers/BooleanMatrices/BooleanMatrices.js';
+import CycleSolver from './components/problem-solvers/cycle-solver/CycleSolver.js';
 
 //import 'bootstrap/dist/css/bootstrap.min.css';
 
@@ -84,6 +85,7 @@ class App extends Component {
               <PrivateRoute path="/hasse-diagram-builder" component={HasseDiagramBuilder} />
               <PrivateRoute path="/recursive-sequence-builder" component={RecursiveSequenceBuilder} />
               <PrivateRoute path="/BooleanMatrices" component={BooleanMatrices} />
+              <PrivateRoute path="/cycle-solver" component={CycleSolver} />
             </Switch>
             <FooterPage />
           </div>

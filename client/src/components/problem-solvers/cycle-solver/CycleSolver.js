@@ -2,17 +2,16 @@ import React from 'react';
 
 import { Form, Card, Button, ListGroup } from 'react-bootstrap';
 
+import { sendProblem } from '../../../utils/problemsAPIUtil';
 import {
   formatSet,
   formatRelation,
   testRelationProperties,
   validateInput
 } from '../../../engine/MultiplicityClosure/multiplicityClosure';
+//import { ListItem } from 'react-bootstrap/lib/Media';
 
-import { sendProblem } from '../../../utils/problemsAPIUtil';
-
-
-class MultiplicityClosureFinder extends React.Component {
+class CycleSolver extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -63,21 +62,28 @@ class MultiplicityClosureFinder extends React.Component {
         */
         var relationClosures = testRelationProperties(formattedSet, formattedRelation, properties);
 
+        let pStar = relationClosures;
+        for (var i = 0; i < pStar.length; i++) {
+            for (var j = 0; j < formattedRelation.length; j++) {
+                pStar[i].push(formattedRelation[j]);
+            }
+        }
+
+        this.setState({ closures: pStar });
+
         // This will occur asynchronously (not blocking)
-        sendProblem({
+        /*sendProblem({
             userID: this.props.user.id,
             username: this.props.user.username,
             email: this.props.user.email,
-            typeIndex: 7,
+            typeIndex: 2,
             input: {
-              setInput: this.state.setInput,
-              relation: this.state.relation
+            setInput: this.state.setInput
             }
-        });
+        });*/
 
         this.setState({ relationProperties: properties });
-        this.setState({ closures: relationClosures });
-        this.setState({ error: "" });
+        this.setState({ error: ""});
       }
     }
     catch (err) {
@@ -90,17 +96,6 @@ class MultiplicityClosureFinder extends React.Component {
         if (this.state.relationProperties.length === 0)
             return;
         else {
-          let rClosureString = "{" + this.state.closures[0].toString().substring(1, this.state.closures[0].toString().length - 1) + "}";
-          rClosureString = rClosureString.replace(/\[/g, "(");
-          rClosureString = rClosureString.replace(/\]/g, ")");
-
-          let sClosureString = "{" + this.state.closures[1].toString().substring(1, this.state.closures[1].toString().length - 1) + "}";
-          sClosureString = sClosureString.replace(/\[/g, "(");
-          sClosureString = sClosureString.replace(/\]/g, ")");
-
-          let tClosureString = "{" + this.state.closures[2].toString().substring(1, this.state.closures[2].toString().length - 1) + "}";
-          tClosureString = tClosureString.replace(/\[/g, "(");
-          tClosureString = tClosureString.replace(/\]/g, ")");
             return (
                 <Card.Body>
                     <Card.Title>Relation Properties</Card.Title>
@@ -110,9 +105,9 @@ class MultiplicityClosureFinder extends React.Component {
                     <Card.Text>Transitive: {this.state.relationProperties[2].toString()}</Card.Text>
 
                     <Card.Title>Relation Closures</Card.Title>
-                    <Card.Text>Reflexive: {rClosureString}</Card.Text>
-                    <Card.Text>Symmetric: {sClosureString}</Card.Text>
-                    <Card.Text>Transitive: {tClosureString}</Card.Text>
+                    <Card.Text>Reflexive: {this.state.closures[0].toString()}</Card.Text>
+                    <Card.Text>Symmetric: {this.state.closures[1].toString()}</Card.Text>
+                    <Card.Text>Transitive: {this.state.closures[2].toString()}</Card.Text>
                 </Card.Body>
             );
         }
@@ -123,7 +118,7 @@ class MultiplicityClosureFinder extends React.Component {
       <div>
         <div className="container" style={{ marginTop: "50px" }}>
           <Form>
-            <h1>Multiplicity and Closure Finder</h1>
+            <h1>Cycle Solver</h1>
             <Form.Group controlId="multiplicityClosureFinder.instructions">
               <Form.Label>Instructions</Form.Label>
               <p>
@@ -170,4 +165,4 @@ class MultiplicityClosureFinder extends React.Component {
   }
 }
 
-export default MultiplicityClosureFinder;
+export default CycleSolver;
