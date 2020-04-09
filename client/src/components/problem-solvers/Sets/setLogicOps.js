@@ -228,7 +228,7 @@ class SetLogicOps extends React.Component {
         }
       }
 
-      /*// This will occur asynchronously (not blocking)
+      // This will occur asynchronously (not blocking)
       sendProblem({
         userID: this.props.user.id,
         username: this.props.user.username,
@@ -238,7 +238,7 @@ class SetLogicOps extends React.Component {
           setInput: this.state.setStrings,
           formula:this.state.formula
         }
-    });*/
+    });
     }
   }
   

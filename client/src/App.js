@@ -26,7 +26,7 @@ import TreeProof from './components/problem-solvers/TreeProof/TreeProof.js';
 import Catalog from './components/privileged/catalog';
 import Feedback from './components/feedback/FeedbackContainer';
 import sortSolver from './components/problem-solvers/sortSolver.js';
-import SetOpsPage from './components/problem-solvers/Sets/SetContainer.js';
+import SetOpsPage from './components/problem-solvers/Sets/setOpsPage.js';
 import PertChartSolver from './components/problem-solvers/PertChartSolver';
 import MastersTheoremSolver from './components/problem-solvers/MastersTheoremSolver';
 import MagnitudeOrderSolver from './components/problem-solvers/MagnitudeOrderSolver';
@@ -37,7 +37,7 @@ import PertChart from './components/problem-solvers/pert-chart/PertChart';
 import TruthTableBuilder from './components/problem-solvers/truth-table-builder/TruthTableBuilderContainer';
 import RecursiveSequenceBuilder from './components/problem-solvers/recursive-sequence-builder/RecursiveSequenceBuilderContainer';
 import BooleanMatrices from './components/problem-solvers/BooleanMatrices/BooleanMatrices.js';
-import CycleSolver from './components/problem-solvers/cycle-solver/CycleSolver.js';
+import CycleSolverPage from './components/problem-solvers/cycle-solver/CycleSolverPage.js';
 
 //import 'bootstrap/dist/css/bootstrap.min.css';
 
@@ -85,7 +85,7 @@ class App extends Component {
               <PrivateRoute path="/hasse-diagram-builder" component={HasseDiagramBuilder} />
               <PrivateRoute path="/recursive-sequence-builder" component={RecursiveSequenceBuilder} />
               <PrivateRoute path="/BooleanMatrices" component={BooleanMatrices} />
-              <PrivateRoute path="/cycle-solver" component={CycleSolver} />
+              <PrivateRoute path="/cycle-solver" component={CycleSolverPage} />
             </Switch>
             <FooterPage />
           </div>

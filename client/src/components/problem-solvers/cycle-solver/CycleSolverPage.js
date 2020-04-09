@@ -6,12 +6,11 @@ import { sendProblem } from '../../../utils/problemsAPIUtil';
 import {
   formatSet,
   formatRelation,
-  testRelationProperties,
   validateInput
-} from '../../../engine/MultiplicityClosure/multiplicityClosure';
-//import { ListItem } from 'react-bootstrap/lib/Media';
+} from '../../../engine/CycleSolver/CycleSolver';
+import {CycleSolver} from '../../../engine/CycleSolver/CycleSolver';
 
-class CycleSolver extends React.Component {
+class CycleSolverPage extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -47,30 +46,7 @@ class CycleSolver extends React.Component {
         var formattedSet = formatSet(this.state.setInput);
         var formattedRelation = formatRelation(this.state.relation);
 
-        /* Array to store boolean values representing relation properties.
-        * Index 0 - Reflexive
-        * 1 - Symmetric 
-        * 2 - Transitive
-        * 3 - Antisymmetric
-        */
-        var properties = [false, false, false, false];
-        
-        /* Array to store relation closures for its properties. If null, the relation satisfies the property and is its own closure.
-        * Index 0 - Reflexive Closure
-        * 1 - Symmetric 
-        * 2 - Transitive
-        */
-        var relationClosures = testRelationProperties(formattedSet, formattedRelation, properties);
-
-        let pStar = relationClosures;
-        for (var i = 0; i < pStar.length; i++) {
-            for (var j = 0; j < formattedRelation.length; j++) {
-                pStar[i].push(formattedRelation[j]);
-            }
-        }
-
-        this.setState({ closures: pStar });
-
+        console.log(formattedRelation);
         // This will occur asynchronously (not blocking)
         /*sendProblem({
             userID: this.props.user.id,
@@ -81,9 +57,6 @@ class CycleSolver extends React.Component {
             setInput: this.state.setInput
             }
         });*/
-
-        this.setState({ relationProperties: properties });
-        this.setState({ error: ""});
       }
     }
     catch (err) {
@@ -114,6 +87,7 @@ class CycleSolver extends React.Component {
   }
 
   render() {
+    window.CycleSolver = CycleSolver;
     return (
       <div>
         <div className="container" style={{ marginTop: "50px" }}>
@@ -122,7 +96,7 @@ class CycleSolver extends React.Component {
             <Form.Group controlId="multiplicityClosureFinder.instructions">
               <Form.Label>Instructions</Form.Label>
               <p>
-                Input a set S and a relation on S.
+                Input a set S and a relation on S. Note that a relation in cycle form can be input as a series of ordered pairs.
               </p>
             </Form.Group>
             <Form.Group controlId="multiplicityClosureFinder.setInput">
@@ -165,4 +139,4 @@ class CycleSolver extends React.Component {
   }
 }
 
-export default CycleSolver;
+export default CycleSolverPage;

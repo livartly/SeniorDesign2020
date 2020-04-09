@@ -1,4 +1,4 @@
-import SetOpsPage from './setOpsPage.js';
+import SetLogicOps from './setLogicOps.js';
 import { connect } from 'react-redux';
 import { withRouter } from 'react-router-dom';
 
@@ -10,5 +10,5 @@ const mapStateToProps = ({ auth }) => ({
 export default connect(
   mapStateToProps,
   {}
-)(withRouter(SetOpsPage));
+)(withRouter(SetLogicOps));
 

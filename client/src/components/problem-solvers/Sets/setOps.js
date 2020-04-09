@@ -116,7 +116,7 @@ class SetOps extends React.Component {
     let output = (m.get('A').properSubset(m.get('B')));
     this.setState({out:output.toString()});
 
-    /*// This will occur asynchronously (not blocking)
+    // This will occur asynchronously (not blocking)
     sendProblem({
       userID: this.props.user.id,
       username: this.props.user.username,
@@ -125,7 +125,7 @@ class SetOps extends React.Component {
       input: {
         setInput: this.state.setStrings
       }
-  });*/
+  });
   }
 
   handleSubsetBSubmit() {
@@ -141,7 +141,7 @@ class SetOps extends React.Component {
     let output = (m.get('B').properSubset(m.get('A')));
     this.setState({out:output.toString()});
 
-    /*// This will occur asynchronously (not blocking)
+    // This will occur asynchronously (not blocking)
     sendProblem({
       userID: this.props.user.id,
       username: this.props.user.username,
@@ -150,7 +150,7 @@ class SetOps extends React.Component {
       input: {
         setInput: this.state.setStrings
       }
-  });*/
+  });
   }
 
   handlePowersetSubmit(idx) {
@@ -172,7 +172,7 @@ class SetOps extends React.Component {
         this.setState({ powersetSize: p.length });
         this.setState({ out: pString });
 
-        /*// This will occur asynchronously (not blocking)
+        // This will occur asynchronously (not blocking)
         sendProblem({
           userID: this.props.user.id,
           username: this.props.user.username,
@@ -181,7 +181,7 @@ class SetOps extends React.Component {
           input: {
             setInput: this.state.setStrings
           }
-      });*/
+      });
       }
     }
   }
