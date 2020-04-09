@@ -33,11 +33,6 @@ class MastersTheorem extends React.Component
         {   
 
         }
-        else 
-        {
-            document.getElementById("ErrorMessage").innerHTML = "Error: Invalid Format of Recurrence Equation has been detected. Try to format your problem like the provided example.";
-            document.getElementById("ErrorMessage").style.display = "block";
-        }
     }
 
     setRecurrenceEquation(event)
@@ -55,12 +50,15 @@ class MastersTheorem extends React.Component
         if(this.state.m_RecurrenceEquation != null && this.state.m_RecurrenceEquation != "")
         {
             var StartIndex = 0;
-            var EndIndex = this.state.m_RecurrenceEquation.indexOf("(", StartIndex);
             var TempString = this.state.m_RecurrenceEquation + " eol";
+            var EndIndex = TempString.indexOf("(", StartIndex);
+            
+            TempString = TempString.trim()
           
-            if((StartIndex != -1 && EndIndex != -1) && (StartIndex + 1) <= (EndIndex -1))  //Used to grab and set the a value
+            //alert(TempString)
+            if((StartIndex != -1 && EndIndex != -1) && (StartIndex + 1) <= (EndIndex))  //Used to grab and set the a value
             {
-              aValue = this.state.m_RecurrenceEquation.slice(StartIndex + 1, EndIndex -1);
+              aValue = this.state.m_RecurrenceEquation.slice(StartIndex, EndIndex -1);
                 
               aValue.trim();
                 if(aValue == "" || aValue == " ")
@@ -71,6 +69,7 @@ class MastersTheorem extends React.Component
                 {
                   aValue = "-1";
                 }
+                
                 aValue = parseInt(aValue);
                 TempString = TempString.slice(EndIndex, TempString.length);
                 
@@ -78,9 +77,8 @@ class MastersTheorem extends React.Component
 		       	else
 		      	{
 				      return false;
-			      }
-              
-            //alert("TempString: " + TempString)
+            }
+            
             StartIndex = TempString.indexOf("/");
             EndIndex = TempString.indexOf(")");
           
@@ -96,10 +94,22 @@ class MastersTheorem extends React.Component
             {
               bValue = 0;
             }
-          
+
+            //alert(TempString)
+            
+            if(!TempString.slice(0, TempString.indexOf(" eol")).includes(" "))
+            {
+              document.getElementById("ErrorMessage").innerHTML = "Error: Invalid Format of Recurrence Equation has been detected. Try to include spacing between terms like in the example.";
+              document.getElementById("ErrorMessage").style.display = "block";
+              return false
+            }
+
             StartIndex = TempString.indexOf(" ");
             EndIndex = TempString.indexOf("eol");
-          
+
+            
+           // alert("Value: " + parseInt(TempString) + "   NormalTemp: " + TempString)
+
             if((StartIndex != -1 && EndIndex != -1) && ((StartIndex + 1) <= (EndIndex -1)))
             {
               TempString = TempString.slice(StartIndex + 1, EndIndex -1);
@@ -117,12 +127,11 @@ class MastersTheorem extends React.Component
               
               StartIndex = TempString.indexOf("^");
               
-
               if(TempString == "n" || TempString == "n^")
               {
                 dValue = 1;   
               }
-              else if((TempString.includes("n^") == true || TempString.includes("n ^")) && (TempString.includes("/n") == false|| !TempString.includes("\n") == false))
+              else if((TempString.includes("n^") == true || TempString.includes("n ^")) && (TempString.includes("/n") == false))
               {
                 
                 dValue = TempString.slice(StartIndex + 1 , TempString.length);
@@ -132,6 +141,8 @@ class MastersTheorem extends React.Component
                 
                 if(TempString.includes("^")) //Weird formatting discovered
                 {
+                  document.getElementById("ErrorMessage").innerHTML = "Error: Invalid Format of Recurrence Equation has been detected. Detected weird syntax for ^.";
+                  document.getElementById("ErrorMessage").style.display = "block";
                   return false;
                 }
 
@@ -152,12 +163,20 @@ class MastersTheorem extends React.Component
                   {
                     dValue = parseFloat(parseFloat(TempNumber1) / parseFloat(TempNumber2)).toFixed(2);
                   }
-                  else dValue = "-1";
+                  else if(TempString.includes("+") || TempString.includes("-"))
+                  {
+                    
+                   TempString = TempString.replace("+", " ");
+                   TempString = TempString.replace("-", " ");
+                   TempString = TempString.trim();
+                
+                   dValue = parseInt(TempString);
+                  }
+                  else dValue = -1
                 }
                 
                 if(dValue.includes("."))
                 {
-
                   dValue = parseFloat(dValue).toFixed(2);
                 }
                 else
@@ -167,14 +186,25 @@ class MastersTheorem extends React.Component
                 
                 TempString = TempString.slice(EndIndex, TempString.length);
               }
-              else dValue = -1;
+              else if(TempString.includes("+") || TempString.includes("-"))
+              {
+               TempString = TempString.replace("+", " ");
+               TempString = TempString.replace("-", " ");
+               TempString = TempString.trim();
+            
+               
+              }
+              else dValue = 0;
               
             }
             else
             {
+              document.getElementById("ErrorMessage").innerHTML = "Error: Invalid Format of Recurrence Equation has been detected. Try to format your problem like the provided example.";
+              document.getElementById("ErrorMessage").style.display = "block";
               return false;
             }
             
+            //alert("Welcome: " + parseInt(TempString) + "   dValue: " + dValue)
               if(this.SolveProblem(aValue, bValue, dValue) == true)
               {
                 return true; //Successfully parsed and solved
@@ -209,6 +239,9 @@ class MastersTheorem extends React.Component
       
       if(IncorrectData != true)
       {
+
+        //alert(aValue + " " + bValue + " " + dValue)
+
          if(aValue < Math.pow(bValue, dValue)) // a < b^d == O(n^d)
          {
             document.getElementById("Answer").innerHTML = "O(n" + dValue.toString().sup() + ")"; 
@@ -221,11 +254,12 @@ class MastersTheorem extends React.Component
          }
          else
          {
-            document.getElementById("Answer").innerHTML = "O(n" + ("log" + dValue.toString().sub() + " " + aValue).sup() + ")"; 
+            document.getElementById("Answer").innerHTML = "O(n" + ("log" + bValue.toString().sub() + " " + aValue).sup() + ")"; 
             document.getElementById("Answer").style.display = "block";
          }
          
          //sendProblem({});
+         
          sendProblem({
           userID: this.props.user.id,
           username: this.props.user.username,

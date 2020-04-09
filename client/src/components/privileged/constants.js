@@ -6,5 +6,6 @@ export const PROBLEM_TYPE_LIST = [
   "Recursive Sequence Builder",
   "Topological Sort",
   "Pert-Chart",
-  "Multiplicity Closure Finder"
+  "Master-Theorem",
+  "Multiplicity-Closure Finder"
 ];

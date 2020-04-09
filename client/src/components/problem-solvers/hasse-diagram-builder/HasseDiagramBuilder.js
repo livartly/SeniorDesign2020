@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { Form, Card, Button } from 'react-bootstrap';
+import { Form, Card } from 'react-bootstrap';
 
 import { sendProblem } from '../../../utils/problemsAPIUtil';
 import {
@@ -12,6 +12,17 @@ import {
 
 import { parseInputDataToGraphData } from '../../../engine/Relations/hasseDiagram';
 import HasseDiagram from './HasseDiagram';
+
+const EXAMPLE_INPUTS = [
+  {
+    setInput: "1,2,3,4,5,6,7",
+    relation: "(1,1),(1,2),(1,3),(1,4),(1,5),(1,6),(1,7),(2,2),(2,4),(2,5),(2,6),(2,7),(3,3),(3,7),(4,4),(4,5),(4,6),(4,7),(5,5),(5,6),(5,7),(6,6),(6,7),(7,7)"
+  },
+  {
+    setInput: "1,2,3,6,12,18",
+    relation: "(1,1),(1,2),(1,3),(1,6),(1,12),(1,18),(2,2),(2,6),(2,12),(2,18),(3,3),(3,6),(3,12),(3,18),(6,6),(6,12),(6,18),(12,12),(18,18)"
+  }
+];
 
 class HasseDiagramBuilder extends React.Component {
   constructor(props) {
@@ -97,74 +108,111 @@ class HasseDiagramBuilder extends React.Component {
     );
   }
 
+  applyExample(idx) {
+    return () => {
+      this.setState(EXAMPLE_INPUTS[idx]);
+    };
+  }
+
   render() {
     return (
       <div>
         <div className="container" style={{ marginTop: "50px" }}>
-          <Form>
-            <h1>Hasse Diagram Builder</h1>
-            <Form.Group controlId="hasseDiagramBuilder.instructions">
-              <Form.Label>Instructions</Form.Label>
-              <p>
-                The site will construct a Hasse Diagram from the input set, S,
-                and binary relation, ρ. The input for the set must be a series
-                of unique integers that are comma-delimited and represents all
-                the elements present in the Hasse Diagram. The input for the
-                relation must be a series of ordered pairs that are also
-                comma-delimited. For example, the ordered pair (1,2) signifies
-                that 1 is related to 2. In order to meet the requirements for
-                a Hasse Diagram, the input relation, ρ, must be a partially
-                ordered set and meet the following criteria:
-              </p>
-              <ul>
-                <li>Reflexive - each element is related to itself.</li>
-                <li>
-                  Antisymmetric - no two elements are related to each other.
-                </li>
-                <li>
-                  Transitive - if l1 relates to l2 and l2 relates to l3, then l1
-                  must be related to l3 as well.
-                </li>
-              </ul>
-              <p>
-                In addition, the minimal and maximal elements and the least and
-                greatest elements, if they are applicable, will be listed below
-                the Hasse Diagram.
-              </p>
-            </Form.Group>
-            <Form.Group controlId="hasseDiagramBuilder.setInput">
-              <Form.Label>Set Input</Form.Label>
-              <Form.Control
-                type="text"
-                value={this.state.setInput}
-                onChange={this.updateSetInput}
-                placeholder="eg. 1,2,3"
-              />
-            </Form.Group>
-            <Form.Group controlId="hasseDiagramBuilder.relationInput">
-              <Form.Label>Relation</Form.Label>
-              <Form.Control
-                type="text"
-                value={this.state.relation}
-                onChange={this.updateRelationInput}
-                placeholder="eg. (1,1), (2,2), (3,3)"
-              />
-            </Form.Group>
-            <button onClick={this.showGraph}>
-              Submit
-            </button>
-            <br />
-            <span style={{ color: 'red' }}>
-              {this.state.error ? this.state.error : ""}
-            </span>
-            <Form.Group controlId="hasseDiagramBuilder.cardOutput">
-              <Form.Label>Result</Form.Label>
-              <Card body style={{ minHeight: "100px" }}>
-                <HasseDiagram data={this.state.graphData} />
-                {this.showExtremes()}
-              </Card>
-            </Form.Group>
-          </Form>
+          <Card>
+            <Card.Body>
+
+              <Form>
+                <h1>Hasse Diagram Builder</h1>
+                <Form.Group controlId="hasseDiagramBuilder.instructions">
+                  <Form.Label>Instructions</Form.Label>
+                  <p>
+                    The site will construct a Hasse Diagram from the input set, S,
+                    and binary relation, ρ. The minimal and maximal elements and the least and
+                    greatest elements, if they are applicable, will also be listed below
+                    the Hasse Diagram.
+                  </p>
+                </Form.Group>
+                <Form.Group controlId="hasseDiagramBuilder.usage">
+                  <Form.Label>Usage</Form.Label>
+                  <ul>
+                    <li>
+                      Set Input - set, S, representing all the elements present
+                      in the Hasse Diagram. Input must be a comma-delimited
+                      series of unique integers.
+                    </li>
+                    <li>
+                      Relation - binary relation, ρ, to be represented by the
+                      Hasse Diagram. The input must be a series of ordered
+                      pairs that are also comma-delimited. For example, the
+                      ordered pair (1,2) indicates that 1 is related to 2.
+                    </li>
+                  </ul>
+                  <p>
+                    In order to meet the requirements for a Hasse Diagram, the
+                    binary relation, ρ, must be a partially ordered set and
+                    meet the following criteria:
+                  </p>
+                  <ul>
+                    <li>Reflexive - each element is related to itself.</li>
+                    <li>
+                      Antisymmetric - no two elements are related to each other.
+                    </li>
+                    <li>
+                      Transitive - if l1 relates to l2 and l2 relates to l3, then l1
+                      must be related to l3 as well.
+                    </li>
+                  </ul>
+                </Form.Group>
+                <Form.Group controlId="hasseDiagramBuilder.examples">
+                  <Form.Label>Examples</Form.Label>
+                  <ul>
+                    <li>
+                      <a href="javascript:;" onClick={this.applyExample(0)}>
+                        Example 1
+                      </a>
+                    </li>
+                    <li>
+                      <a href="javascript:;" onClick={this.applyExample(1)}>
+                        Example 2
+                      </a>
+                    </li>
+                  </ul>
+                </Form.Group>
+                <Form.Group controlId="hasseDiagramBuilder.setInput">
+                  <Form.Label>Set Input</Form.Label>
+                  <Form.Control
+                    type="text"
+                    value={this.state.setInput}
+                    onChange={this.updateSetInput}
+                    placeholder="eg. 1,2,3"
+                  />
+                </Form.Group>
+                <Form.Group controlId="hasseDiagramBuilder.relationInput">
+                  <Form.Label>Relation</Form.Label>
+                  <Form.Control
+                    type="text"
+                    value={this.state.relation}
+                    onChange={this.updateRelationInput}
+                    placeholder="eg. (1,1), (2,2), (3,3)"
+                  />
+                </Form.Group>
+                <button onClick={this.showGraph}>
+                  Submit
+                </button>
+                <br />
+                <span style={{ color: 'red' }}>
+                  {this.state.error ? this.state.error : ""}
+                </span>
+                <Form.Group controlId="hasseDiagramBuilder.cardOutput">
+                  <Form.Label>Result</Form.Label>
+                  <Card body style={{ minHeight: "100px" }}>
+                    <HasseDiagram data={this.state.graphData} />
+                    {this.showExtremes()}
+                  </Card>
+                </Form.Group>
+              </Form>
+            </Card.Body>
+          </Card>
         </div>
         <br></br>
         <br></br>

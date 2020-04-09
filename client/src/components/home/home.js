@@ -133,11 +133,11 @@ class Home extends Component {
                 </Card.Body>
               </Card>
             </Link>
-            </div>
+          </div>
 
-            <br></br>
+          <br></br>
 
-            <div class="card-deck">
+          <div class="card-deck">
             <Link to="/topological-sort">
               <Card style={{ width: '20rem' }}>
                 <Card.Img variant="top" src="icons/topSort.png" />
@@ -150,10 +150,9 @@ class Home extends Component {
                 </Card.Body>
               </Card>
             </Link>
-          
+
             <Link to="/">
               <Card style={{ width: '20rem' }}>
-                <br></br>
                 <Card.Img variant="top" src="icons/function.png" />
                 <Card.Body>
                   <Card.Title><h7>5.4</h7></Card.Title>
@@ -190,7 +189,11 @@ class Home extends Component {
                 </Card.Body>
               </Card>
             </Link>
+          </div>
 
+          <br /><br />
+
+          <div className="card-deck">
             <Link to="/BooleanMatrices">
               <Card style={{ width: '20rem' }}>
                 <Card.Img variant="top" src="icons/matrix.png" />
@@ -203,9 +206,9 @@ class Home extends Component {
                 </Card.Body>
               </Card>
             </Link>
-            <br>
-            </br>
           </div>
+          <br>
+          </br>
         </div>
         <br></br>
       </div>
