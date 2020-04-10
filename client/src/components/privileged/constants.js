@@ -9,5 +9,6 @@ export const PROBLEM_TYPE_LIST = [
   "Master-Theorem",
   "Multiplicity-Closure Finder",
   "Subset Calculator",
-  "Set Logic Calculator"
+  "Set Logic Calculator",
+  "BooleanMatrices",
 ];

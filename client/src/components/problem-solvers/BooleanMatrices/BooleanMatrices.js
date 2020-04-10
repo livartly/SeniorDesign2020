@@ -1,6 +1,6 @@
 import React from 'react'
-import { Form, Card, Button, ListGroup, Dropdown } from 'react-bootstrap';
-import {Link} from 'react-router-dom'
+import { Form, Card, Button } from 'react-bootstrap';
+import { sendProblem } from '../../../utils/problemsAPIUtil';
 
 class BooleanMatrices extends React.Component 
 {
@@ -183,6 +183,19 @@ class BooleanMatrices extends React.Component
         e.preventDefault();
         var ArrayA = this.state.InputButtonsA;
         var ArrayB = this.state.InputButtonsB;
+
+
+        //Send Problem         
+        sendProblem({
+            userID: this.props.user.id,
+            username: this.props.user.username,
+            email: this.props.user.email,
+            typeIndex: 11,
+            input: {
+              InputButtonsA:this.state.InputButtonsA.toString(),
+              InputButtonsB:this.state.InputButtonsB.toString()
+            }
+        });
 
         this.setState(prevState => {
 
@@ -407,7 +420,7 @@ class BooleanMatrices extends React.Component
         }
         return (
             <div>
-                No Answer
+                
             </div>
         )
     }
