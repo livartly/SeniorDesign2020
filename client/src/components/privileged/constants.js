@@ -11,4 +11,5 @@ export const PROBLEM_TYPE_LIST = [
   "Subset Calculator",
   "Set Logic Calculator",
   "BooleanMatrices",
+  "MagnitudeOrder",
 ];

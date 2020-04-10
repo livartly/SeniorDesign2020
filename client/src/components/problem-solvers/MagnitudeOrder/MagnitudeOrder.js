@@ -1,19 +1,25 @@
 import React from 'react'
-import {Link} from 'react-router-dom'
-import {simplify} from 'mathjs'
-import {parse} from 'mathjs'
-import { Form, Row, Col, Card } from 'react-bootstrap';
+import {simplify} from 'mathjs';
+import {parse} from 'mathjs';
+import { Form, Card } from 'react-bootstrap';
+import { sendProblem } from '../../../utils/problemsAPIUtil';
 
 class MagnitudeOrder extends React.Component 
 {
     constructor(props)
     {
         super(props);
+        this.state = {
+          m_FxEquation: " ",
+          m_GxEquation: " "
+       };
         
         this.HandleClick = this.HandleClick.bind(this);
         this.SolveProblem = this.SolveProblem.bind(this);
         this.VerifySolution = this.VerifySolution.bind(this);
         this.ParseEquation = this.ParseEquation.bind(this);
+        this.setFxEquation = this.setFxEquation.bind(this);
+        this.setGxEquation = this.setGxEquation.bind(this);
     }
 
     HandleClick(e)
@@ -24,9 +30,8 @@ class MagnitudeOrder extends React.Component
         document.getElementById("Answer").innerHTML = "";
         e.preventDefault();
       
-
-        var FunctionF = document.getElementById("FunctionF").value;
-        var FunctionG = document.getElementById("FunctionG").value;
+        var FunctionF = this.state.m_FxEquation;
+        var FunctionG = this.state.m_GxEquation;
 
         if((FunctionF == "" || FunctionF == null) || FunctionG == "" || FunctionG == null)
         {
@@ -47,9 +52,23 @@ class MagnitudeOrder extends React.Component
  
           if(this.SolveProblem(FxTerms, GxTerms) != false)
           {
-            //does nothing
+            
           }
         }
+    }
+
+    setFxEquation(event)
+    {
+      this.setState({
+        m_FxEquation: event.currentTarget.value.trim()
+        });
+    }
+
+    setGxEquation(event)
+    {
+      this.setState({
+        m_GxEquation: event.currentTarget.value.trim()
+        });
     }
 
     ParseEquation(Terms, n)
@@ -78,7 +97,6 @@ class MagnitudeOrder extends React.Component
 
       catch(e)
       {
-       // alert(e.message)
         return null
       }
     }
@@ -103,7 +121,6 @@ class MagnitudeOrder extends React.Component
       
       if(FxResult != null && GxResult != null)
       {
-      
         while(n <= 10)
         {
           if(FxResult < (GxResult * (1/const1)))
@@ -135,6 +152,17 @@ class MagnitudeOrder extends React.Component
               + ") <= " + FxTerms + " <= " + const2 + "(" + GxTerms + ")";
               document.getElementById("Answer").style.display = "block";
 
+
+              sendProblem({
+                userID: this.props.user.id,
+                username: this.props.user.username,
+                email: this.props.user.email,
+                typeIndex: 12,
+                input: {
+                  m_FxEquation: this.state.m_FxEquation,
+                  m_GxEquation: this.state.m_GxEquation
+                }
+                });
 
               return true;
             }
@@ -170,14 +198,14 @@ class MagnitudeOrder extends React.Component
 
           }
           
-          if(const1 >= 50 || const2 >= 50)
+          if(const1 >= 60 || const2 >= 60)
           {
             n = n + 1
-            if(const1 >= 50 )
+            if(const1 >= 60 )
             {
               const1 = const1Start
             }
-            if(const2 >= 50)
+            if(const2 >= 60)
             {
               const2 = const2Start
             }
@@ -250,7 +278,8 @@ class MagnitudeOrder extends React.Component
                 <form id = "FunctionInputForm">
                     <div>
                          f(x): {' '}
-                        <input id= "FunctionF">
+                        <input id= "FunctionF"
+                        onChange = {this.setFxEquation}>
                           
                         </input>
                         {' '}
@@ -258,8 +287,9 @@ class MagnitudeOrder extends React.Component
                   <br></br>
                     <div>
                          g(x):
-                        <input id= "FunctionG">
-                          
+                        <input id= "FunctionG"
+                        onChange = {this.setGxEquation}>
+                        
                         </input>
                         {' '}
                     </div>

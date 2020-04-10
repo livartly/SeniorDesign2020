@@ -29,10 +29,8 @@ class MastersTheorem extends React.Component
       
         e.preventDefault();
 
-        if(this.ParseEquation() == true)
-        {   
+       this.ParseEquation()
 
-        }
     }
 
     setRecurrenceEquation(event)
