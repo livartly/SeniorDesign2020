@@ -45,8 +45,6 @@ class CycleSolverPage extends React.Component {
       if (validateInput(this.state.setInput, this.state.relation)) {
         var formattedSet = formatSet(this.state.setInput);
         var formattedRelation = formatRelation(this.state.relation);
-
-        console.log(formattedRelation);
         // This will occur asynchronously (not blocking)
         /*sendProblem({
             userID: this.props.user.id,

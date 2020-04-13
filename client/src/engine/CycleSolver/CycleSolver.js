@@ -2,7 +2,7 @@ class CycleSolver {
     // True: input is in cycle form, FALSE: input is in permutation form
     constructor (setString, relation, isCycleForm) {
         if (isCycleForm) {
-            var {parentSet, cycleMap} = parseCycleForm(setString, relation);
+            var {parentSet, cycleMap, formattedArray} = parseCycleForm(setString, relation);
         }
         else {
             var {parentSet, cycleMap} = validateInput(setString, relation);
@@ -10,6 +10,7 @@ class CycleSolver {
 
         this.parentSet = parentSet;
         this.cycleMap = cycleMap;
+        this.cycleArray = formattedArray;
     }
 
     toCycleString() {
@@ -35,46 +36,47 @@ class CycleSolver {
         return JSON.stringify(resultArr).replace(/\"/g, "").replace(/\[/g, "(").replace(/\]/g, ")").replace(/\),\(/g, ")(").slice(1,-1);
     }
 
-    makeComposite (other) {
-        // Make composite array, 1st element is first element of the inner funtion
-        var otherArray = Object.entries(other.cycleMap).reverse();
-        var otherKeys = Object.keys(other.cycleMap);
-        var otherVals = Object.values(other.cycleMap);
-        var thisArray = Object.entries(this.cycleMap).reverse();
-        var thisKeys = Object.keys(this.cycleMap);
-        var thisVals = Object.values(this.cycleMap);
-        var composite = [otherArray[0][0]];
+    makeComposite (other) {        
+        var composite = [];
+        var prevNode = other.cycleArray[0][0];
+        var cycleStart = other.cycleArray[0][0];
 
-        // Loop through inner function
-        for (var i = 0; i < otherArray.length; i++) {
-            var f = false;
-            // For each member, check mapping in outer function
-            for (var j = 0; j < thisArray.length; j++) {
-                // If the element is a member of the outer function, add its mapping to the array.
-                // Otherwise, it maps to itself. Add to the array.
-                if (thisKeys.includes(otherArray[i][1])) {
-                    composite.push(thisVals[j]);
-                }
-                else {
-                    composite.push(thisArray[j][1]);
-                }
-
-                // If cycle has been formed, exit
-                var last = composite.pop();
-                if (composite[0] === last) {
-                    f = true;
-                    break;
-                }
-                else {
-                    composite.push(last);
-                }
+        while (true) {
+            // Push start of cycle to array
+            if (composite.length === 0 || (composite[composite.length - 1] === "|")) {
+                composite.push(cycleStart);
             }
 
-            if (f)
+            // Get mapping on inner function
+            var innerMapping = "";
+            if (other.cycleMap[prevNode]) {
+                innerMapping = other.cycleMap[prevNode];
+            }
+            else {
+                innerMapping = prevNode;
+            }
+
+            // Map inner function value to outer function
+            var outerMapping = "";
+            if (this.cycleMap[innerMapping]) {
+                outerMapping = this.cycleMap[innerMapping];
+            }
+            else {
+                outerMapping = innerMapping;
+            }
+
+            // Check if cycle has formed
+            if (outerMapping != cycleStart) {
+                composite.push(outerMapping);
+                prevNode = outerMapping;
+            }
+            else {
+                //composite.push("|");
                 break;
+            }
         }
 
-        return composite;
+        console.log("Final: " + composite);
     }
 }
 
@@ -190,10 +192,6 @@ const parseCycleForm = (set, cycleString) => {
         formattedArray[i] = formattedArray[i].split(",");
     }
 
-    for (const e in parentSet) {
-        cycleMap[e] = e;
-    }
-
     for (var i = 0; i < formattedArray.length; i++) {
         for (var j = 0; j < formattedArray[i].length; j++) {
             if (j === formattedArray[i].length - 1) {
@@ -210,5 +208,12 @@ const parseCycleForm = (set, cycleString) => {
             }
         } 
     }
-    return {parentSet, cycleMap};
+
+    console.log(formattedArray);
+    /*for (var i = 0; i < setArray.length; i++) {
+        if (!cycleMap[setArray[i]])
+            cycleMap[setArray[i]] = setArray[i];
+    }*/
+
+    return {parentSet, cycleMap, formattedArray};
 }
