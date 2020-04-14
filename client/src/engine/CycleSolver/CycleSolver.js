@@ -1,11 +1,11 @@
 class CycleSolver {
     // True: input is in cycle form, FALSE: input is in permutation form
-    constructor (setString, relation, isCycleForm) {
+    constructor(setString, relation, isCycleForm) {
         if (isCycleForm) {
-            var {parentSet, cycleMap, formattedArray} = parseCycleForm(setString, relation);
+            var { parentSet, cycleMap, formattedArray } = parseCycleForm(setString, relation);
         }
         else {
-            var {parentSet, cycleMap} = validateInput(setString, relation);
+            var { parentSet, cycleMap } = validateInput(setString, relation);
         }
 
         this.parentSet = parentSet;
@@ -33,10 +33,29 @@ class CycleSolver {
         }
         if (resultArr.length === 0)
             throw new Error("Error: All nodes relate to themselves. Cycle form is inapplicable");
-        return JSON.stringify(resultArr).replace(/\"/g, "").replace(/\[/g, "(").replace(/\]/g, ")").replace(/\),\(/g, ")(").slice(1,-1);
+        return JSON.stringify(resultArr).replace(/\"/g, "").replace(/\[/g, "(").replace(/\]/g, ")").replace(/\),\(/g, ")(").slice(1, -1);
     }
 
-    makeComposite (other) {        
+    makeComposite2(other) {
+        const mapA = this.cycleMap;
+        const mapB = other.cycleMap;
+
+        if (this.parentSet.size !== other.parentSet.size)
+            throw new Error("Error: Cannot composite two functions with different parent sets.");
+
+        var newMap = {};
+        other.parentSet.forEach((el) => {
+            if (!this.parentSet.has(el))
+                throw new Error("Error: Cannot composite two functions with different parent sets.");
+            newMap[el] = mapA[mapB[el]];
+        });
+        var setStr = Array.from(this.parentSet).toString().slice(1, -1);
+        var resultCycle = new CycleSolver(setStr, this.toCycleString(), true);
+        resultCycle.cycleMap = newMap;
+        return resultCycle;
+    }
+
+    makeComposite(other) {
         var composite = [];
         var prevNode = other.cycleArray[0][0];
         var cycleStart = other.cycleArray[0][0];
@@ -80,7 +99,7 @@ class CycleSolver {
     }
 }
 
-export {CycleSolver};
+export { CycleSolver };
 
 
 export const formatSet = (setString) => {
@@ -134,7 +153,7 @@ export const validateInput = (set, relation) => {
     });
 
     if (filtered[0] !== relation) {
-        throw new Error ("Error: Relation must only contain ordered pairs of numerals.");
+        throw new Error("Error: Relation must only contain ordered pairs of numerals.");
     }
 
     var formattedRelation = formatRelation(relation);
@@ -156,7 +175,7 @@ export const validateInput = (set, relation) => {
     if (parentSet.size !== Object.keys(cycleMap).length) {
         throw new Error("Error: All elements of domain should have a mapping.");
     }
-    return {parentSet, cycleMap};
+    return { parentSet, cycleMap };
 }
 
 
@@ -184,7 +203,7 @@ const parseCycleForm = (set, cycleString) => {
     });
 
     if (filtered[0] !== cycleString) {
-        throw new Error ("Error: Relation must only be a comma separated list.");
+        throw new Error("Error: Relation must only be a comma separated list.");
     }
 
     var formattedArray = cycleString.slice(1, -1).split(")(");
@@ -206,14 +225,14 @@ const parseCycleForm = (set, cycleString) => {
                 }
                 cycleMap[formattedArray[i][j]] = formattedArray[i][j + 1];
             }
-        } 
+        }
     }
 
     console.log(formattedArray);
-    /*for (var i = 0; i < setArray.length; i++) {
+    for (var i = 0; i < setArray.length; i++) {
         if (!cycleMap[setArray[i]])
             cycleMap[setArray[i]] = setArray[i];
-    }*/
+    }
 
-    return {parentSet, cycleMap, formattedArray};
+    return { parentSet, cycleMap, formattedArray };
 }
