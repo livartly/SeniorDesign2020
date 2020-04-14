@@ -251,9 +251,14 @@ class MastersTheorem extends React.Component
          }
          else if(aValue == Math.pow(bValue, dValue))
          {
-           if(dValue != 1)
+           if(dValue != 1 && dValue != 0)
            {
             document.getElementById("Answer").innerHTML = "&Theta;(n" + dValue.toString().sup() + "logn)"; 
+            document.getElementById("Answer").style.display = "block";
+           }
+           else if(dValue == 0)
+           {
+            document.getElementById("Answer").innerHTML = "&Theta;(" + "logn)"; 
             document.getElementById("Answer").style.display = "block";
            }
            else
