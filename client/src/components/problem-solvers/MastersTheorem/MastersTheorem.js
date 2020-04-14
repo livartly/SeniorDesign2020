@@ -51,6 +51,8 @@ class MastersTheorem extends React.Component
             var TempString = this.state.m_RecurrenceEquation + " eol";
             var EndIndex = TempString.indexOf("(", StartIndex);
             
+
+
             TempString = TempString.trim()
           
             //alert(TempString)
@@ -74,6 +76,8 @@ class MastersTheorem extends React.Component
             }
 		       	else
 		      	{
+              document.getElementById("ErrorMessage").innerHTML = "Error: Invalid Format of Recurrence Equation has been detected. Try to format Recurrence Input like the examples above.";
+              document.getElementById("ErrorMessage").style.display = "block";
 				      return false;
             }
             
@@ -97,7 +101,7 @@ class MastersTheorem extends React.Component
             
             if(!TempString.slice(0, TempString.indexOf(" eol")).includes(" "))
             {
-              document.getElementById("ErrorMessage").innerHTML = "Error: Invalid Format of Recurrence Equation has been detected. Try to include spacing between terms like in the example.";
+              document.getElementById("ErrorMessage").innerHTML = "Error: Invalid Format of Recurrence Equation has been detected. Try to include spacing between terms like in the examples.";
               document.getElementById("ErrorMessage").style.display = "block";
               return false
             }
@@ -242,18 +246,34 @@ class MastersTheorem extends React.Component
 
          if(aValue < Math.pow(bValue, dValue)) // a < b^d == O(n^d)
          {
-            document.getElementById("Answer").innerHTML = "O(n" + dValue.toString().sup() + ")"; 
+            document.getElementById("Answer").innerHTML = "&Theta;(n" + dValue.toString().sup() + ")"; 
             document.getElementById("Answer").style.display = "block";
          }
          else if(aValue == Math.pow(bValue, dValue))
          {
-            document.getElementById("Answer").innerHTML = "O(n" + dValue.toString().sup() + "logn)"; 
+           if(dValue != 1)
+           {
+            document.getElementById("Answer").innerHTML = "&Theta;(n" + dValue.toString().sup() + "logn)"; 
             document.getElementById("Answer").style.display = "block";
+           }
+           else
+           {
+            document.getElementById("Answer").innerHTML = "&Theta;(n" + "logn)"; 
+            document.getElementById("Answer").style.display = "block";
+           }
          }
          else
          {
-            document.getElementById("Answer").innerHTML = "O(n" + ("log" + bValue.toString().sub() + " " + aValue).sup() + ")"; 
+           if(bValue === aValue)
+           {
+            document.getElementById("Answer").innerHTML = "&Theta;(n" + "1".sup() + ")"; 
             document.getElementById("Answer").style.display = "block";
+           }
+           else 
+           {
+            document.getElementById("Answer").innerHTML = "&Theta;(n" + ("log" + bValue.toString().sub() + " " + aValue).sup() + ")"; 
+            document.getElementById("Answer").style.display = "block";
+           }
          }
          
          //sendProblem({});
@@ -280,17 +300,31 @@ class MastersTheorem extends React.Component
         return (
           <div>
           <div className="container" style={{ marginTop: "50px" }}>
-            <Form>
+          <Card>
+            <Form style={{marginLeft: "10px", marginRight: "10px"}}>
             <h1>Master's Theorem</h1>
               <Form.Group controlId="truthTableBuilder.instructions">
                 <Form.Label>Instructions</Form.Label>
                 <p>
-                Enter a formula of standard propositional, predicate, or modal logic. Enter a valid Recurrence Equation in order to solve it using Master's theorem.
+                Enter a valid Recurrence Relation into the textbox below. The solver will use Master's Theorem to determine an
+                Order of Magnitude Expression to explain the work done by the Recurrence Relation.
+                </p>
+                <Form.Label>Usage</Form.Label>
+                <p>
+                Click on the textbox below and enter a valid Recurrence Relation. Once your Recurrence Relation is entered, press Submit
+                to get your answer in the result box below.<br></br><br></br>
+                  <ul> Input Constraints
+                    <li>&#8730;n - Represented by n^(0.5) or n^(1/2).</li>
+                    <li>
+                      Spacing - Try to space inputs like the examples below. The solver works best when spaces are included between operations.
+                    </li>
+                  </ul>
                 </p>
               </Form.Group>
               <Form.Group controlId="truthTableBuilder.textInput">
-                <Form.Label>Example</Form.Label>
-                <p>S(n) = 2S(n/4) + n^2</p>
+                <Form.Label>Examples</Form.Label>
+                <p>S(n) = 2S(n/4) + n^2 <br></br>
+                   S(n) = 3S(n/3) + n^(1/2)</p>
                 <form id = "RecurrenceEquationForm">
                     <div>
                        S(n) = <input
@@ -309,7 +343,7 @@ class MastersTheorem extends React.Component
               <Form.Group controlId="truthTableBuilder.cardOutput">
                 <Form.Label>Result</Form.Label>
                 <Card body style={{ minHeight: "100px" }}>
-                <div id = "Output">
+                <div id = "Output" style={{fontSize: "16px"}}>
 					         <div id = "ErrorMessage" style={{display: "none", color:"red"}}>
 					         </div>
                  
@@ -319,6 +353,7 @@ class MastersTheorem extends React.Component
                 </Card>
               </Form.Group>
             </Form>
+            </Card>
          </div>
          <br></br>
          <br></br>
