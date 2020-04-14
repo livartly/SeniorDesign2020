@@ -326,6 +326,7 @@ class MastersTheorem extends React.Component
                 <p>S(n) = 2S(n/4) + n^2 <br></br>
                    S(n) = 3S(n/3) + n^(1/2)</p>
                 <form id = "RecurrenceEquationForm">
+                <Form.Label>Recurrence Equation Input</Form.Label>
                     <div>
                        S(n) = <input
                         as="select"
