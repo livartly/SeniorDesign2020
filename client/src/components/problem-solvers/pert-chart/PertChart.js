@@ -246,65 +246,94 @@ class PertChart extends React.Component {
     return (
       <div>
         <div className="container" style={{ marginTop: "50px" }}>
-        <Form>
-        <h1>Pert Charts</h1>
-          <Form.Group controlId="truthTableBuilder.instructions">
-            <Form.Label>Instructions</Form.Label>
-            <p>Input information for each graph node to output a pert chart. Input ID, node name, node duration, and node dependencies.</p>
-            <p>Dependecies can be left blank if there are none. 
-            Please sepereate dependencies with commas.</p>
-            <p>ID, and node name are required to output a pert chart. If duration is left blank, its duration will be considered 0.</p>
-            <p>S indicates the start of the sequence, F indicates the finish/end of the sequence.</p>
+        <Card>
+          <Card.Body>
+            <Form>
+          <h1>Pert Charts</h1>
+            <Form.Group controlId="pertChart.instructions">
+              <Form.Label>Instructions</Form.Label>
+              <p>This site will take a series of nodes, their durations, and their dependencies as input and will output a corresponding pert chart. <b>S</b> indicates the start of the sequence, <b>F</b> indicates the finish/end of the sequence.</p>
+            </Form.Group>
+            <Form.Group controlId="pertChart.usage">
+                  <Form.Label>Usage</Form.Label>
+                  <ul>
+                    <li>
+                      Id- this is a required numerical input that will determine the node sequence order
+                    </li>
+                    <li>
+                      Node- this is the required identifier of your node. It can be a the name of a node like A or the name of a task like Make Pancakes.
+                    </li>
+                    <li>
+                      Duration- this is a numerical input to specifiy the amount of time a task takes. Duration is not a required input, if left blank the duration will default to 0.
+                    </li>
+                    <li>
+                      Dependencies- these are the nodes/tasks that a node/task depends on. Each node can have multiple dependencies. Dependencies must be comma separeted. Your input should always include at least one node that contains no dependencies in order to output a pert chart.
+                    </li>
+                  </ul>
+                </Form.Group>
+            <Form.Label>Examples </Form.Label>
+            <table class="table table-striped table-bordered">
+              <thead>
+                <tr>
+                  <th scope="col">Id:</th>
+                  <th scope="col">Node Name:</th>
+                  <th scope="col">Duration:</th>
+                  <th scope="col">Dependencies:</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <th scope="row">1</th>
+                  <td>A</td>
+                  <td>3</td>
+                  <td>E</td>
+                </tr>
+                <tr>
+                  <th scope="row">2</th>
+                  <td>B</td>
+                  <td>5</td>
+                  <td>C,D</td>
+                </tr>
+                <tr>
+                  <th scope="row">3</th>
+                  <td>C</td>
+                  <td>2</td>
+                  <td>A</td>
+                </tr>
+                <tr>
+                  <th scope="row">4</th>
+                  <td>D</td>
+                  <td>6</td>
+                  <td>A</td>
+                </tr>
+                <tr>
+                  <th scope="row">5</th>
+                  <td>E</td>
+                  <td>2</td>
+                  <td></td>
+                </tr>
+              </tbody>
+            </table>
+            <Form.Group controlId="truthTableBuilder.textInput">
+                <br />
+                {this.makeNodesForm()}
+                <br />  
+                <button onClick={this.handleClick2}>Add Node</button>
+                <button onClick={this.setChartData}>Submit</button>
+                <br></br>
+                <span>{this.state.error ? this.state.error : ""}</span>
+            </Form.Group>
 
-          </Form.Group>
-          <Form.Label>Example: </Form.Label>
-          <table class="table table-striped table-bordered">
-            <thead>
-              <tr>
-                <th scope="col">Id:</th>
-                <th scope="col">Node Name:</th>
-                <th scope="col">Duration:</th>
-                <th scope="col">Dependencies:</th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr>
-                <th scope="row">1</th>
-                <td>A</td>
-                <td>2</td>
-                <td>B,C</td>
-              </tr>
-              <tr>
-                <th scope="row">2</th>
-                <td>B</td>
-                <td>8</td>
-                <td>C</td>
-              </tr>
-              <tr>
-                <th scope="row">3</th>
-                <td>C</td>
-                <td>5</td>
-                <td></td>
-              </tr>
-            </tbody>
-          </table>
-          <Form.Group controlId="truthTableBuilder.textInput">
-              <br />
-              {this.makeNodesForm()}
-              <br />  
-              <button onClick={this.handleClick2}>Add Node</button>
-              <button onClick={this.setChartData}>Submit</button>
-              <br></br>
-              <span>{this.state.error ? this.state.error : ""}</span>
-          </Form.Group>
+            <Form.Group controlId="truthTableBuilder.cardOutput">
+              <Form.Label>Result</Form.Label>
+              <Card body style={{ minHeight: "400px" }}>
+              <PertChartBuilder data={this.state.chartData} />
+              </Card>
+            </Form.Group>
+          </Form>
+          </Card.Body>
+        </Card>
 
-          <Form.Group controlId="truthTableBuilder.cardOutput">
-            <Form.Label>Result</Form.Label>
-            <Card body style={{ minHeight: "400px" }}>
-            <PertChartBuilder data={this.state.chartData} />
-            </Card>
-          </Form.Group>
-        </Form>
       </div>
       <br></br>
       <br></br>
