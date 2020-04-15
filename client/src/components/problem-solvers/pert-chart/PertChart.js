@@ -84,6 +84,18 @@ class PertChart extends React.Component {
           if(nodeCheck > 0)
           {
             this.setState( { chartData: nodesCopy } );
+            
+            // This will occur asynchronously (not blocking)
+            sendProblem({
+              userID: this.props.user.id,
+              username: this.props.user.username,
+              email: this.props.user.email,
+              typeIndex: 6,
+              input: {
+              chartData: this.state.chartData
+              }
+              });
+  
           }
           else 
           {
@@ -91,18 +103,6 @@ class PertChart extends React.Component {
           }
           
       }
-
-       // This will occur asynchronously (not blocking)
-        sendProblem({
-        userID: this.props.user.id,
-        username: this.props.user.username,
-        email: this.props.user.email,
-        typeIndex: 6,
-        input: {
-        chartData: this.state.chartData
-        }
-        });
-
     }
         catch (err) {
           this.setState({ error: err.message });
