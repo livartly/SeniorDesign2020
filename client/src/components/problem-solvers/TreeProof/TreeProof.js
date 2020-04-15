@@ -8,10 +8,7 @@ import { Parser } from '../../../engine/TreeProof/parser.js';
 import { Prover, Tree, Branch, Node } from '../../../engine/TreeProof/prover.js';
 import { SenTree } from '../../../engine/TreeProof/sentree.js';
 import { Table, Form, Row, Col, Card } from 'react-bootstrap';
-//import Statement from '../engine/statement.js';
-
-
-
+import { sendProblem } from '../../../utils/problemsAPIUtil';
 
 class TreeProof extends React.Component {
   constructor(props) {
@@ -28,8 +25,6 @@ class TreeProof extends React.Component {
 
   handleClick(e) {
     e.preventDefault();
-    //this.setState();
-    //console.log("Yeet");
     this.startProof();
   }
 
@@ -49,10 +44,6 @@ class TreeProof extends React.Component {
     }
     document.getElementById("model").style.display = "none";
     document.getElementById("rootAnchor").style.display = "none";
-    //document.getElementById("backtostartpage").style.display = "block";
-    //document.getElementById("status").style.display = "block";
-    //document.getElementById("status").innerHTML = "something went wrong: please email wo@umsu.de and tell me what you did";
-
     // Now a free-variable tableau is created. When the proof is finished,
     // prover.finished() is called.
     var accessibilityConstraints = [];
@@ -73,12 +64,23 @@ class TreeProof extends React.Component {
       var sentree = new SenTree(this.tree, parser);
       if (!treeClosed) {
         // Tree is open. Display a countermodel if one is known:
-        // if (!this.counterModel) this.counterModel = sentree.getCounterModel();
         if (this.counterModel) {
           document.getElementById("model").style.display = "block";
           document.getElementById("model").innerHTML = "<b>Countermodel:</b><br>" +
             this.counterModel.toHTML();
         }
+
+        // This will occur asynchronously (not blocking)
+        sendProblem({
+          userID: this.props.user.id,
+          username: this.props.user.username,
+          email: this.props.user.email,
+          typeIndex: 14,
+          input: {
+            statement: this.state.inputText
+          }
+        });
+
         return;
       }
       if (parser.isModal) {
@@ -88,6 +90,17 @@ class TreeProof extends React.Component {
       document.getElementById("rootAnchor").style.display = "block";
       window.self.painter = new TreePainter(sentree, document.getElementById("rootAnchor"));
       window.self.painter.paintTree();
+
+      // This will occur asynchronously (not blocking)
+      sendProblem({
+        userID: this.props.user.id,
+        username: this.props.user.username,
+        email: this.props.user.email,
+        typeIndex: 14,
+        input: {
+          statement: this.state.inputText
+        }
+      });
     }
     setTimeout(function () {
       prover.start();

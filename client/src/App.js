@@ -22,7 +22,7 @@ import Home from './components/home/home.js';
 import About from './components/about/about.js';
 import Resources from './components/resources/resources.js';
 import Calculator2 from './components/calculator2.js';
-import TreeProof from './components/problem-solvers/TreeProof/TreeProof.js';
+import TreeProof from './components/problem-solvers/TreeProof/TreeProofContainer.js';
 import Catalog from './components/privileged/catalog';
 import Feedback from './components/feedback/FeedbackContainer';
 import sortSolver from './components/problem-solvers/sortSolver.js';

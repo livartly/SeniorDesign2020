@@ -12,5 +12,6 @@ export const PROBLEM_TYPE_LIST = [
   "Set Logic Calculator",
   "BooleanMatrices",
   "MagnitudeOrder",
-  "Cycle-Solver"
+  "Cycle-Solver",
+  "Propositinal Logic Prover"
 ];
