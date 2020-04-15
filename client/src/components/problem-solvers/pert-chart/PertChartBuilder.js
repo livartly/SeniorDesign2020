@@ -29,7 +29,7 @@ class PertChartBuilder extends React.Component {
     return (
       <AnyChart
         width={800}
-        height={600}
+        height={400}
         instance={stage}
         charts={[chart]}
       />
