@@ -428,8 +428,10 @@ class MagnitudeOrder extends React.Component
               <Form.Group controlId="truthTableBuilder.instructions">
                 <Form.Label><b>Instructions</b></Form.Label>
                 <p>
-                Enter in two functions f(x) and g(x). If these functions have the same Order of Magnitude then the solver will provide the n, constant1, and constant2 values such that
-                (x >= n, constant1 * g(x) {'<='} f(x) {'<='} constant2 * g(x)). Please limit variable usage to only use x.
+                In the two input boxes below 'Function Input', provide two functions: 1) f(x) 2) g(x). Once you click the Verify Order button, the solver will determine if the 
+                functions are of the same Order of Magnitude, AKA: have the same growth rate. Once your functions have been Verified successfully, input the three variable values 
+                N, c1, and c2 in the three input boxes below 'Variable Values' that should make it so the relationship that (x >= N), and {'c1*g(x) <= f(x) <= c2*g(x)'} holds true. Once
+                the Verify Inputs button is clicked, the solver will verify if the N, c1, and c2 values holds the definition provided in the previous statement true.
                 </p>
               </Form.Group>
               <Form.Group controlId="truthTableBuilder.FunctionInput">
