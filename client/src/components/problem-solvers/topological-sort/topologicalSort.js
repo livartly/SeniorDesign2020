@@ -43,7 +43,7 @@ class TopologicalSort extends React.Component {
       for(var i=0; i<topoArray.length; i++)
       {
           var temp = topoArray[i].toString();
-          if(temp === "null")
+          if(temp == "")
           {
               topoArray.splice(i, 1)
           }
@@ -68,8 +68,7 @@ class TopologicalSort extends React.Component {
       email: this.props.user.email,
       typeIndex: 5,
       input: {
-        nodes: this.state.nodes,
-        output: tempOutput
+        nodes: this.state.nodes
       }
       });
 
@@ -173,33 +172,78 @@ class TopologicalSort extends React.Component {
     return (
       <div>
       <div className="container" style={{ marginTop: "50px" }}>
-        <Form>
-        <h1>Topological Sorting</h1>
-          <Form.Group controlId="truthTableBuilder.instructions">
-            <Form.Label>Instructions</Form.Label>
-            <p>
-            Input graph nodes and dependencies to output a topological sort. Enter node name into the left field, and comma seperated dependencies into the right field.
-            Enter null in an input field of a node that does not have a dependency.
-            </p>
-          </Form.Group>
-          <Form.Group controlId="truthTableBuilder.textInput">
-            <Form.Label>Example</Form.Label>
-            <Form.Label>A B,C</Form.Label>
-            <span>{this.state.error ? this.state.error : ""}</span>
-              <br />
-              {this.makeNodesForm()}
-              <br />
-              <button onClick={this.handleClick2}>Add Node</button>
-              <button onClick={this.topologicalSort}>Submit</button>
-          </Form.Group>
+        <Card>
+          <Card.Body>
+            <Form>
+          <h1>Topological Sorting</h1>
+          <Form.Group controlId="topologicalSort.instructions">
+              <Form.Label>Instructions</Form.Label>
+              <p>This site will take a series of nodes and their dependencies as input and will output a corresponding topological sort of the entered nodes.</p>
+            </Form.Group>
+            <Form.Group controlId="topologicalSort.usage">
+                  <Form.Label>Usage</Form.Label>
+                  <ul>
+                    <li>
+                      Node- this is the required identifier of your node. It can be a the name of a node like A or the name of a task like Make Pancakes.
+                    </li>
+                    <li>
+                      Dependencies- these are the nodes/tasks that a node/task depends on. Each node can have multiple dependencies. Dependencies must be comma separeted. Your input should always include at least one node that contains no dependencies in order to output a pert chart.
+                    </li>
+                  </ul>
+                </Form.Group>
+                <Form.Label>Examples </Form.Label>
+            <table class="table table-striped table-bordered">
+              <thead>
+                <tr>
+                  <th scope="col">Node Name:</th>
+                  <th scope="col">Dependencies:</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td>A</td>
+                  <td>B,C</td>
+                </tr>
+                <tr>
+                  <td>B</td>
+                  <td>D</td>
+                </tr>
+                <tr>
+                  <td>C</td>
+                  <td>E,F</td>
+                </tr>
+                <tr>
+                  <td>D</td>
+                  <td></td>
+                </tr>
+                <tr>
+                  <td>E</td>
+                  <td>D</td>
+                </tr>
+                <tr>
+                  <td>F</td>
+                  <td>G</td>
+                </tr>
+              </tbody>
+            </table>
+            <Form.Group controlId="topologicalSort.textInput">
+              <span>{this.state.error ? this.state.error : ""}</span>
+                <br />
+                {this.makeNodesForm()}
+                <br />
+                <button onClick={this.handleClick2}>Add Node</button>
+                <button onClick={this.topologicalSort}>Submit</button>
+            </Form.Group>
 
-          <Form.Group controlId="truthTableBuilder.cardOutput">
-            <Form.Label>Result</Form.Label>
-            <Card body style={{ minHeight: "100px" }}>
-            <pre id="output"></pre>
-            </Card>
-          </Form.Group>
-        </Form>
+            <Form.Group controlId="topologicalSort.cardOutput">
+              <Form.Label>Result</Form.Label>
+              <Card body style={{ minHeight: "100px" }}>
+              <pre id="output"></pre>
+              </Card>
+            </Form.Group>
+          </Form>
+          </Card.Body>
+        </Card>
       </div>
     </div>
     );
