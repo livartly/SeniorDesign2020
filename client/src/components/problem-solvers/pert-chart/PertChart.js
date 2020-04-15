@@ -35,10 +35,19 @@ class PertChart extends React.Component {
 
       for (var node of this.state.nodes) {
 
+          // Declare variable to check for at least one node with no dependencies 
+          var nodeCheck = 0;
+
           // Check if id input is empty- throw error
           if(node.id == "")
           {
             throw new Error(" Error: All nodes must have an id value.");
+          }
+
+          // Check if id input is not numerical
+          if(isNaN(node.id))
+          {
+            throw new Error(" Error: Id value must be a number.");
           }
 
           // Deep copy of nodes 
@@ -54,6 +63,7 @@ class PertChart extends React.Component {
             if(nodeCopy.dependsOn == "")
             {
               delete nodeCopy.dependsOn;
+              nodeCheck++;
             }
             else
             {
@@ -70,7 +80,16 @@ class PertChart extends React.Component {
             nodesCopy.push(nodeCopy);
           }
 
-          this.setState( { chartData: nodesCopy } );
+          // Before setting state, check to make sure node check caught at least one independant node
+          if(nodeCheck > 0)
+          {
+            this.setState( { chartData: nodesCopy } );
+          }
+          else 
+          {
+            throw new Error(" Error: Cyclic dependency detected! At least one node should have no dependencies.");
+          }
+          
       }
 
        // This will occur asynchronously (not blocking)
