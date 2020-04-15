@@ -1,4 +1,8 @@
 import React from 'react'
+import nerdamer from 'nerdamer/nerdamer.core.js'
+import 'nerdamer/Algebra.js'
+import 'nerdamer/Calculus.js'
+import 'nerdamer/Solve.js'
 import {simplify} from 'mathjs';
 import {parse} from 'mathjs';
 import { Form, Card } from 'react-bootstrap';
@@ -10,251 +14,393 @@ class MagnitudeOrder extends React.Component
     {
         super(props);
         this.state = {
-          m_FxEquation: " ",
-          m_GxEquation: " "
+          m_FxEquation: null,
+          m_GxEquation: null,
+          m_nValue: null,
+          m_c1Value: null,
+          m_c2Value: null,
+          error: null,
+          error2: null,
+          Verification: null,
+          Answer: null,
+          SameOrderFlag: false,
        };
         
-        this.HandleClick = this.HandleClick.bind(this);
-        this.SolveProblem = this.SolveProblem.bind(this);
-        this.VerifySolution = this.VerifySolution.bind(this);
-        this.ParseEquation = this.ParseEquation.bind(this);
+        this.VerifyOrder = this.VerifyOrder.bind(this);
+        this.VerifyInputs = this.VerifyInputs.bind(this);
         this.setFxEquation = this.setFxEquation.bind(this);
         this.setGxEquation = this.setGxEquation.bind(this);
+        this.setNValue = this.setNValue.bind(this);
+        this.setc1Value = this.setc1Value.bind(this);
+        this.setc2Value = this.setc2Value.bind(this);
     }
 
-    HandleClick(e)
+    VerifyOrder(e)
     {
-        document.getElementById("ErrorMessage").style.display = "none";
-        document.getElementById("ErrorMessage").innerHTML = "";
-        document.getElementById("Answer").style.display = "none";
-        document.getElementById("Answer").innerHTML = "";
-        e.preventDefault();
-      
-        var FunctionF = this.state.m_FxEquation;
-        var FunctionG = this.state.m_GxEquation;
+      var EquationF = this.state.m_FxEquation;
+      var EquationG = this.state.m_GxEquation;
 
-        if((FunctionF == "" || FunctionF == null) || FunctionG == "" || FunctionG == null)
+      
+      try
+      {
+       if(EquationF != null && EquationF.trim() != "" && EquationG != null && EquationG.trim() != "")
+       {
+         //Solve
+         EquationF = EquationF.toLowerCase();
+         EquationG = EquationG.toLowerCase();
+
+         if(EquationF.includes("sin") || EquationF.includes("tan") || EquationF.includes("cos") || EquationF.includes("cot") || EquationF.includes("csc") || EquationF.includes("sec"))
+         {
+          this.setState({ Verification:null, error: "Error: Trigonometric functions are not supported by the solver at this time." });
+          return;
+         }
+         if(EquationG.includes("sin") || EquationG.includes("tan") || EquationG.includes("cos") || EquationG.includes("cot") || EquationG.includes("csc") || EquationG.includes("sec"))
+         {
+          this.setState({ Verification:null, error: "Error: Trigonometric functions are not supported by the solver at this time." });
+          return;
+         }
+
+         var fxOrder = "deg(" + EquationF.trim() + ",x)" 
+         var gxOrder = "deg(" + EquationG.trim() + ",x)"
+
+         fxOrder = nerdamer(fxOrder).toString()
+         gxOrder = nerdamer(gxOrder).toString()
+
+         //alert(fxOrder + "  " + gxOrder)
+         if(fxOrder === gxOrder && (fxOrder != 0 && gxOrder != 0)) //Fx and Gx have the same order due to only being basic polynomials
+         {
+           
+          this.setState({ Verification: " Verification Success: F(x) and G(x) are the same order", error: null, SameOrderFlag: true });
+          return;
+         }
+         else if(fxOrder != gxOrder || (fxOrder == 0 && gxOrder == 0)) //Check if they are not same order or contain a highest order of sqrt or log.
+         {
+            if(fxOrder == 0 && gxOrder == 0) //Check for log, sqrt, const
+            {
+              if(EquationF.includes("log"))//Check for sqrtx. logx, or const as highest order
+              {
+                fxOrder = this.checkLog(EquationF);
+                //alert("fxOrder: " + fxOrder);
+              }
+              if(EquationG.includes("log"))//Check for sqrtx. logx, or const as highest order
+              {
+                gxOrder = this.checkLog(EquationG);
+               // alert("gxOrder: " + gxOrder);
+              }
+              if(EquationF.includes("sqrt"))
+              {
+                fxOrder = this.checkSqrt(EquationF);
+               // alert("fxOrder: " + fxOrder);
+              }
+              if(EquationG.includes("sqrt"))
+              {
+                gxOrder = this.checkSqrt(EquationG);
+               // alert("gxOrder: " + gxOrder);
+              }
+
+              if(fxOrder != -1 || gxOrder != -1 )
+              {
+                if(fxOrder == gxOrder) // Either logorder==logorder, 0==0, const == const, sqrt == sqrt
+                {
+                  this.setState({ Verification: " Verification Success: F(x) and G(x) are the same order", error: null, SameOrderFlag: true });
+                  return;
+                }
+                else 
+                {
+                  this.setState({ Verification: " Verification Failure: F(x) and G(x) {do not} have the same order", error: null, SameOrderFlag: false });
+                  return;
+                }
+              }
+
+            }
+            else //Order does not equal and does not have an order of (log(), x^(1/2), or const)
+            {
+            //  alert("Functions have different orders and do not equal")
+              this.setState({ Verification: " Verification Failure: F(x) and G(x) {do not} have the same order", error: null, SameOrderFlag: false });
+              return;
+            }
+         }
+         else //
+         {
+          this.setState({ Verification: " Verification Failure: F(x) and G(x) {do not} have the same order", error: null, SameOrderFlag: false });
+          return;
+         }
+       }
+       else
+       {
+        this.setState({ Verification: null, error: "Error: F(x) and G(x) must have input values" });
+        return;
+       }
+      }
+      catch(err)
+      {
+        this.setState({ Verification:null, error: "Error: Incorrect Formatting Detected" });
+        return;
+      }
+       
+    }
+
+    checkLog(func)
+    {
+      var strtIdx = func.indexOf("log(");
+      var logIdx = func.indexOf("log");
+      var endIdx;
+
+      while(true)
+      {
+        endIdx = func.indexOf(")", strtIdx);
+        
+       // alert(strtIdx + "  " + endIdx + "  " + logIdx)
+        if(strtIdx != -1 && endIdx != -1)
         {
-          document.getElementById("ErrorMessage").innerHTML = "Error: Must fill out both f(x) and g(x) forms before submitting!";
-          document.getElementById("ErrorMessage").style.display = "block";
-        }
-        else if(FunctionF.includes("sin") || FunctionF.includes("cos") || FunctionF.includes("tan") || FunctionG.includes("tan") || FunctionG.includes("sin" || FunctionG.includes("cos")))
-        {
-          document.getElementById("ErrorMessage").innerHTML = "Error: Solver currently does not support trig operations";
-          document.getElementById("ErrorMessage").style.display = "block";
-        }
-        else 
-        {
-          FunctionF = FunctionF.trim();
-          FunctionG = FunctionG.trim();
-          var FxTerms = FunctionF //.matchAll("(\\+|\\-)?[a-z0-9.^]+|\\(([^()]+)\\)|[/*+-]")
-          var GxTerms = FunctionG //.matchAll("(\\+|\\-)?[a-z0-9.^]+|\\(([^()]+)\\)|[/*+-]")
- 
-          if(this.SolveProblem(FxTerms, GxTerms) != false)
+          var polynomial = func.slice(strtIdx + 1, endIdx);
+          if(polynomial.includes("x"))
           {
-            
+            return "logOrder";
           }
+          logIdx = func.indexOf("log", endIdx); //Find the next log instance if it exists
+          strtIdx = func.indexOf("log(", endIdx); //Find the next log instance if it exists
+          endIdx = func.indexOf(")", strtIdx); ////Find the next log closing if it exists
         }
+        else if(logIdx != -1 && (strtIdx == -1 || endIdx == -1))
+        {
+          //Error: log found but not correct syntax
+          this.setState({ Verification:null, error: "Error: Log values must be formatted like the example provided above." });
+          return -1;
+        }
+        else
+        {
+          return "const";
+        }
+      }
+    }
+
+    checkSqrt(func)
+    {
+      var strtIdx = func.indexOf("sqrt(");
+      var logIdx = func.indexOf("sqrt");
+      var endIdx;
+
+      while(true)
+      {
+        endIdx = func.indexOf(")", strtIdx);
+        
+       // alert(strtIdx + "  " + endIdx + "  " + logIdx)
+        if(strtIdx != -1 && endIdx != -1)
+        {
+          var polynomial = func.slice(strtIdx + 1, endIdx);
+          if(polynomial.includes("x"))
+          {
+            return "sqrtOrder";
+          }
+          logIdx = func.indexOf("sqrt", endIdx); //Find the next log instance if it exists
+          strtIdx = func.indexOf("sqrt(", endIdx); //Find the next log instance if it exists
+          endIdx = func.indexOf(")", strtIdx); ////Find the next log closing if it exists
+        }
+        else if(logIdx != -1 && (strtIdx == -1 || endIdx == -1))
+        {
+          //Error: log found but not correct syntax
+          this.setState({ Verification:null, error: "Error: Sqrt values must be formatted like the example provided above." });
+          return -1;
+        }
+        else
+        {
+          return "const";
+        }
+      }
     }
 
     setFxEquation(event)
     {
       this.setState({
-        m_FxEquation: event.currentTarget.value.trim()
+        m_FxEquation: event.currentTarget.value.trim(),
+        VerifyOrder: false,
+        Verification: null,
+        error2: null,
+        Answer: null
         });
     }
 
     setGxEquation(event)
     {
       this.setState({
-        m_GxEquation: event.currentTarget.value.trim()
+        m_GxEquation: event.currentTarget.value.trim(),
+        VerifyOrder: false,
+        Verification: null,
+        error2: null,
+        Answer: null
         });
     }
 
-    ParseEquation(Terms, n)
+    setNValue(event)
     {
-      try
-      {   
-       while(Terms.includes("log(") && n >= 1)
-       { 
-          var Lslice = Terms.slice(Terms.indexOf("log("), Terms.indexOf(")", Terms.indexOf("log(")) + 1)
-          var value = Lslice.slice(Lslice.indexOf("log(") + 4, Lslice.indexOf(")", Terms.indexOf("log(")))
-          const g = parse(value)
-         // alert("g: " + g)
-          const simpl = simplify(g)
-         // alert("simpl: " + simpl)
-          var logNumber = simpl.evaluate({x:n})
-          
-          Terms = Terms.replace(Lslice, Math.log10(logNumber))
-    
-       }
-       //alert("exit")
-       const f = parse(Terms)
-       const simp = simplify(f) 
-
-       return simp.evaluate({x:n})
-      }
-
-      catch(e)
-      {
-        return null
-      }
+      this.setState({
+        m_nValue: event.currentTarget.value.trim(),
+        Answer: null
+        });
     }
 
-    SolveProblem(FxTerms, GxTerms)  //Will attempt to solve so X > N, 
+    setc1Value(event)
     {
-      var n = 1
-      var const1 = 1
-      var const2 = 1
-      var FxTermsCopy = FxTerms
-      var GxTermsCopy = GxTerms
+      this.setState({
+        m_c1Value: event.currentTarget.value.trim(),
+        Answer: null
+        });
+    }
 
-      if(FxTerms.includes("log") || GxTerms.includes("log"))
-      {
-        const2 = const2 + 1
-      }
+    setc2Value(event)
+    {
+      this.setState({
+        m_c2Value: event.currentTarget.value.trim(),
+        Answer: null
+        });
+    }
 
-      var FxResult = this.ParseEquation(FxTerms, n)
-      var GxResult = this.ParseEquation(GxTerms, n)
-      var const2Start = const1
-      var const1Start = const2
-      
-      if(FxResult != null && GxResult != null)
-      {
-        while(n <= 10)
+    VerifyInputs()
+    { 
+      //alert(this.state.SameOrderFlag)
+      this.setState({error2: null });
+        if(this.state.SameOrderFlag == true)
         {
-          if(FxResult < (GxResult * (1/const1)))
-          {
-              const1 = const1 + 1;
-          }
+          var nValue = this.state.m_nValue;
+          var c1Value = this.state.m_c1Value;
+          var c2Value = this.state.m_c2Value;
+          var EquationF = this.state.m_FxEquation;
+          var EquationG = this.state.m_GxEquation;
 
-          if(FxResult > (GxResult * const2))
+          //EquationF != null && EquationF.trim() != ""
+          if((nValue != null && nValue.trim() != "") && (c1Value != null && c1Value.trim() != "") && (c2Value != null && c2Value.trim() != ""))
           {
-            const2 = const2 + 1;
-          }
+              var funcLowerBoundG;
+              var funcHigherBoundG;
+              var funcSolutionF;
 
-          if(FxResult >= (GxResult * (1/const1)) && FxResult <= (GxResult * const2))
-          {
-            var flag = this.VerifySolution(FxTerms, GxTerms, const1, const2)
-            if(flag == 0)
-            {
-              //alert("Success: " + "1/"+ const1 + "(" + this.state.m_FunctionG + ") <= " + 
-              //    this.state.m_FunctionF + " <= " + const2 + "(" + this.state.m_FunctionG +
-              //    ")" + "\nWhere X >= " + n)
-              
-              if(const1 == 1)
+              if(this.testValues(nValue, c1Value, c2Value) === true)
               {
-                const1 = "1"
-              }
-              else const1 = "1/" + const1
-
-              document.getElementById("Answer").innerHTML = "x >= " + n + ",  " + const1 + "(" + GxTerms
-              + ") <= " + FxTerms + " <= " + const2 + "(" + GxTerms + ")";
-              document.getElementById("Answer").style.display = "block";
-
-
-              sendProblem({
-                userID: this.props.user.id,
-                username: this.props.user.username,
-                email: this.props.user.email,
-                typeIndex: 12,
-                input: {
-                  m_FxEquation: this.state.m_FxEquation,
-                  m_GxEquation: this.state.m_GxEquation
+                try
+                {
+                funcSolutionF = this.solveFunction(EquationF, nValue, null);
+                funcLowerBoundG = this.solveFunction(EquationG, nValue, c1Value);
+                funcHigherBoundG = this.solveFunction(EquationG, nValue, c2Value);
                 }
+                catch(err)
+                {
+                  this.setState({ Verification:null, error: "Error: Incorrect Formatting Detected" });
+                  return;
+                }
+                
+                if(funcLowerBoundG <= funcSolutionF && funcSolutionF <= funcHigherBoundG)
+                {
+                  sendProblem({
+                    userID: this.props.user.id,
+                    username: this.props.user.username,
+                    email: this.props.user.email,
+                    typeIndex: 12,
+                    input: {
+                      m_FxEquation: this.state.m_FxEquation,
+                      m_GxEquation: this.state.m_GxEquation,
+                      m_nValue: this.state.m_nValue,
+                      m_c1Value: this.state.c1Value,
+                      m_c2Value: this.state.c2Value
+                    }
                 });
 
-              return true;
-            }
-            else if(flag == 1)
-            {
-              if(n < 5)
-              {
-                const1 = const1 + 1
-              }
-              else const1 = const1 + 20
-            }
-            else if(flag == 2)
-            {
-              if(n < 5)
-              {
-                const2 = const2 + 1
-              }
-              else const2 = const2 + 20
-            }
-            else
-            {
-              if(n < 5)
-              {
-                const1 = const1 + 1
-                const2 = const2 + 1
+                  this.setState({Answer: "Verification was Successful.\n The inputs provided are a correct solution." });
+                  return;
+                }
+                else
+                {
+                  //alert(funcSolutionF + "   " + funcLowerBoundG + "  " + funcHigherBoundG)
+                  this.setState({Answer: "The inputs provided were unsuccessful.\n Try inputting different variable values." });
+                  return;
+                }
+               // alert(funcSolutionF + "   " + funcLowerBoundG + "  " + funcHigherBoundG)
+                
               }
               else
               {
-                const1 = const1 + 20
-                const2 = const2 + 20
+                return;
               }
-            }
 
           }
-          
-          if(const1 >= 60 || const2 >= 60)
+          else
           {
-            n = n + 1
-            if(const1 >= 60 )
-            {
-              const1 = const1Start
-            }
-            if(const2 >= 60)
-            {
-              const2 = const2Start
-            }
-          }
-        // alert("n = " + n + "     const1 = " + const1 + "     const2 = " + const2)
-          FxResult = this.ParseEquation(FxTerms, n)
-          GxResult = this.ParseEquation(GxTerms, n)
-
-          if(n >= 10)
-          {
-          document.getElementById("ErrorMessage").innerHTML = "Error: f(x) growth rate does not fall within g(x)";
-          document.getElementById("ErrorMessage").style.display = "block";
-          return false
+         //   alert(nValue + " " + c1Value + "  " + c2Value )
+            this.setState({error2: "Error: Must have values for all three of the above variable values: N, C1, C2" });
+            return;
           }
         }
-
-        //alert(FxResult)
-        //alert(GxResult)
-        document.getElementById("ErrorMessage").innerHTML = "Error: Solver has determined that these functions are not growing within scope";
-        document.getElementById("ErrorMessage").style.display = "block";
-      }
-      else 
-      {
-        document.getElementById("ErrorMessage").innerHTML = "Error: Solver has determined an incorrect format has been entered";
-        document.getElementById("ErrorMessage").style.display = "block";
-      }
+        else
+        {
+          this.setState({error2: "Error: Must have successfully verified f(x) and g(x) to be same order before inputting Variable Values." });
+          return;
+        }
     }
 
-    VerifySolution(FxTerms, GxTerms, const1, const2)
+    solveFunction(func, nValue, cValue)
     {
-      var VerResultFx = this.ParseEquation(FxTerms, 500)
-      var VerResultGx = this.ParseEquation(GxTerms, 500)
+      while(func.includes("log("))
+      { 
+         //alert("enter")
+        // alert(Terms + " " + Terms.indexOf(")") + " " + Terms.indexOf("log("))
+         var Lslice = func.slice(func.indexOf("log("), func.indexOf(")", func.indexOf("log(")) + 1)
+        // alert("Lslice: " + Lslice)
+         var value = Lslice.slice(Lslice.indexOf("log(") + 4, Lslice.indexOf(")", func.indexOf("log(")))
+         //alert("value: " + value)
+         const g = parse(value)
+        // alert("g: " + g)
+         const simpl = simplify(g)
+        // alert("simpl: " + simpl)
+         var logNumber = simpl.evaluate({x:nValue})
 
-      if(VerResultFx >= (VerResultGx * (1/const1)) && VerResultFx <= (VerResultGx * const2))
-      {
-        return 0 //Success
+         func = func.replace(Lslice, Math.log10(logNumber))
       }
-      else if(VerResultFx < (VerResultGx * (1/const1)) && VerResultFx <= (VerResultGx * const2))
+
+      var terms = func;
+
+      if(cValue == null) //Solve for fx
       {
-        return 1 // Failure due to const1 being too low
+        const f = parse(terms);
+        const simpl = simplify(f);
+        return simpl.evaluate({x:nValue})
       }
-      else if(VerResultFx >= (VerResultGx * (1/const1)) && VerResultFx > (VerResultGx * const2))
+
+      if(cValue.includes("/"))
       {
-        return 2 // Failure due to const2 being too low
+        cValue = simplify(parse(cValue)).evaluate();
       }
-      else 
+
+      terms = cValue + "(" + func + ")";
+      const f = parse(terms);
+      const simpl = simplify(f);
+      return simpl.evaluate({x:nValue})
+      
+    }
+
+    testValues(nValue, c1Value, c2Value)
+    {
+      if(nValue < 1 || nValue > 10)
       {
-        return 3 // Failure due to both
+        this.setState({error2: "Error: Invalid N value. N must be >= 1 and <= 10" });
+        return false;
       }
+      if(c1Value <= 0)
+      {
+        this.setState({error2: "Error: Invalid c1 value. c1 must be > 0" });
+        return false;
+      }
+      if(c2Value <= 0)
+      {
+        this.setState({error2: "Error: Invalid c2 value. c2 must be > 0" });
+        return false;
+      }
+      if(nValue.includes(".") || nValue.includes("/"))
+      {
+        this.setState({error2: "Error: N Value must be a whole number" });
+        return false;
+      }
+
+      return true;
     }
 
     render()
@@ -262,7 +408,8 @@ class MagnitudeOrder extends React.Component
         return (
           <div>
           <div className="container" style={{ marginTop: "50px" }}>
-            <Form>
+            <Card>
+            <Form style={{marginLeft: "10px", marginRight: "10px"}}>
             <h1>Order Verification</h1>
               <Form.Group controlId="truthTableBuilder.instructions">
                 <Form.Label><b>Instructions</b></Form.Label>
@@ -271,52 +418,97 @@ class MagnitudeOrder extends React.Component
                 (x >= n, constant1 * g(x) {'<='} f(x) {'<='} constant2 * g(x)). Please limit variable usage to only use x.
                 </p>
               </Form.Group>
-              <Form.Group controlId="truthTableBuilder.textInput">
-                <Form.Label><b>Example</b> </Form.Label>
-                <p>f(x) = x^2 + 5</p>
-                <p>g(x) = x^2 + sqrt(x^1) + log(x)</p>
+              <Form.Group controlId="truthTableBuilder.FunctionInput">
+                <Form.Label><b>Examples</b> </Form.Label>
+                <p>1) f(x) = x<br></br>
+                g(x) = 17x + 1</p>
+                <p>2) f(x) = 3x^3 - 7x<br></br>
+                g(x) = (x^3)/2</p>
+                <p>4) f(x) = sqrt(x + 100)<br></br>
+                g(x) = sqrt(x)</p>
+                <p>5) f(x) = x^3 + log(x)<br></br>
+                g(x) = x^3</p>
                 <form id = "FunctionInputForm">
+                <Form.Label>Function Input</Form.Label>
                     <div>
                          f(x): {' '}
-                        <input id= "FunctionF"
+                        <input
+                        style = {{}}
                         onChange = {this.setFxEquation}>
                           
                         </input>
-                        {' '}
                     </div>
-                  <br></br>
                     <div>
                          g(x):
-                        <input id= "FunctionG"
+                        <input
                         onChange = {this.setGxEquation}>
                         
                         </input>
-                        {' '}
                     </div>
                   <br></br>
                     <label>
-                         <button id = "SubmitButton"   onClick = {this.HandleClick}>
-                           Submit
+                         <button type="button"  onClick = {this.VerifyOrder}>
+                           Verify Order
                          </button>
-                    </label>
-                  
+                         <span style={{ color: 'black'}}>
+                         {this.state.Verification ? this.state.Verification : ""}
+                        </span>
+                    </label><br></br>
+                    <span style={{ color: 'red' }}>
+                    {this.state.error ? this.state.error : ""}
+                    </span>
                 </form>
+              </Form.Group>
+
+              <Form.Group >
+                <Form.Label>Variable Values</Form.Label> <Form.Label style= {{marginLeft: "125px"}}>Variable Restrictions</Form.Label>
+
+                <div>
+                  N:
+                  <input
+                  onChange = {this.setNValue}
+                  style = {{marginLeft: "10px"}}>
+                 </input>
+                 <Form.Label style= {{marginLeft: "18px", fontWeight: "normal"}}>{'N >= 1 and N <= 10, N must be a whole number'}</Form.Label>
+                </div>
+                <div>
+                  C1:
+                  <input
+                  onChange = {this.setc1Value}
+                  style = {{marginLeft: "2px"}}>
+                 </input>
+                 <Form.Label style= {{marginLeft: "18px", fontWeight: "normal"}}>{'C1 > 0'}</Form.Label>
+                </div>
+                <div>
+                  C2:
+                  <input
+                  onChange = {this.setc2Value}
+                  style = {{marginLeft: "2px"}}>
+                 </input>
+                 <Form.Label style= {{marginLeft: "18px", fontWeight: "normal"}}>{'C2 > 0 '}</Form.Label>
+                </div>
+
+                <br></br>
+                <label>
+                  <button type="button"  onClick = {this.VerifyInputs}>
+                    Verify Inputs
+                  </button>
+                </label><br></br>
+                <span style={{ color: 'red' }}>
+                    {this.state.error2 ? this.state.error2 : ""}
+                </span>
               </Form.Group>
 
               <Form.Group controlId="truthTableBuilder.cardOutput">
                 <Form.Label>Result</Form.Label>
                 <Card body style={{ minHeight: "100px" }}>
-                <div id = "Output" style={{display: "block", color: "black"}}>
-					         <div id = "ErrorMessage" style={{display: "none", color:"red"}}>
-						            
-					         </div>
-                 
-                   <div id = "Answer" style={{display: "none", color: "black", fontsize: "15px"}}>
-                   </div>
-				       </div>
+                <span style={{ color: 'black' }}>
+                {this.state.Answer ? this.state.Answer : ""}
+                </span>
                 </Card>
               </Form.Group>
-            </Form>
+              </Form>
+              </Card>
          </div>
          <br></br>
          <br></br>
