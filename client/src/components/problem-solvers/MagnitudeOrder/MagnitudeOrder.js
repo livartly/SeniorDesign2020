@@ -14,11 +14,11 @@ class MagnitudeOrder extends React.Component
     {
         super(props);
         this.state = {
-          m_FxEquation: null,
-          m_GxEquation: null,
-          m_nValue: null,
-          m_c1Value: null,
-          m_c2Value: null,
+          m_FxEquation: "",
+          m_GxEquation: "",
+          m_nValue: "",
+          m_c1Value: "",
+          m_c2Value: "",
           error: null,
           error2: null,
           Verification: null,
@@ -37,9 +37,8 @@ class MagnitudeOrder extends React.Component
 
     VerifyOrder(e)
     {
-      var EquationF = this.state.m_FxEquation;
-      var EquationG = this.state.m_GxEquation;
-
+      var EquationF = this.state.m_FxEquation.trim();
+      var EquationG = this.state.m_GxEquation.trim();
       
       try
       {
@@ -213,9 +212,10 @@ class MagnitudeOrder extends React.Component
     setFxEquation(event)
     {
       this.setState({
-        m_FxEquation: event.currentTarget.value.trim(),
+        m_FxEquation: event.currentTarget.value,
         VerifyOrder: false,
         Verification: null,
+        error: null,
         error2: null,
         Answer: null
         });
@@ -224,9 +224,10 @@ class MagnitudeOrder extends React.Component
     setGxEquation(event)
     {
       this.setState({
-        m_GxEquation: event.currentTarget.value.trim(),
+        m_GxEquation: event.currentTarget.value,
         VerifyOrder: false,
         Verification: null,
+        error: null,
         error2: null,
         Answer: null
         });
@@ -267,6 +268,7 @@ class MagnitudeOrder extends React.Component
           var c2Value = this.state.m_c2Value;
           var EquationF = this.state.m_FxEquation;
           var EquationG = this.state.m_GxEquation;
+          var maxN = 100;
 
           //EquationF != null && EquationF.trim() != ""
           if((nValue != null && nValue.trim() != "") && (c1Value != null && c1Value.trim() != "") && (c2Value != null && c2Value.trim() != ""))
@@ -285,28 +287,40 @@ class MagnitudeOrder extends React.Component
                 }
                 catch(err)
                 {
-                  this.setState({ Verification:null, error: "Error: Incorrect Formatting Detected" });
+                  this.setState({ Verification:null, error2: "Error: Incorrect Formatting Detected" });
                   return;
                 }
                 
                 if(funcLowerBoundG <= funcSolutionF && funcSolutionF <= funcHigherBoundG)
                 {
-                  sendProblem({
-                    userID: this.props.user.id,
-                    username: this.props.user.username,
-                    email: this.props.user.email,
-                    typeIndex: 12,
-                    input: {
-                      m_FxEquation: this.state.m_FxEquation,
-                      m_GxEquation: this.state.m_GxEquation,
-                      m_nValue: this.state.m_nValue,
-                      m_c1Value: this.state.c1Value,
-                      m_c2Value: this.state.c2Value
-                    }
-                });
+                  funcSolutionF = this.solveFunction(EquationF, maxN, null);
+                  funcLowerBoundG = this.solveFunction(EquationG, maxN, c1Value);
+                  funcHigherBoundG = this.solveFunction(EquationG, maxN, c2Value);
 
-                  this.setState({Answer: "Verification was Successful.\n The inputs provided are a correct solution." });
-                  return;
+                  if(funcLowerBoundG <= funcSolutionF && funcSolutionF <= funcHigherBoundG)
+                  {
+                    sendProblem({
+                      userID: this.props.user.id,
+                      username: this.props.user.username,
+                      email: this.props.user.email,
+                      typeIndex: 12,
+                      input: {
+                        m_FxEquation: this.state.m_FxEquation,
+                        m_GxEquation: this.state.m_GxEquation,
+                        m_nValue: this.state.m_nValue,
+                        m_c1Value: this.state.m_c1Value,
+                        m_c2Value: this.state.m_c2Value
+                      }
+                    });
+
+                    this.setState({Answer: "Verification was Successful.\n The inputs provided are a correct solution." });
+                    return;
+                  }
+                  else 
+                  {
+                    this.setState({Answer: "The inputs provided were unsuccessful.\n Try inputting different variable values." });
+                    return;
+                  }
                 }
                 else
                 {
@@ -379,9 +393,9 @@ class MagnitudeOrder extends React.Component
 
     testValues(nValue, c1Value, c2Value)
     {
-      if(nValue < 1 || nValue > 10)
+      if(nValue < 1 || nValue > 100)
       {
-        this.setState({error2: "Error: Invalid N value. N must be >= 1 and <= 10" });
+        this.setState({error2: "Error: Invalid N value. N must be >= 1 and <= 100" });
         return false;
       }
       if(c1Value <= 0)
@@ -433,7 +447,7 @@ class MagnitudeOrder extends React.Component
                     <div>
                          f(x): {' '}
                         <input
-                        style = {{}}
+                        value = {this.state.m_FxEquation}
                         onChange = {this.setFxEquation}>
                           
                         </input>
@@ -441,6 +455,7 @@ class MagnitudeOrder extends React.Component
                     <div>
                          g(x):
                         <input
+                        value = {this.state.m_GxEquation}
                         onChange = {this.setGxEquation}>
                         
                         </input>
@@ -466,14 +481,16 @@ class MagnitudeOrder extends React.Component
                 <div>
                   N:
                   <input
+                  value = {this.state.nValue}
                   onChange = {this.setNValue}
                   style = {{marginLeft: "10px"}}>
                  </input>
-                 <Form.Label style= {{marginLeft: "18px", fontWeight: "normal"}}>{'N >= 1 and N <= 10, N must be a whole number'}</Form.Label>
+                 <Form.Label style= {{marginLeft: "18px", fontWeight: "normal"}}>{'N >= 1 and N <= 100, N must be a whole number'}</Form.Label>
                 </div>
                 <div>
                   C1:
                   <input
+                  value = {this.state.c1Value}
                   onChange = {this.setc1Value}
                   style = {{marginLeft: "2px"}}>
                  </input>
@@ -482,6 +499,7 @@ class MagnitudeOrder extends React.Component
                 <div>
                   C2:
                   <input
+                  value = {this.state.c2Value}
                   onChange = {this.setc2Value}
                   style = {{marginLeft: "2px"}}>
                  </input>
