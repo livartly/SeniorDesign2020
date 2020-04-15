@@ -151,7 +151,7 @@ class Home extends Component {
               </Card>
             </Link>
 
-            <Link to="/">
+            <Link to="/cycle-solver">
               <Card style={{ width: '20rem' }}>
                 <Card.Img variant="top" src="icons/function.png" />
                 <Card.Body>
