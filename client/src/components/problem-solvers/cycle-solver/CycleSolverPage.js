@@ -16,6 +16,7 @@ class CycleSolverPage extends React.Component {
     this.state = {
       setInput: "",
       relation: "",
+      out: "",
       relationProperties: [],
       closures: [],
       error: null,
@@ -23,7 +24,8 @@ class CycleSolverPage extends React.Component {
     };
     this.updateSetInput = this.updateSetInput.bind(this);
     this.updateRelationInput = this.updateRelationInput.bind(this);
-    this.handleSubmit = this.handleSubmit.bind(this);
+    this.handleCycleSubmit = this.handleCycleSubmit.bind(this);
+    this.handlePermutationSubmit = this.handlePermutationSubmit.bind(this);
     this.showOutput = this.showOutput.bind(this);
   }
 
@@ -39,46 +41,97 @@ class CycleSolverPage extends React.Component {
     });
   }
 
-  handleSubmit(event) {
+  handleCycleSubmit(event) {
     event.preventDefault();
     try {
-      if (validateInput(this.state.setInput, this.state.relation)) {
-        var formattedSet = formatSet(this.state.setInput);
-        var formattedRelation = formatRelation(this.state.relation);
+      let solver = new CycleSolver(this.state.setInput, this.state.relation, true);
+      let inputStr = this.state.relation.replace(/ /g, "");
+      let inputArray = inputStr.split(")(");
+      for (var i = 0; i < inputArray.length; i++) {
+        inputArray[i] = inputArray[i].replace(/\(/g, "");
+        inputArray[i] = inputArray[i].replace(/\)/g, "");
+
+        inputArray[i] = "(" + inputArray[i] + ")";
+      }
+
+      if (inputArray.length === 1) {
+        let solver = new CycleSolver(this.state.setInput, inputArray[0], true);
+        this.setState({out : solver.toCycleString()});
+        this.setState({error : "Given relation already in cycle form."});
+      }
+      else if (inputArray.length > 1) {
+        let solvers = [];
+        for (var i = 0; i < inputArray.length; i++) {
+          solvers.push(new CycleSolver(this.state.setInput, inputArray[i], true));
+        }
+
+        var result = null;
+        for (var i = solvers.length - 1; i > 0; i--) {
+          if (result === null)
+            result = solvers[i-1].makeComposite(solvers[i]);
+          else {
+            result = solvers[i - 1].makeComposite(result); 
+          }
+        }
+
         // This will occur asynchronously (not blocking)
-        /*sendProblem({
+        sendProblem({
             userID: this.props.user.id,
             username: this.props.user.username,
             email: this.props.user.email,
-            typeIndex: 2,
+            typeIndex: 13,
             input: {
-            setInput: this.state.setInput
+              setInput: this.state.setInput,
+              relation: this.state.relation
             }
-        });*/
+        });
+
+        this.setState({out : result.toCycleString()});
+        this.setState({error : ""});
       }
+      else {
+        throw new Error("Error: Empty relation. No cycle possible.");
+      }
+
+      this.setState({ error : null });
     }
     catch (err) {
       this.setState({ error: err.message });
     }
+  }
 
+  handlePermutationSubmit(event) {
+    event.preventDefault();
+    try {
+      let solver = new CycleSolver(this.state.setInput, this.state.relation, false);
+
+        // This will occur asynchronously (not blocking)
+        sendProblem({
+            userID: this.props.user.id,
+            username: this.props.user.username,
+            email: this.props.user.email,
+            typeIndex: 13,
+            input: {
+              setInput: this.state.setInput,
+              relation: this.state.relation
+            }
+        });
+
+        this.setState({ out : solver.toCycleString() });
+        this.setState({ error : null });
+    }
+    catch (err) {
+      this.setState({ error: err.message });
+    }
   }
 
   showOutput() {
-        if (this.state.relationProperties.length === 0)
+        if (this.state.out === "")
             return;
         else {
             return (
                 <Card.Body>
-                    <Card.Title>Relation Properties</Card.Title>
-                    <Card.Text>Reflexive: {this.state.relationProperties[0].toString()}</Card.Text>
-                    <Card.Text>Symmetric: {this.state.relationProperties[1].toString()}</Card.Text>
-                    <Card.Text>Antisymmetric: {this.state.relationProperties[3].toString()}</Card.Text>
-                    <Card.Text>Transitive: {this.state.relationProperties[2].toString()}</Card.Text>
-
-                    <Card.Title>Relation Closures</Card.Title>
-                    <Card.Text>Reflexive: {this.state.closures[0].toString()}</Card.Text>
-                    <Card.Text>Symmetric: {this.state.closures[1].toString()}</Card.Text>
-                    <Card.Text>Transitive: {this.state.closures[2].toString()}</Card.Text>
+                    <Card.Text>{this.state.out}</Card.Text>
                 </Card.Body>
             );
         }
@@ -94,7 +147,9 @@ class CycleSolverPage extends React.Component {
             <Form.Group controlId="multiplicityClosureFinder.instructions">
               <Form.Label>Instructions</Form.Label>
               <p>
-                Input a set S and a relation on S. Note that a relation in cycle form can be input as a series of ordered pairs.
+                Input a set S and a relation on S in either cycle form or permutation form.
+                Note that cycle-form is represented as a list of elements as they relate to each other (e.g 1,2,3,4,5), 
+                whereas permutation-form is a list of ordered pairs detailing the relations explicitly (e.g (1,2),(2,3),(3,4),(4,5),(5,1)).
               </p>
             </Form.Group>
             <Form.Group controlId="multiplicityClosureFinder.setInput">
@@ -104,7 +159,7 @@ class CycleSolverPage extends React.Component {
                 size="lg"
                 value={this.state.setInput}
                 onChange={this.updateSetInput}
-                placeholder="eg. 1,2,3,4,5,6,7,8"
+                placeholder="eg. 1,2,3"
               />
             </Form.Group>
             <Form.Group controlId="multiplicityClosureFinder.relationInput">
@@ -114,11 +169,15 @@ class CycleSolverPage extends React.Component {
                 size="lg"
                 value={this.state.relation}
                 onChange={this.updateRelationInput}
-                placeholder="eg. (1,1), (2,2), (3,3)"
+                placeholder="eg. (1,2), (2,3), (3,1)"
               />
             </Form.Group>
-            <Button onClick={this.handleSubmit}>
-              Submit
+            <Button onClick={this.handleCycleSubmit}>
+              Submit Cycle-Form
+            </Button>
+
+            <Button onClick={this.handlePermutationSubmit}>
+              Submit Permutation-Form
             </Button>
             <br />
             <span style={{ color: 'red' }}>

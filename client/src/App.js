@@ -37,7 +37,7 @@ import PertChart from './components/problem-solvers/pert-chart/PertChart';
 import TruthTableBuilder from './components/problem-solvers/truth-table-builder/TruthTableBuilderContainer';
 import RecursiveSequenceBuilder from './components/problem-solvers/recursive-sequence-builder/RecursiveSequenceBuilderContainer';
 import BooleanMatricesSolver from './components/problem-solvers/BooleanMatricesSolver.js';
-import CycleSolverPage from './components/problem-solvers/cycle-solver/CycleSolverPage.js';
+import CycleSolverPage from './components/problem-solvers/cycle-solver/CycleSolverContainer.js';
 
 //import 'bootstrap/dist/css/bootstrap.min.css';
 

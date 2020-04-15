@@ -2,7 +2,7 @@ class CycleSolver {
     // True: input is in cycle form, FALSE: input is in permutation form
     constructor(setString, relation, isCycleForm) {
         if (isCycleForm) {
-            var { parentSet, cycleMap, formattedArray } = parseCycleForm(setString, relation);
+            var { parentSet, cycleMap} = parseCycleForm(setString, relation);
         }
         else {
             var { parentSet, cycleMap } = validateInput(setString, relation);
@@ -10,7 +10,6 @@ class CycleSolver {
 
         this.parentSet = parentSet;
         this.cycleMap = cycleMap;
-        this.cycleArray = formattedArray;
     }
 
     toCycleString() {
@@ -36,7 +35,7 @@ class CycleSolver {
         return JSON.stringify(resultArr).replace(/\"/g, "").replace(/\[/g, "(").replace(/\]/g, ")").replace(/\),\(/g, ")(").slice(1, -1);
     }
 
-    makeComposite2(other) {
+    makeComposite(other) {
         const mapA = this.cycleMap;
         const mapB = other.cycleMap;
 
@@ -53,49 +52,6 @@ class CycleSolver {
         var resultCycle = new CycleSolver(setStr, this.toCycleString(), true);
         resultCycle.cycleMap = newMap;
         return resultCycle;
-    }
-
-    makeComposite(other) {
-        var composite = [];
-        var prevNode = other.cycleArray[0][0];
-        var cycleStart = other.cycleArray[0][0];
-
-        while (true) {
-            // Push start of cycle to array
-            if (composite.length === 0 || (composite[composite.length - 1] === "|")) {
-                composite.push(cycleStart);
-            }
-
-            // Get mapping on inner function
-            var innerMapping = "";
-            if (other.cycleMap[prevNode]) {
-                innerMapping = other.cycleMap[prevNode];
-            }
-            else {
-                innerMapping = prevNode;
-            }
-
-            // Map inner function value to outer function
-            var outerMapping = "";
-            if (this.cycleMap[innerMapping]) {
-                outerMapping = this.cycleMap[innerMapping];
-            }
-            else {
-                outerMapping = innerMapping;
-            }
-
-            // Check if cycle has formed
-            if (outerMapping != cycleStart) {
-                composite.push(outerMapping);
-                prevNode = outerMapping;
-            }
-            else {
-                //composite.push("|");
-                break;
-            }
-        }
-
-        console.log("Final: " + composite);
     }
 }
 
@@ -228,11 +184,10 @@ const parseCycleForm = (set, cycleString) => {
         }
     }
 
-    console.log(formattedArray);
     for (var i = 0; i < setArray.length; i++) {
         if (!cycleMap[setArray[i]])
             cycleMap[setArray[i]] = setArray[i];
     }
 
-    return { parentSet, cycleMap, formattedArray };
+    return { parentSet, cycleMap};
 }
