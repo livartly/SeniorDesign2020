@@ -38,18 +38,6 @@ class PertChart extends React.Component {
           // Declare variable to check for at least one node with no dependencies 
           var nodeCheck = 0;
 
-          // Check if id input is empty- throw error
-          if(node.id == "")
-          {
-            throw new Error(" Error: All nodes must have an id value.");
-          }
-
-          // Check if id input is not numerical
-          if(isNaN(node.id))
-          {
-            throw new Error(" Error: Id value must be a number.");
-          }
-
           // Deep copy of nodes 
           var nodesCopy = [];
           for (const node of this.state.nodes) {
@@ -84,7 +72,7 @@ class PertChart extends React.Component {
           if(nodeCheck > 0)
           {
             this.setState( { chartData: nodesCopy } );
-            
+
             // This will occur asynchronously (not blocking)
             sendProblem({
               userID: this.props.user.id,
@@ -276,17 +264,20 @@ class PertChart extends React.Component {
             <Form.Group controlId="pertChart.usage">
                   <Form.Label>Usage</Form.Label>
                   <ul>
-                    <li>
-                      Id- this is a required numerical input that will determine the node sequence order
+                  <li>
+                      <b>Pert Chart Output</b>- hover over nodes and edges to see tags and duration information. Critical path consists of all red nodes.
                     </li>
                     <li>
-                      Node- this is the required identifier of your node. It can be a the name of a node like A or the name of a task like Make Pancakes.
+                      Id- this is the required identifier of your node.
+                    </li>
+                    <li>
+                      Node- this can be a the name of a node like A or the name of a task like Make Pancakes.
                     </li>
                     <li>
                       Duration- this is a numerical input to specifiy the amount of time a task takes. Duration is not a required input, if left blank the duration will default to 0.
                     </li>
                     <li>
-                      Dependencies- these are the nodes/tasks that a node/task depends on. Each node can have multiple dependencies. Dependencies must be comma separeted. Your input should always include at least one node that contains no dependencies in order to output a pert chart.
+                      Dependencies- these are the nodes/tasks that a node/task depends on- also called Prerequisite Tasks. Each node can have multiple dependencies. Dependencies must be comma separeted. Your input should always include at least one node that contains no dependencies in order to output a pert chart.
                     </li>
                   </ul>
                 </Form.Group>
@@ -303,34 +294,53 @@ class PertChart extends React.Component {
               <tbody>
                 <tr>
                   <th scope="row">1</th>
-                  <td>A</td>
-                  <td>3</td>
-                  <td>E</td>
+                  <td>1</td>
+                  <td>4</td>
+                  <td>2</td>
                 </tr>
                 <tr>
                   <th scope="row">2</th>
-                  <td>B</td>
-                  <td>5</td>
-                  <td>C,D</td>
+                  <td>2</td>
+                  <td>2</td>
+                  <td>3</td>
                 </tr>
                 <tr>
                   <th scope="row">3</th>
-                  <td>C</td>
-                  <td>2</td>
-                  <td>A</td>
+                  <td>3</td>
+                  <td>5</td>
+                  <td>8</td>
                 </tr>
                 <tr>
                   <th scope="row">4</th>
-                  <td>D</td>
-                  <td>6</td>
-                  <td>A</td>
+                  <td>4</td>
+                  <td>2</td>
+                  <td>3</td>
                 </tr>
                 <tr>
                   <th scope="row">5</th>
-                  <td>E</td>
+                  <td>5</td>
                   <td>2</td>
+                  <td>4,7</td>
+                </tr>
+                <tr>
+                  <th scope="row">6</th>
+                  <td>6</td>
+                  <td>1</td>
+                  <td>5</td>
+                </tr>
+                <tr>
+                  <th scope="row">7</th>
+                  <td>7</td>
+                  <td>3</td>
+                  <td>3</td>
+                </tr>
+                <tr>
+                  <th scope="row">8</th>
+                  <td>8</td>
+                  <td>5</td>
                   <td></td>
                 </tr>
+                
               </tbody>
             </table>
             <Form.Group controlId="truthTableBuilder.textInput">

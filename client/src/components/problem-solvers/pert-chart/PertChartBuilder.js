@@ -16,9 +16,17 @@ class PertChartBuilder extends React.Component {
 
        // set chart data
        chart.data(this.props.data, "asTable");
- 
+
+       // critical path
+       chart.milestones().labels(false);
+
+       chart.criticalPath({milestones: {fill: "#FF4040", selectFill: "#92000A"}});
+
+       // set critical path duration
+       var duration = chart.getStat("pertChartProjectDuration");
+
        // set the title of the chart
-       chart.title("Pert Chart");
+       chart.title("Minimum time to completion is " + duration + " units. Critical path shown in red.");
  
        // set the container id for the chart
        chart.container('chart');
