@@ -26,6 +26,17 @@ class TreeProof extends React.Component {
   handleClick(e) {
     e.preventDefault();
     this.startProof();
+
+    // This will occur asynchronously (not blocking)
+    sendProblem({
+      userID: this.props.user.id,
+      username: this.props.user.username,
+      email: this.props.user.email,
+      typeIndex: 14,
+      input: {
+        statement: this.state.inputText
+      }
+    });
   }
 
   startProof() {
@@ -70,7 +81,7 @@ class TreeProof extends React.Component {
             this.counterModel.toHTML();
         }
 
-        // This will occur asynchronously (not blocking)
+        /*// This will occur asynchronously (not blocking)
         sendProblem({
           userID: this.props.user.id,
           username: this.props.user.username,
@@ -81,7 +92,7 @@ class TreeProof extends React.Component {
           }
         });
 
-        return;
+        return;*/
       }
       if (parser.isModal) {
         sentree.modalize();
@@ -91,16 +102,6 @@ class TreeProof extends React.Component {
       window.self.painter = new TreePainter(sentree, document.getElementById("rootAnchor"));
       window.self.painter.paintTree();
 
-      // This will occur asynchronously (not blocking)
-      sendProblem({
-        userID: this.props.user.id,
-        username: this.props.user.username,
-        email: this.props.user.email,
-        typeIndex: 14,
-        input: {
-          statement: this.state.inputText
-        }
-      });
     }
     setTimeout(function () {
       prover.start();
