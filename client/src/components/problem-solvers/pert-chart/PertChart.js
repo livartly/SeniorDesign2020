@@ -72,25 +72,24 @@ class PertChart extends React.Component {
           if(nodeCheck > 0)
           {
             this.setState( { chartData: nodesCopy } );
-
-            // This will occur asynchronously (not blocking)
-            sendProblem({
-              userID: this.props.user.id,
-              username: this.props.user.username,
-              email: this.props.user.email,
-              typeIndex: 6,
-              input: {
-              chartData: this.state.chartData
-              }
-              });
-  
           }
           else 
           {
             throw new Error(" Error: Cyclic dependency detected! At least one node should have no dependencies.");
           }
-          
       }
+
+          // This will occur asynchronously (not blocking)
+          sendProblem({
+          userID: this.props.user.id,
+          username: this.props.user.username,
+          email: this.props.user.email,
+          typeIndex: 6,
+          input: {
+          nodes: this.state.nodes
+          //chartData: this.state.chartData
+          }
+          });
     }
         catch (err) {
           this.setState({ error: err.message });
