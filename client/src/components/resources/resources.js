@@ -159,6 +159,18 @@ class Resources extends Component {
               </tr>
               <tr>
                 <th scope="row">5</th>
+                <td><a href="https://github.com/jiggzson/nerdamer" >Jiggzson- Nerdamer</a></td>
+                <td>Symbolic Math Evaluation Github Repository</td>
+                <td>Order of Magnitude</td>
+              </tr>
+              <tr>
+                <th scope="row">6</th>
+                <td><a href="https://mathjs.org/" >MathJs</a></td>
+                <td>OpenSource Mathematics Library</td>
+                <td>Order of Magnitude</td>
+              </tr>
+              <tr>
+                <th scope="row">7</th>
                 <td><a href="https://www.flaticon.com/authors/mavadee" >Flaticon.com</a></td>
                 <td>Temporary Icons</td>
                 <td>About Page</td>
