@@ -169,13 +169,6 @@ class Resources extends Component {
                 <td>OpenSource Mathematics Library</td>
                 <td>Order of Magnitude</td>
               </tr>
-              <tr>
-                <th scope="row">7</th>
-                <td><a href="https://www.flaticon.com/authors/mavadee" >Flaticon.com</a></td>
-                <td>Temporary Icons</td>
-                <td>About Page</td>
-                
-              </tr>
             </tbody>
           </table>
         </div>
