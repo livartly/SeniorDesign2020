@@ -30,7 +30,7 @@ class About extends Component {
               <div class="card-deck">
               <Link to="/">
               <Card style={{ width: '20rem' }}>
-              <Card.Img variant="top" src="images/question.png" />
+              <Card.Img variant="top" src="images/about1.png" />
               <Card.Body>
                 <Card.Title><h7>Get</h7></Card.Title>
                 <Card.Title><h7>Answers!</h7></Card.Title>
@@ -44,7 +44,7 @@ class About extends Component {
 
             <Link to="/resources">
               <Card style={{ width: '20rem' }}>
-              <Card.Img variant="top" src="images/book.png" />
+              <Card.Img variant="top" src="images/about2.png" />
               <Card.Body>
                 <Card.Title><h7>Access Resources</h7></Card.Title>
                 <Card.Text>
@@ -58,7 +58,7 @@ class About extends Component {
 
             <Link to="/feedback">
               <Card style={{ width: '20rem' }}>
-                <Card.Img variant="top" src="images/project-management.png" />
+                <Card.Img variant="top" src="images/about3.png" />
                   <Card.Body>
                     <Card.Title><h7>Admin Assistance</h7></Card.Title>
                     <Card.Text>
