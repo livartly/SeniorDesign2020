@@ -48,6 +48,7 @@ class ProblemList extends Component {
         <td>{i + 1}</td>
         <td>{PROBLEM_TYPE_LIST[problem.typeIndex]}</td>
         <td>{problem.username}</td>
+        <td>{new Date(problem.dateSubmitted).toLocaleDateString()}</td>
       </tr>
     ));
   }
@@ -65,6 +66,7 @@ class ProblemList extends Component {
               <th>#</th>
               <th>Type</th>
               <th>Username</th>
+              <th>Date</th>
             </tr>
           </thead>
           <tbody>

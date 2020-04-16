@@ -39,6 +39,7 @@ class FeedbackList extends Component {
         <td>{issue.issueType}</td>
         <td>{issue.username}</td>
         <td>{issue.subject}</td>
+        <td>{new Date(issue.dateSubmitted).toLocaleDateString()}</td>
       </tr>
     ));
   }
@@ -66,6 +67,7 @@ class FeedbackList extends Component {
               <th>Issue Type</th>
               <th>Username</th>
               <th>Subject</th>
+              <th>Date</th>
             </tr>
           </thead>
           <tbody>
