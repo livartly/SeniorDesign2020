@@ -437,10 +437,35 @@ class BooleanMatrices extends React.Component
                     <h1>Boolean Matrix Solver</h1>
                     <Form.Group >
                         <p style = {{marginLeft: "20px"}}>
-                            <b>Instructions</b> <br></br>Select the size of your two matrices from the dropdown below. This value will be used to determine
-                            the size of Matrix A and Matrix B. In the provided input boxes, please then provide the data for Matrix A and Matrix B. These Matrices follow the standard format for a Matrix.
-                            Rows are along the vertical axis and Columns are along the horizontal. Once you have entered all available values for Matrix A and
+                        <Form.Label >Instructions</Form.Label> <br></br>
+                            Select the size of your two matrices from the dropdown below. This value will be used to determine
+                            the size of Matrix A and Matrix B. In the provided input boxes, please then provide the data for Matrix A and Matrix B. Clicking on
+                            one of the subboxes under either of these Matrices will cause the value to flip between 0 and 1. The Matricies follow a standard matrix layout,
+                             where Rows are along the horizontal axis and Columns are along the vertical. Once you have entered all available values for Matrix A and
                             Matrix B, click the submit button to get your answers in the result area below.
+                        </p>   
+                        <p style = {{marginLeft: "20px", marginTop: "25px"}}>
+                            
+                        </p> <br></br>
+                    </Form.Group>
+
+                    <Form.Group >
+                        <p style = {{marginLeft: "20px"}}>
+                        <Form.Label >Answer Explanation</Form.Label> <br></br>
+                        Clicking on the individual links below will take you to additional resources explaining the concept behind finding the answer..<br></br><br></br>
+                        <ul> 
+                         <li><a href = "https://www.allaboutcircuits.com/textbook/digital/chpt-7/boolean-arithmetic/">A &and; B</a> - Boolean Multiplication - Start at the same position in Matrix A and Matrix B. 
+                         If the value at both of those positions is 1, then the resulting Matrix C value at that same position will be 1. If the values at those positions in Matrix A and Matrix B are not 1, then the resulting
+                         Matrix C value will be 0. Move to the next position in Matrix A and Matrix B, then repeat the above steps for each position in Matrix A and Matrix B.</li>
+                         <li><a href = "https://www.allaboutcircuits.com/textbook/digital/chpt-7/boolean-arithmetic/">A &or; B</a> - Boolean Addition - Start at the same position in Matrix A and Matrix B. 
+                         If either of the values at those positions is 1, then the resulting Matrix C value at that same position will be 1. If the values at those positions in Matrix A and Matrix B are both 0, then the resulting
+                         Matrix C value will be 0. Move to the next position in Matrix A and Matrix B, then repeat the above steps for each position in Matrix A and Matrix B</li>
+                         <li><a href = "https://www.youtube.com/watch?v=BjTeDlpj-ts">A X B or B X A</a> - Boolean Matrix Multiplication - Involves keeping track of three position values, an i,j, and k each starting at 1. For each 
+                        position [i][j] in Matrix C, you must Or each of the results of a series of boolean AND operations, starting at k = 1, between (Matrix A of position [i][k] with Matrix B of position [k][j]). The link provided shows a Boolean Matrix
+                        Multiplication example being explained and solved.  </li>
+                        <li><a href = "https://www.khanacademy.org/math/precalculus/x9e81a4f98389efdf:matrices/x9e81a4f98389efdf:multiplying-matrices-by-matrices/v/multiplying-a-matrix-by-a-matrix">A · B or B · A</a> - Regular Matrix Multiplication - Steps away from the topic of Boolean Matricies, but is useful for comparing the results of 
+                        a Boolean Matrix Multiplication against a Regular Matrix Multiplication. The link provided is an example regular matrix multiplication problem being solved by a member of Khan Academy.  </li>
+                         </ul>   
                         </p>   
                         <p style = {{marginLeft: "20px", marginTop: "25px"}}>
                             

@@ -103,8 +103,20 @@ class Resources extends Component {
               </tr>
               <tr>
                 <th scope="row">13</th>
-                <td><a href="https://mathworld.wolfram.com/01-Matrix.html" >WolframMathWorld</a></td>
-                <td>Simple explaination of boolean matricies</td>
+                <td><a href="https://www.allaboutcircuits.com/textbook/digital/chpt-7/boolean-arithmetic/" >AllAboutCircuits</a></td>
+                <td>Simple explaination of boolean arithmetic involving AND, OR operations</td>
+                <td>Boolean Matricies</td>
+              </tr>
+              <tr>
+                <th scope="row">14</th>
+                <td><a href="https://www.youtube.com/watch?v=BjTeDlpj-ts" >MathHacks</a></td>
+                <td>Simple video explaination of boolean matrix multiplication</td>
+                <td>Boolean Matricies</td>
+              </tr>
+              <tr>
+                <th scope="row">15</th>
+                <td><a href="https://www.khanacademy.org/math/precalculus/x9e81a4f98389efdf:matrices/x9e81a4f98389efdf:multiplying-matrices-by-matrices/v/multiplying-a-matrix-by-a-matrix" >Kahn Academy</a></td>
+                <td>Simple video explaination of regular matrix multiplication</td>
                 <td>Boolean Matricies</td>
               </tr>
             </tbody>
