@@ -65,16 +65,33 @@ class MagnitudeOrder extends React.Component
          fxOrder = nerdamer(fxOrder).toString()
          gxOrder = nerdamer(gxOrder).toString()
 
+         if((fxOrder > 8 || gxOrder > 8) || (fxOrder < -8 || gxOrder < -8))
+         {
+          this.setState({ Verification:null, error: "Error: Solver has detected that an input function has a degree order higher than 8." });
+          return;
+         }
          //alert(fxOrder + "  " + gxOrder)
          if(fxOrder === gxOrder && (fxOrder != 0 && gxOrder != 0)) //Fx and Gx have the same order due to only being basic polynomials
          {
-           
-          this.setState({ Verification: " Verification Success: F(x) and G(x) are the same order", error: null, SameOrderFlag: true });
-          return;
+
+          fxOrder = this.checkXlog(EquationF, fxOrder);
+          gxOrder = this.checkXlog(EquationG, gxOrder);
+
+          if(fxOrder === gxOrder)
+          {
+            this.setState({ Verification: " Verification Success: F(x) and G(x) are the same order", error: null, SameOrderFlag: true });
+            return;
+          }
+          else
+          {
+            this.setState({ Verification: " Verification Failure: F(x) and G(x) {do not} have the same order", error: null, SameOrderFlag: false });
+            return;
+          }
+
          }
          else if(fxOrder != gxOrder || (fxOrder == 0 && gxOrder == 0)) //Check if they are not same order or contain a highest order of sqrt or log.
          {
-            if(fxOrder == 0 && gxOrder == 0) //Check for log, sqrt, const
+            if(fxOrder == 0 && gxOrder == 0 || EquationF.includes("sqrt") || EquationG.includes("sqrt")) //Check for log, sqrt, const
             {
               if(EquationF.includes("log"))//Check for sqrtx. logx, or const as highest order
               {
@@ -187,10 +204,21 @@ class MagnitudeOrder extends React.Component
        // alert(strtIdx + "  " + endIdx + "  " + logIdx)
         if(strtIdx != -1 && endIdx != -1)
         {
-          var polynomial = func.slice(strtIdx + 1, endIdx);
+          var polynomial = func.slice(strtIdx + 5, endIdx);
           if(polynomial.includes("x"))
           {
-            return "sqrtOrder";
+            try
+            {
+              var order = "deg(" + polynomial.trim() + ",x)";
+              order = nerdamer(order).toString()
+              return order/2;
+            }
+
+            catch(err)
+            {
+              this.setState({ Verification:null, error: "Error: Incorrect format found within square root." });
+             return -1;
+            }
           }
           logIdx = func.indexOf("sqrt", endIdx); //Find the next log instance if it exists
           strtIdx = func.indexOf("sqrt(", endIdx); //Find the next log instance if it exists
@@ -207,6 +235,21 @@ class MagnitudeOrder extends React.Component
           return "const";
         }
       }
+    }
+
+    checkXlog(func, order)
+    {
+
+      if(func.includes("x^" + order + "log") || func.includes("x^" + order + " * log") ||
+         func.includes("x^" + order + "* log") || func.includes("x^" + order + " *log") || 
+         func.includes("x^" + order + "*log") || (order <= 1 && (func.includes("xlog") || 
+         func.includes("x log") || func.includes("x * log") || func.includes("x*log") || 
+         func.includes("x* log") || func.includes("x *log"))) || func.includes("x^" + order + " log"))
+      {
+            return "xlogx"
+      }
+      else return order
+
     }
 
     setFxEquation(event)
@@ -287,7 +330,7 @@ class MagnitudeOrder extends React.Component
                 }
                 catch(err)
                 {
-                  this.setState({ Verification:null, error2: "Error: Incorrect Formatting Detected" });
+                  this.setState({ Verification:null, error2: "Error: There is a formatting error in one of your equation." });
                   return;
                 }
                 
@@ -436,16 +479,16 @@ class MagnitudeOrder extends React.Component
               </Form.Group>
               <Form.Group controlId="truthTableBuilder.FunctionInput">
                 <Form.Label><b>Examples</b> </Form.Label>
-                <p>1) f(x) = x<br></br>
-                g(x) = 17x + 1</p>
+                <p>1) f(x) = x + x * log(x)<br></br>
+                g(x) = 17x + 1 + x * log(x)</p>
                 <p>2) f(x) = 3x^3 - 7x<br></br>
                 g(x) = (x^3)/2</p>
-                <p>4) f(x) = sqrt(x + 100)<br></br>
+                <p>3) f(x) = sqrt(x + 100)<br></br>
                 g(x) = sqrt(x)</p>
-                <p>5) f(x) = x^3 + log(x)<br></br>
+                <p>4) f(x) = x^3 + log(x)<br></br>
                 g(x) = x^3</p>
                 <form id = "FunctionInputForm">
-                <Form.Label>Function Input</Form.Label>
+                <Form.Label>Function Input</Form.Label> <Form.Label style= {{marginLeft: "128px"}}>Function Restrictions</Form.Label>
                     <div>
                          f(x): {' '}
                         <input
@@ -453,14 +496,15 @@ class MagnitudeOrder extends React.Component
                         onChange = {this.setFxEquation}>
                           
                         </input>
+                        <Form.Label style= {{marginLeft: "12px", fontWeight: "normal"}}>{'x^n, where n <= 8'}</Form.Label>
                     </div>
                     <div>
                          g(x):
                         <input
                         value = {this.state.m_GxEquation}
                         onChange = {this.setGxEquation}>
-                        
                         </input>
+                        <Form.Label style= {{marginLeft: "12px", fontWeight: "normal"}}>{'x^n, where n <= 8'}</Form.Label>
                     </div>
                   <br></br>
                     <label>
