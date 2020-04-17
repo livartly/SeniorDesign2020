@@ -163,7 +163,7 @@ class CycleSolverPage extends React.Component {
             <Form.Group controlId="multiplicityClosureFinder.instructions">
               <Form.Label>Instructions</Form.Label>
               <p>
-                Input the elements of the set. Elements can be any comma separated list of characters or strings. The, input the relation
+                Input the elements of the set. Elements can be any comma separated list of characters or strings. Then, input the relation
                 in either cycle-form or permutation-form and select the appropriate "Submit" button.
               </p>
               <p>
