@@ -4,6 +4,17 @@ import {Table, Form, Row, Col, Card, Button} from 'react-bootstrap';
 import {LogicalSet} from "../../../engine/Sets/LogicalSet.js";
 import { sendProblem } from '../../../utils/problemsAPIUtil';
 
+const EXAMPLE_INPUTS = [
+  {
+    'A': "1,2,3,4,5",
+    'B': "1,2,3"
+  },
+  {
+    'A': "1,2,3",
+    'B': "1,3,5,7"
+  }
+];
+
 //********************************************//
 //
 // Begin code for SUBSET and POWERSET calculations
@@ -21,6 +32,7 @@ class SetOps extends React.Component {
       out:"",
       powersetSize:-1
     };
+    
     this.handleClick = this.handleClick.bind(this);
     this.handleInput = this.handleInput.bind(this);
     this.handleSubsetASubmit = this.handleSubsetASubmit.bind(this);
@@ -81,7 +93,7 @@ class SetOps extends React.Component {
       return (
         <div key={idx}>
           {setStr} = 
-          <input onChange={this.handleInput(setStr)}></input><button onClick={this.handlePowersetSubmit(setStr)}>𝓟</button>
+          <input onChange={this.handleInput(setStr)} value={this.state.setStrings[setStr]}></input><button onClick={this.handlePowersetSubmit(setStr)}>𝓟</button>
         </div>
       );
     });
@@ -203,6 +215,12 @@ class SetOps extends React.Component {
     }
   }
 
+  applyExample(idx) {
+    return () => {
+      this.setState({setStrings : EXAMPLE_INPUTS[idx]});
+    };
+  }
+
   // Draw page
   render() {
     return (
@@ -223,6 +241,20 @@ class SetOps extends React.Component {
                 (A is a subset of B that is not equal to B), or if B is a proper subset of A.
                 </p>
               </Form.Group>
+              <Form.Group controlID="multiplicityColsureFinder.examples">
+              <ul>
+                <li>
+                  <a href="javascript:;" onClick={this.applyExample(0)}>
+                    Example 1
+                  </a>
+                </li>
+                <li>
+                  <a href="javascript:;" onClick={this.applyExample(1)}>
+                    Example 2
+                  </a>
+                </li>
+              </ul>
+            </Form.Group>
               </Form>
                 {
                   this.makeInputForm()

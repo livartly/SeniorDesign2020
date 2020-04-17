@@ -29,6 +29,22 @@ var isAlpha = function(ch){
          && (ch >= "a" && ch <= "z" || ch >= "A" && ch <= "Z");
 }
 
+const EXAMPLE_INPUTS = [
+  {
+    'A': "1,2,3,4,5",
+    'B': "1,2,3"
+  },
+  {
+    'A': "1,2,3",
+    'B': "1,3,5,7"
+  }
+];
+
+const EXAMPLE_FORMULAS = [
+  "A ∩ B",
+  "B - A"
+]
+
 //********************************************//
 //
 // Begin code for the /set-ops page
@@ -128,7 +144,7 @@ class SetLogicOps extends React.Component {
       return (
         <div key={idx}>
           {setStr} = 
-          <input onChange={this.handleInput(setStr)}></input>
+          <input onChange={this.handleInput(setStr)} value={this.state.setStrings[setStr]}></input>
         </div>
       );
     });
@@ -415,6 +431,13 @@ class SetLogicOps extends React.Component {
     return str;
   }
 
+  applyExample(idx) {
+    return () => {
+      this.setState({setStrings : EXAMPLE_INPUTS[idx]});
+      this.setState({formula : EXAMPLE_FORMULAS[idx]});
+    };
+  }
+
   // Draw page
   render() {
     return (
@@ -436,20 +459,20 @@ class SetLogicOps extends React.Component {
               <Legend />
               <p><b>Note that the unary " ' " operator (negation) can be represented as "S-A", where A is a subset of S.</b></p>
 
-              <Card.Text><b>Example</b></Card.Text>
-              <Card.Text>
-                <ul>
-                  <li>
-                  A = 1,2,3
-                  </li>
-                  <li>
-                  B = a,b,c
-                  </li>
-                  <li>
-                    Formula = A ∪ B
-                  </li>
-                </ul>
-              </Card.Text>
+              <Form.Group controlID="multiplicityColsureFinder.examples">
+              <ul>
+                <li>
+                  <a href="javascript:;" onClick={this.applyExample(0)}>
+                    Example 1
+                  </a>
+                </li>
+                <li>
+                  <a href="javascript:;" onClick={this.applyExample(1)}>
+                    Example 2
+                  </a>
+                </li>
+              </ul>
+            </Form.Group>
 
               <Card.Text><b>Set Input</b></Card.Text>
               </Card.Text>

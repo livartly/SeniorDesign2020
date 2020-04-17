@@ -9,6 +9,18 @@ import {
   validateInput
 } from '../../../engine/CycleSolver/CycleSolver';
 import {CycleSolver} from '../../../engine/CycleSolver/CycleSolver';
+import Legend from './Legend';
+
+const EXAMPLE_INPUTS = [
+  {
+    setInput: "1,2,3,4,5",
+    relation: "(1,4),(2,5),(3,2),(4,3),(5,1)"
+  },
+  {
+    setInput: "a,b,c,d,e",
+    relation: "(b,e,d)(d,a)(e,a,c)(a,c,b,e)"
+  }
+];
 
 class CycleSolverPage extends React.Component {
   constructor(props) {
@@ -17,8 +29,6 @@ class CycleSolverPage extends React.Component {
       setInput: "",
       relation: "",
       out: "",
-      relationProperties: [],
-      closures: [],
       error: null,
       graphData: {}
     };
@@ -137,6 +147,12 @@ class CycleSolverPage extends React.Component {
         }
   }
 
+  applyExample(idx) {
+    return () => {
+      this.setState(EXAMPLE_INPUTS[idx]);
+    };
+  }
+
   render() {
     window.CycleSolver = CycleSolver;
     return (
@@ -147,11 +163,38 @@ class CycleSolverPage extends React.Component {
             <Form.Group controlId="multiplicityClosureFinder.instructions">
               <Form.Label>Instructions</Form.Label>
               <p>
-                Input a set S and a relation on S in either cycle form or permutation form.
-                Note that cycle-form is represented as a list of elements as they relate to each other (e.g 1,2,3,4,5), 
-                whereas permutation-form is a list of ordered pairs detailing the relations explicitly (e.g (1,2),(2,3),(3,4),(4,5),(5,1)).
+                Input the elements of the set. Elements can be any comma separated list of characters or strings. The, input the relation
+                in either cycle-form or permutation-form and select the appropriate "Submit" button.
+              </p>
+              <p>
+                Sets submitted in permutation form will be converted into the shortest possible cycle-form equivalent.
+                Submit a series of cycle-form sets as a relation to calculate a function composition. For this calculation, it is assumed
+                that all cycles given share the same parent set of elements.
               </p>
             </Form.Group>
+
+            <Form.Group>
+              <p>
+                The following legend listsan example of valid permutation and cycle forms.
+              </p>
+              <Legend />
+            </Form.Group>
+
+            <Form.Group controlID="multiplicityColsureFinder.examples">
+              <ul>
+                <li>
+                  <a href="javascript:;" onClick={this.applyExample(0)}>
+                    Example 1 - Permutation Form Simplification
+                  </a>
+                </li>
+                <li>
+                  <a href="javascript:;" onClick={this.applyExample(1)}>
+                    Example 2 - Cycle Form Composition
+                  </a>
+                </li>
+              </ul>
+            </Form.Group>
+
             <Form.Group controlId="multiplicityClosureFinder.setInput">
               <Form.Label>Set Input</Form.Label>
               <Form.Control

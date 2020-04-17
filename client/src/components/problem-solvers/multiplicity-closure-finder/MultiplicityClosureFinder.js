@@ -10,6 +10,16 @@ import {
 
 import { sendProblem } from '../../../utils/problemsAPIUtil';
 
+const EXAMPLE_INPUTS = [
+  {
+    setInput: "1,2,3,4,5",
+    relation: "(1,1),(2,2),(3,3),(4,4),(5,5)"
+  },
+  {
+    setInput: "1,2,3,4",
+    relation: "(1,3),(3,4),(4,1),(2,2)"
+  }
+];
 
 class MultiplicityClosureFinder extends React.Component {
   constructor(props) {
@@ -117,6 +127,12 @@ class MultiplicityClosureFinder extends React.Component {
         }
   }
 
+  applyExample(idx) {
+    return () => {
+      this.setState(EXAMPLE_INPUTS[idx]);
+    };
+  }
+
   render() {
     return (
       <div>
@@ -133,38 +149,18 @@ class MultiplicityClosureFinder extends React.Component {
             </Form.Group>
 
             <Form.Group controlID="multiplicityColsureFinder.examples">
-              <Tabs defaultActiveKey="ex1" id="uncontrolled-tab-example">
-                <Tab eventKey="ex1" title="Example 1">
-                  <ul>
-                    <li>
-                      Set = 1, 2, 3, 4, 5
-                    </li>
-                    <li>
-                      Relation = (1,1), (2,2), (3,3), (4,4), (5,5)
-                    </li>
-                  </ul>
-                </Tab>
-                <Tab eventKey="ex2" title="Example 2">
-                  <ul>
-                    <li>
-                      Set = a, b, c, d
-                    </li>
-                    <li>
-                      Relation = (a,b), (b,a), (c,c), (d,c)
-                    </li>
-                  </ul>
-                </Tab>
-                <Tab eventKey="ex3" title="Example 3">
-                  <ul>
-                    <li>
-                      Set = 1, 2, 3
-                    </li>
-                    <li>
-                      Relation = (2,2)
-                    </li>
-                  </ul>
-                </Tab>
-              </Tabs>
+              <ul>
+                <li>
+                  <a href="javascript:;" onClick={this.applyExample(0)}>
+                    Example 1
+                  </a>
+                </li>
+                <li>
+                  <a href="javascript:;" onClick={this.applyExample(1)}>
+                    Example 2
+                  </a>
+                </li>
+              </ul>
             </Form.Group>
 
             <Form.Group controlId="multiplicityClosureFinder.setInput">
