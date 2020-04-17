@@ -1,6 +1,5 @@
 import React from 'react';
-
-import { Form, Card, Button, ListGroup } from 'react-bootstrap';
+import { Form, Card, Button, ListGroup, Tabs, Tab} from 'react-bootstrap';
 
 import {
   formatSet,
@@ -103,13 +102,13 @@ class MultiplicityClosureFinder extends React.Component {
           tClosureString = tClosureString.replace(/\]/g, ")");
             return (
                 <Card.Body>
-                    <Card.Title>Relation Properties</Card.Title>
-                    <Card.Text>Reflexive: {this.state.relationProperties[0].toString()}</Card.Text>
-                    <Card.Text>Symmetric: {this.state.relationProperties[1].toString()}</Card.Text>
-                    <Card.Text>Antisymmetric: {this.state.relationProperties[3].toString()}</Card.Text>
-                    <Card.Text>Transitive: {this.state.relationProperties[2].toString()}</Card.Text>
+                    <Card.Text><b>Relation Properties</b></Card.Text>
+                    <Card.Text>Reflexive: {this.state.relationProperties[0].toString().toUpperCase()}</Card.Text>
+                    <Card.Text>Symmetric: {this.state.relationProperties[1].toString().toUpperCase()}</Card.Text>
+                    <Card.Text>Antisymmetric: {this.state.relationProperties[3].toString().toUpperCase()}</Card.Text>
+                    <Card.Text>Transitive: {this.state.relationProperties[2].toString().toUpperCase()}</Card.Text>
 
-                    <Card.Title>Relation Closures</Card.Title>
+                    <Card.Text><b>Relation Closures</b></Card.Text>
                     <Card.Text>Reflexive: {rClosureString}</Card.Text>
                     <Card.Text>Symmetric: {sClosureString}</Card.Text>
                     <Card.Text>Transitive: {tClosureString}</Card.Text>
@@ -127,9 +126,47 @@ class MultiplicityClosureFinder extends React.Component {
             <Form.Group controlId="multiplicityClosureFinder.instructions">
               <Form.Label>Instructions</Form.Label>
               <p>
-                Input a set S and a relation on S.
+                Input the elements of the set. Elements must be <b>integers</b>. Then, input the comma-separated list of ordered pairs
+                composing the relation. All elements of the relation must also be integers. Select "Submit" to determine if the relation is
+                reflexive, symmetric, antisymmetric, and transitive. Closures will also be provided for all properties except antisymmetric.
               </p>
             </Form.Group>
+
+            <Form.Group controlID="multiplicityColsureFinder.examples">
+              <Tabs defaultActiveKey="ex1" id="uncontrolled-tab-example">
+                <Tab eventKey="ex1" title="Example 1">
+                  <ul>
+                    <li>
+                      Set = 1, 2, 3, 4, 5
+                    </li>
+                    <li>
+                      Relation = (1,1), (2,2), (3,3), (4,4), (5,5)
+                    </li>
+                  </ul>
+                </Tab>
+                <Tab eventKey="ex2" title="Example 2">
+                  <ul>
+                    <li>
+                      Set = a, b, c, d
+                    </li>
+                    <li>
+                      Relation = (a,b), (b,a), (c,c), (d,c)
+                    </li>
+                  </ul>
+                </Tab>
+                <Tab eventKey="ex3" title="Example 3">
+                  <ul>
+                    <li>
+                      Set = 1, 2, 3
+                    </li>
+                    <li>
+                      Relation = (2,2)
+                    </li>
+                  </ul>
+                </Tab>
+              </Tabs>
+            </Form.Group>
+
             <Form.Group controlId="multiplicityClosureFinder.setInput">
               <Form.Label>Set Input</Form.Label>
               <Form.Control

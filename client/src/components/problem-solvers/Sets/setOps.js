@@ -215,10 +215,11 @@ class SetOps extends React.Component {
               <Form>
               <Form.Group controlId="truthTableBuilder.instructions">  
               <p><b>Subset Calculator</b></p>
-              <Form.Label>Instructions</Form.Label>
+              <Form.Label><b>Instructions</b></Form.Label>
                 <p>
-                Enter sets using numbers seperated with commas for Subset and Set Logic calculators. Select the "𝓟" button to 
-                generate the powerset of the given set. Select one of the bottom two buttons to determine if A is a proper subset of B 
+                Enter set elements into each field. Sets can be any collection of comma-separated characters or strings. 
+                Select the "𝓟" button next to a set field to generate the powerset of the given set, as well as its size. 
+                Select one of the bottom two buttons to determine if A is a proper subset of B 
                 (A is a subset of B that is not equal to B), or if B is a proper subset of A.
                 </p>
               </Form.Group>

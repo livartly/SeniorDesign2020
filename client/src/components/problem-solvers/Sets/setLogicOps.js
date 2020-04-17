@@ -219,7 +219,8 @@ class SetLogicOps extends React.Component {
         let rpnArray = this.infixToPostfix(f);
 
         if (this.solveRPN(rpnArray, m) != null && this.solveRPN(rpnArray, m) != undefined) {
-          this.setState({out:Array.from(this.solveRPN(rpnArray, m)).toString()});
+          let outArray = Array.from(this.solveRPN(rpnArray, m)).toString();
+          this.setState({out : "{" + outArray.substring(1, outArray.length - 1) + "}"});
           this.setState({error: ""});
         }
         else {
@@ -330,7 +331,6 @@ class SetLogicOps extends React.Component {
     }
     outputQueue = outputQueue.replace(/\s/g,'');
     let outputArray = Array.from(outputQueue);
-    //return outputQueue;
     return outputArray;
   }
 
@@ -423,18 +423,40 @@ class SetLogicOps extends React.Component {
         <Card>
             <Card.Body>
               <Card.Text>
-              <p><b>Set Logic Calculator</b></p>
-              <p><b>Instructions</b></p>
-              Enter the contents of the sets, separated by commas. Click the "+" button to add another set. Up to 10 sets are supported.
-              Enter the formula in the Formula box, using the listed set letters and operations. Click "Submit" to evaluate.
-               <p><b>Formula Input</b></p>
+              <Card.Text><b>Set Logic Calculator</b></Card.Text>
+              <Card.Text><b>Instructions</b></Card.Text>
+              <Card.Text>
+                Enter the contents of the sets, separated by commas. Set contents can be any comma separated values.
+                Click the "+" button to add another set. Up to 10 sets are supported.
+                Enter the formula in the Formula box, using the listed set letters and operations. Standard characters will be 
+                automatically converted into the matching operation.
+                Click "Submit" to evaluate the expression.
+              </Card.Text>
+
+              <Legend />
+              <p><b>Note that the unary " ' " operator (negation) can be represented as "S-A", where A is a subset of S.</b></p>
+
+              <Card.Text><b>Example</b></Card.Text>
+              <Card.Text>
+                <ul>
+                  <li>
+                  A = 1,2,3
+                  </li>
+                  <li>
+                  B = a,b,c
+                  </li>
+                  <li>
+                    Formula = A ∪ B
+                  </li>
+                </ul>
+              </Card.Text>
+
+              <Card.Text><b>Set Input</b></Card.Text>
               </Card.Text>
               {this.makeInputForm()}
             <button onClick={this.addBox} disabled={this.state.maxInputs}>+</button>
 
-            <Legend />
-            <p>* Note that the unary " ' " operator (negation) can be represented as "S-A", where A is a subset of S.</p>
-            <p>Enter Formula: </p>
+            <p><b>Enter Formula:</b></p>
             <div id="symbolButtonRow">
               <div id="symbolButtons">
                 <div
