@@ -4,6 +4,7 @@ import { Modal, Button, Card } from 'react-bootstrap';
 
 const FeedbackModal = (props) => {
   var { feedback } = props;
+  const dateSubmitted = new Date(feedback.dateSubmitted);
   return (
     <Modal
       {...props}
@@ -21,6 +22,8 @@ const FeedbackModal = (props) => {
         <p>Username: {feedback.username}</p>
         <p>Email: {feedback.email}</p>
         <p>Subject: {feedback.subject}</p>
+        <p>Date: {dateSubmitted.toLocaleDateString()}</p>
+        <p>Time: {dateSubmitted.toLocaleTimeString()}</p>
         <p>Body: </p>
         <Card>
           <Card.Body>

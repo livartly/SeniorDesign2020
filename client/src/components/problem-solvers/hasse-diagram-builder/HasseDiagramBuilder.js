@@ -100,9 +100,9 @@ class HasseDiagramBuilder extends React.Component {
     const { minimalNodes, maximalNodes } = this.state.extremes;
     return (
       <div>
-        <p>Minimal Elements: {minimalNodes.toString()}</p>
+        <p>Minimal Elements: {"{" + minimalNodes.toString().slice(1, -1) + "}"}</p>
         <p>Least Element: {minimalNodes.length === 1 ? minimalNodes[0] : "N/A"}</p>
-        <p>Maximal Elements: {maximalNodes.toString()}</p>
+        <p>Maximal Elements: {"{" + maximalNodes.toString().slice(1, -1) + "}"}</p>
         <p>Greatest Element: {maximalNodes.length === 1 ? maximalNodes[0] : "N/A"}</p>
       </div>
     );
@@ -149,8 +149,8 @@ class HasseDiagramBuilder extends React.Component {
                   </ul>
                   <p>
                     In order to meet the requirements for a Hasse Diagram, the
-                    binary relation, ρ, must be a partially ordered set and
-                    meet the following criteria:
+                    binary relation, ρ, must be a partially ordered set (poset)
+                    and meet the following criteria:
                   </p>
                   <ul>
                     <li>Reflexive - each element is related to itself.</li>

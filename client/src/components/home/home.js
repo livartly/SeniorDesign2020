@@ -191,7 +191,7 @@ class Home extends Component {
             </Link>
           </div>
 
-          <br /><br />
+          <br />
 
           <div className="card-deck">
             <Link to="/BooleanMatrices">

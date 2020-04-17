@@ -15,8 +15,8 @@ const showProblemInput = (input) => {
 };
 
 const ProblemInputModal = (props) => {
-  console.log(props.problem);
   var { problem } = props;
+  const dateSubmitted = new Date(problem.dateSubmitted);
   return (
     <Modal
       {...props}
@@ -33,6 +33,8 @@ const ProblemInputModal = (props) => {
         <h4>Submission History</h4>
         <p>Username: {problem.username}</p>
         <p>Email: {problem.email}</p>
+        <p>Date: {dateSubmitted.toLocaleDateString()}</p>
+        <p>Time: {dateSubmitted.toLocaleTimeString()}</p>
         <p>Input: </p>
         <Card>
           <Card.Body>
