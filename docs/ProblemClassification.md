@@ -5,7 +5,7 @@
 User will input a well-formed formula (wff) and optionally, to show intermediates (verbose on/off). The output will be a truth table that has a row for each combination of the individual arguments. The output will also indicate if the wff provided is a tautology (last column is always true) or a contradiction (last column is never true).  
 
 ## 1.2 Propositional Logic
-Omitting because entirety is based on proofs. Will verify with instructor.
+User will input a propositional logic formula. The solver will show a step by step proof to validate the formula or attempt to provide a counterexample.
 
 ## 3.1 Recursive Definitions
 ### Recursive Sequence Builder
